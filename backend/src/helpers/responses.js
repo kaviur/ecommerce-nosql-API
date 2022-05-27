@@ -1,5 +1,6 @@
 import { response } from "express";
-import { isProductionEnvironment } from "../config/config.js";
+import { isProductionEnvironment, jwtSecret } from "../config/config.js";
+import jwt from "jsonwebtoken";
 
 const errorResponse = (res = response, error) => {
   if (error.hasOwnProperty("code") || error.hasOwnProperty("errors")) {
@@ -22,18 +23,20 @@ const errorResponse = (res = response, error) => {
     });
   }
 
-  return res
-    .status(500)
-    .json({
-      ok: false,
-      status: 500,
-      errors: [{ message: error.message || error
-       }],
-    });
+  return res.status(500).json({
+    ok: false,
+    errors: [{ message: error.message || error }],
+  });
 };
 
-const authResponse = (res = response, status, ok, message, data) => {
+const authResponse = async (res = response, status, ok, message, data) => {
   const { payload, token } = data;
+  let exp
+  try {
+     exp  = jwt.verify(token, jwtSecret).exp;
+  } catch (error) {
+    return errorResponse(res, error);
+  }
 
   return res
     .status(status)
@@ -41,9 +44,28 @@ const authResponse = (res = response, status, ok, message, data) => {
       httpOnly: true,
       secure: isProductionEnvironment,
       sameSite: "none",
-      expires: new Date(new Date().setDate(new Date().getDate() + 15)),
+      expires: new Date(exp * 1000),
     })
     .json({ ok, message, ...payload });
 };
 
-export { errorResponse, authResponse };
+const successfulResponse = (
+  res = response,
+  status,
+  ok,
+  message,
+  data = null
+) => {
+  return data
+    ? res.status(status).json({
+        ok,
+        message,
+        data,
+      })
+    : res.status(status).json({
+        ok,
+        message,
+      });
+};
+
+export { errorResponse, authResponse, successfulResponse };
