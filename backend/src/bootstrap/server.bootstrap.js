@@ -4,7 +4,9 @@ import cors from "cors";
 import morgan from "morgan";
 
 import { endPoints } from "../config/endPoints.js";
-import { config } from "../config/config.js";
+import  { port } from "../config/config.js";
+import { userRoute } from "../routes/index.js";
+
 
 export class Server {
   #port;
@@ -13,7 +15,7 @@ export class Server {
 
   constructor() {
     this.#app = express();
-    this.#port = config.port;
+    this.#port = port;
     this.#paths = endPoints;
     this.#middleware();
     this.#routes();
@@ -24,9 +26,12 @@ export class Server {
     this.#app.use(express.json());
     this.#app.use(express.urlencoded({ extended: true }));
     this.#app.use(morgan("dev"));
+
   }
 
-  #routes() {}
+  #routes() {
+    this.#app.use(this.#paths.user,userRoute)
+  }
 
   initServer() {
     return new Promise((resolve, reject) => {

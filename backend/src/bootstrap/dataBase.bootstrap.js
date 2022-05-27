@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-import { config } from "../config/config.js";
+import { dbHost, dbName, dbPassword, dbUser } from "../config/config.js";
 
 export class DataBase {
   #dbName;
@@ -10,10 +10,10 @@ export class DataBase {
   #dbClient;
 
   constructor() {
-    this.#dbName = config.dbName;
-    this.#dbHost = config.dbHost;
-    this.#dbUser = config.dbUser;
-    this.#dbPassword = config.dbPassword;
+    this.#dbName = dbName;
+    this.#dbHost = dbHost;
+    this.#dbUser = dbUser;
+    this.#dbPassword = dbPassword;
     this.#dbClient = mongoose.connection;
   }
 
@@ -37,11 +37,11 @@ export class DataBase {
     });
   }
 
-  async closedatabase(){
-      try {
-          await this.#dbClient.close(true)
-      } catch (error) {
-          console.log(`${error}`.bgRed);
-      }
+  async closedatabase() {
+    try {
+      await this.#dbClient.close(true);
+    } catch (error) {
+      console.log(`${error}`.bgRed);
+    }
   }
 }
