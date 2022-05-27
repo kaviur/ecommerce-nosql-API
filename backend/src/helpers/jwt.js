@@ -12,7 +12,6 @@ export const createJWT = (user) => {
 
   return new Promise((resolve, reject) => {
     jwt.sign(payload, jwtSecret, { expiresIn: "15d" }, (err, token) => {
-    return reject("prueba fallo")
       if (err) {
         return reject(err);
       }
