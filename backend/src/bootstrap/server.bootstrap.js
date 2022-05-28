@@ -30,6 +30,7 @@ export class Server {
   }
 
   #routes() {
+    //Aca van todas las rutas
     this.#app.use(this.#paths.user,userRoute)
   }
 
