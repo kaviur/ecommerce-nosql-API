@@ -1,13 +1,32 @@
-import { createJWT } from "../helpers/jwt.js";
 import { userModel } from "../models/index.js";
 
 export default class UserService {
   async postUser(data) {
-    const { name, email, password, image, role } = data;
     try {
-      const user = new userModel({ name, email, password, image, role });
+      const user = new userModel({ ...data });
       await user.save();
-      const data = await createJWT(user);
+      return { success: true, user };
+    } catch (error) {
+      return { success: false, error };
+    }
+  }
+
+  async getUserByEmail(email) {
+    try {
+      const user = await userModel.findOne({ email });
+      return { success: true, user };
+    } catch (error) {
+      return { success: false, error };
+    }
+  }
+
+  async getUsers(limit, page) {
+    try {
+      const { docs: users, ...information } = await userModel.paginate(
+        {},
+        { limit, page }
+      );
+      const data = { users, information };
       return { success: true, data };
     } catch (error) {
       return { success: false, error };

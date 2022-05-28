@@ -1,37 +1,60 @@
 import mongoose from "mongoose";
 import mongoosePaginate from "mongoose-paginate-v2";
-import { encripPassword } from "../helpers/bcrypt.js";
+import { encripPassword } from "../helpers/bcrypt.helper.js";
 
-const userSchema = new mongoose.Schema({
-  name: {
-    type: String,
-    required: [true, "The name is required"],
-    trim: true,
-    uppercase: true,
-  },
-  email: {
-    type: String,
-    required: [true, "Email is required"],
-    uppercase: true,
-    trim: true,
-    unique: [true, "The Email is already registered"],
-    match: [
-      /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/,
-      "Please fill a valid email address",
+const userSchema = new mongoose.Schema(
+  {
+    name: {
+      type: String,
+      required: [true, "The name is required"],
+      trim: true,
+      uppercase: true,
+    },
+    email: {
+      type: String,
+      required: [true, "Email is required"],
+      uppercase: true,
+      trim: true,
+      unique: [true, "The Email is already registered"],
+      match: [
+        /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/,
+        "Please fill a valid email address",
+      ],
+    },
+    password: {
+      type: String,
+      required: [true, "Password is required"],
+    },
+    image: {
+      type: String,
+    },
+    role: {
+      type: Number,
+      default: 1,
+    },
+    status: {
+      type: Boolean,
+      default: true,
+    },
+    addresses: [
+      {
+        country: {
+          type: String,
+          required: [true, "Country is required"],
+        },
+        city: {
+          type: String,
+          required: [true, "City is required"],
+        },
+        adress: {
+          type: String,
+          required: [true, "Adress is required"],
+        },
+      },
     ],
   },
-  password: {
-    type: String,
-    required: [true, "Password is required"],
-  },
-  image: {
-    type: String,
-  },
-  role: {
-    type: Number,
-    default: 1,
-  },
-});
+  { timestamps: true }
+);
 
 userSchema.plugin(mongoosePaginate);
 

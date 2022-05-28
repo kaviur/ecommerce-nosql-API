@@ -9,10 +9,12 @@ const encripPassword = async (password) => {
   }
 };
 
-const validatePassword = (password, hash) => {
+const validatePassword = async (password, hash) => {
   try {
     return bcrypt.compareSync(password, hash);
-  } catch (error) {}
+  } catch (error) {
+    console.log(error);
+  }
 };
 
 export { encripPassword, validatePassword };

@@ -1,5 +1,10 @@
-import { Router } from "express";
-import { authResponse, errorResponse } from "../helpers/responses.js";
+import { request, response, Router } from "express";
+import {
+  errorResponse,
+  successfulResponse,
+} from "../helpers/responses.helper.js";
+import { validateRol, verifyToken } from "../middlewares/auth.middleware.js";
+
 import UserService from "../services/user.service.js";
 
 export class UserRoute {
@@ -7,16 +12,21 @@ export class UserRoute {
   #services;
   constructor() {
     this.#router = Router();
-    this.#routes();
     this.#services = new UserService();
+    this.#routes();
   }
   #routes() {
-    this.#router.post("/", async (req, res) => {
-      const response = await this.#services.postUser(req.body);
-      response.success
-        ? authResponse(res, 201, true, "The user has been created", response.data)
-        : errorResponse(res, response.error);
-    });
+    this.#router.get(
+      "/",
+      [verifyToken, validateRol(1)],
+      async (req = request, res = response) => {
+        const { limit = 10, page = 1 } = req.query;
+        const response = await this.#services.getUsers(limit, page);
+        response.success
+          ? successfulResponse(res, 200, true, "List users", response.data)
+          : errorResponse(res, response.error);
+      }
+    );
   }
 
   get router() {
