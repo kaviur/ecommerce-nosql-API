@@ -2,7 +2,7 @@ import express from "express";
 import "colors";
 import cors from "cors";
 import morgan from "morgan";
-
+// importaciones locales
 import { endPoints } from "../config/endPoints.js";
 import  { port } from "../config/config.js";
 import { userRoute } from "../routes/index.js";
