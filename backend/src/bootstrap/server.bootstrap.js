@@ -6,7 +6,7 @@ import cookieParser  from 'cookie-parser';
 // importaciones locales
 import { endPoints } from "../config/endPoints.js";
 import { port } from "../config/config.js";
-import { authRoute, userRoute } from "../routes/index.js";
+import { authRoute, userRoute, categoryRoute } from "../routes/index.js";
 
 export class Server {
   #port;
@@ -33,6 +33,7 @@ export class Server {
     //Aca van todas las rutas
     this.#app.use(this.#paths.user, userRoute);
     this.#app.use(this.#paths.auth, authRoute);
+    this.#app.use(this.#paths.category, categoryRoute);
   }
 
   initServer() {
