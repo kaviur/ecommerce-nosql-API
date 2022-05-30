@@ -1,4 +1,5 @@
 import { categoryModel } from "../models/index.js";
+import { successfulResponse, errorResponse } from "../helpers/responses.helper.js";
 
 export default class CategoryService {
 
@@ -7,8 +8,10 @@ export default class CategoryService {
             const category = new categoryModel({ ...data });
             await category.save();
             return { success: true, category };
+            //return successfulResponse(category.data.response, 201, true, "Category was successfully created", category);
         } catch (error) {
             return { success: false, error };
+            //return errorResponse(error);
         }
     }
 
