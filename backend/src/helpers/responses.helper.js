@@ -14,7 +14,7 @@ const errorResponse = (res = response, error, status = 500) => {
       });
     }
 
-    return res.status(400).json({
+    return res. status(400).json({
       ok: false,
       errors: Object.values(error.errors).map(({ message}) => ({
         message,

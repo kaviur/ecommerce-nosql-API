@@ -8,15 +8,18 @@ export class AuthService {
     this.#userService = new UserService();
   }
 
-  async signup(user) {
+  async signup(user, files = null) {
     const { name, email, password, image, role } = user;
-    const response = await this.#userService.postUser({
-      name,
-      email,
-      password,
-      image,
-      role,
-    });
+    const response = await this.#userService.postUser(
+      {
+        name,
+        email,
+        password,
+        image,
+        role,
+      },
+      files
+    );
     if (response.success) {
       try {
         const data = await createJWT(response.user);

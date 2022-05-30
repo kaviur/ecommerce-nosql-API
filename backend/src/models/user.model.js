@@ -1,5 +1,10 @@
 import mongoose from "mongoose";
 import mongoosePaginate from "mongoose-paginate-v2";
+import {
+  callbackUrl,
+  callbackUrlDevelopment,
+  isProductionEnvironment,
+} from "../config/config.js";
 import { encripPassword } from "../helpers/bcrypt.helper.js";
 
 const userSchema = new mongoose.Schema(
@@ -72,6 +77,12 @@ userSchema.pre("save", async function (next) {
 userSchema.methods.toJSON = function () {
   const { password, __v, ...user } = this.toObject();
   return user;
+};
+
+userSchema.methods.saveUrlImg = function (fileNames) {
+  this.image = isProductionEnvironment
+    ? `${callbackUrl}/public/user/${fileNames[0]}`
+    : `${callbackUrlDevelopment}/public/user/${fileNames[0]}`;
 };
 
 export default mongoose.model("User", userSchema);

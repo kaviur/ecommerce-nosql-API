@@ -4,8 +4,8 @@ import {
   errorResponse,
   logoutResponse,
 } from "../helpers/responses.helper.js";
+import { validateExtensionImages } from "../middlewares/validationsMiddleware.js";
 import { AuthService } from "../services/auth.service.js";
-
 
 export class AuhtRoute {
   #router;
@@ -24,18 +24,23 @@ export class AuhtRoute {
         : errorResponse(res, response.error, response.status);
     });
 
-    this.#router.post("/signup", async (req = request, res = response) => {
-      const response = await this.#services.signup(req.body);
-      response.success
-        ? authResponse(
-            res,
-            201,
-            true,
-            "The user has been created",
-            response.user
-          )
-        : errorResponse(res, response.error);
-    });
+    this.#router.post(
+      "/signup",
+      validateExtensionImages,
+      async (req = request, res = response) => {
+        const { files } = req;
+        const response = await this.#services.signup(req.body, files);
+        response.success
+          ? authResponse(
+              res,
+              201,
+              true,
+              "The user has been created",
+              response.user
+            )
+          : errorResponse(res, response.error);
+      }
+    );
 
     this.#router.post("/logout", async (req = request, res = response) => {
       logoutResponse(res);
