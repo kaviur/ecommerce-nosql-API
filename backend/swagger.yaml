@@ -3,22 +3,22 @@ info:
   version: 1.0.0
   title: eCommerce
   description: >-
-   Este proyecto plantea la creacion de un eCommerce
+    Este proyecto plantea la creacion de un eCommerce
   contact:
     name: Camilo Morales Sanchez
     email: moorales.camilo@gmial.com
-    
+
 servers:
   - url: http://localhost:8081/api/v1
 
-tags: 
+tags:
   - name: Auth
   - name: Users
 
 paths:
   /signup/:
     post:
-      tags: 
+      tags:
         - Auth
       requestBody:
         description: Body with data new user
@@ -26,9 +26,9 @@ paths:
         content:
           multipart/form-data:
             schema:
-              $ref: '#/components/schemas/user'
+              $ref: "#/components/schemas/user"
       responses:
-        200: 
+        200:
           description: User register
           content:
             application/json:
@@ -48,7 +48,7 @@ paths:
                 $ref: "#/components/schemas/errorMessage"
   /login/:
     post:
-      tags: 
+      tags:
         - Auth
       requestBody:
         description: Login user
@@ -70,14 +70,14 @@ paths:
           description: Successful login
           headers:
             Set-Cookie:
-              schema: 
+              schema:
                 type: string
                 example: cookie=abcde12345; Path=/; HttpOnly
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/responseSuccessfulAuth"
-                
+
         400:
           description: Bad request
           content:
@@ -98,7 +98,7 @@ paths:
                 $ref: "#/components/schemas/errorMessage"
   /logout/:
     post:
-      tags: 
+      tags:
         - Auth
       responses:
         200:
@@ -106,27 +106,34 @@ paths:
           content:
             application/json:
               schema:
-               type: object
-               properties:
-                ok:
-                  type: boolean
-                  example: true
-                message:
-                  type: string
-                  example: "Successfully Message"
-  /user/:
+                type: object
+                properties:
+                  ok:
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    example: "Successfully Message"
+  /user/{id}:
     put:
-      tags: 
+      tags:
         - Users
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: string
+          required: true
+          description: User mongo id
       requestBody:
         description: Body with data user
         required: true
         content:
           multipart/form-data:
             schema:
-              $ref: '#/components/schemas/user'
+              $ref: "#/components/schemas/user"
       responses:
-        200: 
+        200:
           description: User register
           content:
             application/json:
@@ -146,12 +153,12 @@ paths:
                 $ref: "#/components/schemas/errorMessage"
   /user:
     get:
-      tags: 
+      tags:
         - Users
-      security: 
+      security:
         - cookieAuth: []
       responses:
-        200: 
+        200:
           description: List users
           content:
             application/json:
@@ -182,7 +189,7 @@ components:
       properties:
         name:
           type: string
-          example: 'name'
+          example: "name"
         email:
           type: string
           example: correo@correo.com
@@ -193,8 +200,8 @@ components:
           type: string
           example: "Abc123**12"
         image:
-         type: string
-         format: binary
+          type: string
+          format: binary
     responseSuccessfulAuth:
       type: object
       properties:
@@ -214,8 +221,8 @@ components:
           type: string
           example: http://localhost:8081/public/user/adba2f76-2a65-4566-bdae-9b8a0a7ac2c4.jpg
         role:
-         type: integer
-         example: 1
+          type: integer
+          example: 1
         id:
           type: string
           example: correo@correocom
@@ -230,7 +237,7 @@ components:
           items:
             type: object
             properties:
-              message: 
+              message:
                 type: string
                 example: "Error message"
     responsePagination:
@@ -261,7 +268,7 @@ components:
                 totalPages:
                   type: integer
                   example: 20
-                page: 
+                page:
                   type: integer
                   example: 1
                 pagingCounter:
@@ -284,5 +291,3 @@ components:
       type: apiKey
       in: cookie
       name: token
-      
-      
