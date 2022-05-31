@@ -3,7 +3,7 @@ import { errorResponse } from "../helpers/responses.helper.js";
 
 const validateExtensionImages = (req = request, res = response, next) => {
   const validExtensions = ["jpg", "png", "jpeg", "gif", "JPG", "PNG", "JPEG"];
-  const { image } = req.files;
+  const image = req.files?.image || null;
   let images = [];
 
   if (image) {

@@ -41,7 +41,7 @@ export default class UserService {
   }
 
   async updateUser(data, id, files = null) {
-    let imagesName;
+    let imagesName = [];
     try {
       const user = await userModel.findByIdAndUpdate(id, data);
       if (!user) throw new Error("User not found");
@@ -53,7 +53,7 @@ export default class UserService {
       }
       return { success: true, user };
     } catch (error) {
-      imagesName && (await deleteImages(imagesName));
+      imagesName.length === 0 && (await deleteImages(imagesName));
       return { success: false, error };
     }
   }

@@ -75,7 +75,7 @@ userSchema.pre("save", async function (next) {
 });
 
 userSchema.methods.toJSON = function () {
-  const { password, __v, ...user } = this.toObject();
+  const { password, __v,createdAt, updatedAt,...user } = this.toObject();
   return user;
 };
 

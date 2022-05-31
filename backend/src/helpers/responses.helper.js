@@ -46,7 +46,7 @@ const authResponse = async (res = response, status, ok, message, data) => {
       sameSite: "none",
       expires: new Date(exp * 1000),
     })
-    .json({ ok, message, ...payload });
+    .json({ ok, message, ...payload });   
 };
 
 const successfulResponse = (
