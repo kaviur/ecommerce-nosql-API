@@ -4,7 +4,7 @@ import {
   errorResponse,
   logoutResponse,
 } from "../helpers/responses.helper.js";
-import { validateExtensionImages } from "../middlewares/validationsMiddleware.js";
+import { validateExtensionImages } from "../middlewares/validations.middleware.js";
 import { AuthService } from "../services/auth.service.js";
 
 export class AuhtRoute {

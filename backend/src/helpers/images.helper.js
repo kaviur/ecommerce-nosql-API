@@ -3,24 +3,23 @@ import { v4 as uuidv4 } from "uuid";
 import fs from "fs";
 import { promisify } from "util";
 
-const validExtensions = ["jpg", "png", "jpeg", "gif", "JPG", "PNG", "JPEG"];
 const __dirname = path.resolve();
 
 const uploadImage = (files, pathImg = "users") => {
   return new Promise((resolve, reject) => {
-    const { image } = files;
+    let image = [];
     let imagesName = [];
+
+    if (pathImg === "users") {
+      image.push(files.image[0]);
+    } else {
+      image = [...files.image];
+    }
 
     image.forEach(({ name, mv }) => {
       let tempImgName = "";
       const splitImageName = name.split(".");
       const imageExtension = splitImageName[splitImageName.length - 1];
-      if (!validExtensions.includes(imageExtension))
-        return reject({
-          errors: {
-            message: `Invalid extension, allowed extension are: [${validExtensions}]`,
-          },
-        });
       tempImgName = `${uuidv4()}.${imageExtension}`;
       const sendtoPath = path.join(
         __dirname,

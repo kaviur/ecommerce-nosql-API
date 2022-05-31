@@ -44,7 +44,7 @@ export default class UserService {
     let imagesName;
     try {
       const user = await userModel.findByIdAndUpdate(id, data);
-      if (!user) throw new Error("user not found");
+      if (!user) throw new Error("User not found");
       if (files) {
         if (user.image) await deleteImages(user.image);
         imagesName = await uploadImage(files);

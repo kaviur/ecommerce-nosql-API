@@ -4,7 +4,7 @@ import {
   successfulResponse,
 } from "../helpers/responses.helper.js";
 import { validateRol, verifyToken } from "../middlewares/auth.middleware.js";
-import { validateExtensionImages } from "../middlewares/validationsMiddleware.js";
+import { validateExtensionImages } from "../middlewares/validations.middleware.js";
 
 import UserService from "../services/user.service.js";
 
