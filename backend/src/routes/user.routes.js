@@ -19,7 +19,7 @@ export class UserRoute {
   #routes() {
     this.#router.get(
       "/",
-      [verifyToken, validateRol(1)],
+      [verifyToken, validateRol(3)],
       async (req = request, res = response) => {
         const { limit = 10, page = 1 } = req.query;
         const response = await this.#services.getUsers(limit, page);

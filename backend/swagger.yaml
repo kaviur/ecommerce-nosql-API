@@ -14,8 +14,200 @@ servers:
 tags:
   - name: Auth
   - name: Users
+  - name: SubCategory
 
 paths:
+  /subcategory:
+    get:
+      tags:
+        - SubCategory
+      security:
+        - cookieAuth: []
+      responses:
+        200:
+          description: List sub categories
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/responseNoPagination"
+        400:
+          description: Bad request
+          content:
+            aplication/json:
+              schema:
+                $ref: "#/components/schemas/errorMessage"
+        403:
+          description: Forbidden
+          content:
+            aplication/json:
+              schema:
+                $ref: "#/components/schemas/errorMessage"
+        500:
+          description: Iternal server error
+          content:
+            aplication/json:
+              schema:
+                $ref: "#/components/schemas/errorMessage"
+  /subcategory/admin:
+    get:
+      tags:
+        - SubCategory
+      security:
+        - cookieAuth: []
+      responses:
+        200:
+          description: List sub categories
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/responseNoPagination"
+        400:
+          description: Bad request
+          content:
+            aplication/json:
+              schema:
+                $ref: "#/components/schemas/errorMessage"
+        403:
+          description: Forbidden
+          content:
+            aplication/json:
+              schema:
+                $ref: "#/components/schemas/errorMessage"
+        500:
+          description: Iternal server error
+          content:
+            aplication/json:
+              schema:
+                $ref: "#/components/schemas/errorMessage"
+  /subcategory/:
+    post:
+      tags:
+        - SubCategory
+      requestBody:
+        description: Body with data new subcategory
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                 type: string
+                 example: "name"
+      security:
+        - cookieAuth: []
+      responses:
+        200:
+          description: SubCategory create
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/responseNoPagination"
+        400:
+          description: Bad request
+          content:
+            aplication/json:
+              schema:
+                $ref: "#/components/schemas/errorMessage"
+        403:
+          description: Forbidden
+          content:
+            aplication/json:
+              schema:
+                $ref: "#/components/schemas/errorMessage"
+        500:
+          description: Iternal server error
+          content:
+            aplication/json:
+              schema:
+                $ref: "#/components/schemas/errorMessage"  
+  /subcategory/{id}:
+    put:
+      tags:
+        - SubCategory
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: string
+          required: true
+          description: Subcategory mongo id
+      requestBody:
+        description: Body with data new subcategory
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                 type: string
+                 example: "name"
+      security:
+        - cookieAuth: []
+      responses:
+        200:
+          description: SubCategory updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/responseNoPagination"
+        400:
+          description: Bad request
+          content:
+            aplication/json:
+              schema:
+                $ref: "#/components/schemas/errorMessage"
+        403:
+          description: Forbidden
+          content:
+            aplication/json:
+              schema:
+                $ref: "#/components/schemas/errorMessage"
+        500:
+          description: Iternal server error
+          content:
+            aplication/json:
+              schema:
+                $ref: "#/components/schemas/errorMessage"              
+  /subcategory/admin/{id}:
+    put:
+      tags:
+        - SubCategory
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: string
+          required: true
+          description: Subcategory mongo id
+      security:
+        - cookieAuth: []
+      responses:
+        200:
+          description: SubCategory update
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/responseNoPagination"
+        400:
+          description: Bad request
+          content:
+            aplication/json:
+              schema:
+                $ref: "#/components/schemas/errorMessage"
+        403:
+          description: Forbidden
+          content:
+            aplication/json:
+              schema:
+                $ref: "#/components/schemas/errorMessage"
+        500:
+          description: Iternal server error
+          content:
+            aplication/json:
+              schema:
+                $ref: "#/components/schemas/errorMessage"              
   /signup/:
     post:
       tags:
@@ -286,6 +478,22 @@ components:
                 nextPage:
                   type: string
                   example: bull
+    responseNoPagination:
+      type: object
+      properties:
+        ok:
+          type: boolean
+          example: true
+        message:
+          type: string
+          example: List data
+        data:
+          type: object
+          properties:
+            docs:
+              type: array
+              items:
+                type: object
   securitySchemes:
     cookieAuth:
       type: apiKey

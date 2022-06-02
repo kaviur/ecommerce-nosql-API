@@ -10,7 +10,7 @@ import path from 'path';
 // importaciones locales
 import { endPoints } from "../config/endPoints.js";
 import { port } from "../config/config.js";
-import { authRoute, userRoute } from "../routes/index.js";
+import { authRoute, subCategoryRoute, userRoute } from "../routes/index.js";
 const __dirname = path.resolve();
 const swaggerDocument = YAML.load(`${__dirname}\\swagger.yaml`)
 
@@ -47,6 +47,7 @@ export class Server {
     //Aca van todas las rutas
     this.#app.use(this.#paths.user, userRoute);
     this.#app.use(this.#paths.auth, authRoute);
+    this.#app.use(this.#paths.subCategory, subCategoryRoute)
     this.#app.use('/api-docs',swaggerUi.serve,swaggerUi.setup(swaggerDocument))
   }
 
