@@ -42,7 +42,7 @@ const authResponse = async (res = response, status, ok, message, data) => {
     .status(status)
     .cookie("token", token, {
       httpOnly: true,
-      secure: isProductionEnvironment,
+      secure: true,
       sameSite: "none",
       expires: new Date(exp * 1000),
     })
