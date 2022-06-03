@@ -29,6 +29,7 @@ export class AuthService {
     return response;
   }
 
+
   async login(data) {
     const { email, password } = data;
     try {
@@ -52,4 +53,32 @@ export class AuthService {
       return { success: false, status: 500, error };
     }
   }
+
+  async socialLogin(profile){
+
+    const user = {
+      name:profile.displayName,
+      email:profile.emails?.length?profile.emails[0].value:"noemail@mail.com",
+      profilePic: profile.photos?.length?profile.photos[0].value:"no_image.png",
+      provider: profile.provider,
+      idProvider:profile.id
+    }
+
+    const response = await this.#userService.getOrCreate(user)
+
+    if(!response.created){
+        // TODO:Verificar si el correo está en uso
+        return {
+            success:false,
+            status:409,
+            errors:response.errors
+        }
+    }
+    
+    const data = await createJWT(response.user);
+    response.user = data;
+    console.log("data de socialLogin",response)
+    return response;
+  }
+
 }

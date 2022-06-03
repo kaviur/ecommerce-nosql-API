@@ -7,6 +7,8 @@ import cookieParser  from 'cookie-parser';
 import { endPoints } from "../config/endPoints.js";
 import { port } from "../config/config.js";
 import { authRoute, userRoute, categoryRoute } from "../routes/index.js";
+import session from "express-session";
+import passport from "passport";
 
 export class Server {
   #port;
@@ -27,6 +29,12 @@ export class Server {
     this.#app.use(express.urlencoded({ extended: true }));
     this.#app.use(morgan("dev"));
     this.#app.use(cookieParser ())
+    this.#app.use(passport.initialize());
+    this.#app.use(session({
+      secret: "keyboard cat",
+      resave: false,
+      saveUninitialized: true,
+    }));
   }
 
   #routes() {
@@ -37,7 +45,7 @@ export class Server {
   }
 
   initServer() {
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve, reject) => {          
       this.#app
         .listen(this.#port)
         .on("listening", () => {

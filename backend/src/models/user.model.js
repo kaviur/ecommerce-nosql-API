@@ -52,6 +52,9 @@ const userSchema = new mongoose.Schema(
         },
       },
     ],
+    profilePic:String,
+    provider:String,
+    idProvider:String
   },
   { timestamps: true }
 );

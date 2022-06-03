@@ -1,11 +1,12 @@
 import { userModel } from "../models/index.js";
+import { v4 as uuidv4 } from "uuid";
 
 export default class UserService {
   async postUser(data) {
     try {
       const user = new userModel({ ...data });
       await user.save();
-      return { success: true, user };
+      return { created:true, success: true, user };
     } catch (error) {
       return { success: false, error };
     }
@@ -31,5 +32,18 @@ export default class UserService {
     } catch (error) {
       return { success: false, error };
     }
+  }
+
+  async getOrCreate(data){
+    const user = await userModel.findOne({provider:data.provider,idProvider:data.idProvider})
+    if(user){
+        return {
+          success:true,
+          created:true,
+          user
+        }
+    }
+    data.password = uuidv4()
+    return await this.postUser(data)
   }
 }
