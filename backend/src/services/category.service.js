@@ -19,7 +19,7 @@ export default class CategoryService {
 
     async getAllCategories() {
         try {
-            const categories = await categoryModel.find({ status: true }).populate("subcategories", "name").where("subcategories.status").equals(true);
+            const categories = await categoryModel.find({ status: true }).populate("subcategories", "name");
             return { success: true, categories };
         } catch (error) {
             return { success: false, error };

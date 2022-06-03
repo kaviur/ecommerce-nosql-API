@@ -10,7 +10,6 @@ import { validateExtensionImages } from "../middlewares/validations.middleware.j
 import { AuthService } from "../services/auth.service.js";
 import passport from "passport";
 import { useGoogleStrategy, useFacebookStrategy, useGitHubStrategy, useTwitterStrategy } from "../middlewares/authProvider.middleware.js";
-import { validateRol, verifyToken } from "../middlewares/auth.middleware.js";
 
 export class AuhtRoute {
   #router;

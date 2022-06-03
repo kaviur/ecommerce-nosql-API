@@ -1,9 +1,7 @@
 import mongoose from "mongoose";
 import mongoosePaginate from "mongoose-paginate-v2";
 import {
-  callbackUrl,
-  callbackUrlDevelopment,
-  isProductionEnvironment,
+  callback_url
 } from "../config/config.js";
 import { encripPassword } from "../helpers/bcrypt.helper.js";
 
@@ -83,9 +81,10 @@ userSchema.methods.toJSON = function () {
 };
 
 userSchema.methods.saveUrlImg = function (fileNames) {
-  this.image = isProductionEnvironment
-    ? `${callbackUrl}/public/user/${fileNames[0]}`
-    : `${callbackUrlDevelopment}/public/user/${fileNames[0]}`;
+  // this.image = isProductionEnvironment
+  //   ? `${callbackUrl}/public/user/${fileNames[0]}`
+  //   : `${callbackUrlDevelopment}/public/user/${fileNames[0]}`;
+  this.image = `${callback_url}/public/user/${fileNames[0]}`;
 };
 
 userSchema.methods.changePassword = async function (password) {

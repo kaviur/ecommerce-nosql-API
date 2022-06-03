@@ -14,7 +14,7 @@ import { authRoute, userRoute, categoryRoute, subCategoryRoute } from "../routes
 import session from "express-session";
 import passport from "passport";
 const __dirname = path.resolve();
-const swaggerDocument = YAML.load(`${__dirname}\\swagger.yaml`)
+//const swaggerDocument = YAML.load(`${__dirname}\\swagger.yaml`)
 
 export class Server {
   #port;
@@ -57,7 +57,7 @@ export class Server {
     this.#app.use(this.#paths.auth, authRoute);
     this.#app.use(this.#paths.category, categoryRoute);
     this.#app.use(this.#paths.subCategory, subCategoryRoute)
-    this.#app.use('/api-docs',swaggerUi.serve,swaggerUi.setup(swaggerDocument))
+    //this.#app.use('/api-docs',swaggerUi.serve,swaggerUi.setup(swaggerDocument))
   }
 
   initServer() {
