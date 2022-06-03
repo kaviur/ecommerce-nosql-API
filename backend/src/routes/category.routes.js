@@ -18,7 +18,7 @@ export class CategoryRoute {
             response.success?successfulResponse(res, 200, true, "Categories were successfully retrieved", response.categories):errorResponse(res, response.error);
         });
 
-        this.#router.get("/id/:id", async (req, res) => {
+        this.#router.get("/:id", async (req, res) => {
             const response = await this.#services.getCategoryById(req.params.id);
             response.success?successfulResponse(res, 200, true, "Category was successfully retrieved", response.category):errorResponse(res, response.error);
         });
@@ -33,25 +33,9 @@ export class CategoryRoute {
             response.success?successfulResponse(res, 200, true, "Category was successfully updated", response.category):errorResponse(res, response.error);
         });
 
-        this.#router.put("/:id/add_subcategory", async (req, res) => {
-            const response = await this.#services.addSubcategory(req.params.id, req.body.subcategoryId);
-            response.success?successfulResponse(res, 200, true, "Subcategory was successfully added", response.category):errorResponse(res, response.error);    
-        });
-
-        this.#router.put("/inactivate/:id", async (req, res) => {
-            const response = await this.#services.inactivateCategory(req.params.id);
-            response.success?successfulResponse(res, 200, true, "Category was successfully inactivated", response.category):errorResponse(res, response.error);
-        });
-
         this.#router.put("/:id/remove_subcategory/:subcategoryId", async (req, res) => {
             const response = await this.#services.removeSubcategory(req.params.id, req.params.subcategoryId);
             response.success?successfulResponse(res, 200, true, "Subcategory was successfully removed", response.category):errorResponse(res, response.error);
-        });
-
-        //activar categoría
-        this.#router.put("/activate/:id", async (req, res) => {
-            const response = await this.#services.activateCategory(req.params.id);
-            response.success?successfulResponse(res, 200, true, "Category was successfully activated", response.category):errorResponse(res, response.error);
         });
 
         //cambiar estado de la categoría

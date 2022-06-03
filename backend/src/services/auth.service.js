@@ -67,7 +67,7 @@ export class AuthService {
     const response = await this.#userService.getOrCreate(user)
 
     if(!response.created){
-        // TODO:Verificar si el correo está en uso
+        // TODO:Verificar si el correo está en uso y si el estatus correcto a responder
         return {
             success:false,
             status:409,
@@ -77,7 +77,6 @@ export class AuthService {
     
     const data = await createJWT(response.user);
     response.user = data;
-    console.log("data de socialLogin",response)
     return response;
   }
 

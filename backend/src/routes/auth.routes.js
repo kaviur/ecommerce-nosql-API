@@ -45,7 +45,6 @@ export class AuhtRoute {
       response.success
       ?authResponse(res,200,true,"Successful login with google",response.user)
       :socialErrorResponse(res,response.error);
-      //return res.redirect("/");
     });
 
     this.#router.get("/facebook", passport.authenticate("facebook"));
@@ -87,7 +86,6 @@ export class AuhtRoute {
       response.success
       ?authResponse(res,200,true,"Successful login with twitter",response.user)
       :socialErrorResponse(res,response.error);
-      //return res.redirect("/");
     });
 
     this.#router.get("/validate",verifyToken,(req,res)=>{

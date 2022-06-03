@@ -19,7 +19,7 @@ export default class CategoryService {
 
     async getAllCategories() {
         try {
-            const categories = await categoryModel.find({ status: true }).populate("subcategories", "name");
+            const categories = await categoryModel.find({ status: true }).populate("subcategories", "name").where("subcategories.status").equals(true);
             return { success: true, categories };
         } catch (error) {
             return { success: false, error };
@@ -38,33 +38,6 @@ export default class CategoryService {
     async updateCategory(id, data) {
         try {
         const category = await categoryModel.findByIdAndUpdate(id, data, { new: true });
-        return { success: true, category };
-        } catch (error) {
-        return { success: false, error };
-        }
-    }
-
-    async addSubcategory(id, subcategoryId) {
-        try {
-        const category = await categoryModel.findByIdAndUpdate(id, { $push: { subcategories: subcategoryId } }, { new: true });
-        return { success: true, category };
-        } catch (error) {
-        return { success: false, error };
-        }
-    }
-
-    async inactivateCategory(id) {
-        try {
-        const category = await categoryModel.findByIdAndUpdate(id, { status: false }, { new: true });
-        return { success: true, category };
-        } catch (error) {
-        return { success: false, error };
-        }
-    }
-
-    async activateCategory(id) {
-        try {
-        const category = await categoryModel.findByIdAndUpdate(id, { status: true }, { new: true });
         return { success: true, category };
         } catch (error) {
         return { success: false, error };
