@@ -44,6 +44,23 @@ export default class CategoryService {
         }
     }
 
+    // async updateSubCategory(name, id) {
+    //     try {
+    //         const subcategory = await subCategoryModel.findOne(
+    //         {
+    //             _id: id,
+    //             status: true,
+    //         },
+    //         { new: true }
+    //         );
+    //         subcategory.name = name || subcategory.name;
+    //         await subcategory.save();
+    //         return { success: true, subcategory };
+    //     } catch (error) {
+    //         return { success: false, error };
+    //     }
+    // }
+
     async changeStatus(id) {
         try {
             const category = await categoryModel.findById(id); 

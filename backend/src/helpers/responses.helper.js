@@ -14,7 +14,7 @@ const errorResponse = (res = response, error, status = 500) => {
       });
     }
 
-    return res.status(400).json({
+    return res. status(400).json({
       ok: false,
       errors: Object.values(error.errors).map(({ message}) => ({
         message,
@@ -49,11 +49,11 @@ const authResponse = async (res = response, status, ok, message, data) => {
     .status(status)
     .cookie("token", token, {
       httpOnly: true,
-      secure: isProductionEnvironment,
+      secure: true,
       sameSite: "none",
       expires: new Date(exp * 1000),
     })
-    .json({ ok, message, ...payload });
+    .json({ ok, message, ...payload });   
 };
 
 const successfulResponse = (

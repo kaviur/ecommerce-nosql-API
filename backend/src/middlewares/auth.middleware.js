@@ -15,7 +15,7 @@ const validateRol = (...roles) => {
 const verifyToken = (req = request, res = response, next) => {
   const token = req.cookies.token || null;
   if (!token)
-    return errorResponse(res, { message: "Insufficient permissions" }, 403);
+    return errorResponse(res, { message: "The token is necessary" }, 403);
 
   try {
     const payload = jwt.verify(token, jwtSecret);

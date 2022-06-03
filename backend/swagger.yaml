@@ -1,0 +1,599 @@
+openapi: 3.0.0
+info:
+  version: 1.0.0
+  title: eCommerce
+  description: >-
+    Este proyecto plantea la creacion de un eCommerce
+  contact:
+    name: Camilo Morales Sanchez
+    email: moorales.camilo@gmial.com
+
+servers:
+  - url: http://localhost:8081/api/v1
+
+tags:
+  - name: Auth
+  - name: Users
+  - name: SubCategories
+
+paths:
+  /subcategory:
+    get:
+      tags:
+        - SubCategories
+      security:
+        - cookieAuth: []
+      responses:
+        200:
+          description: List sub categories
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/listNoPagination"
+        400:
+          description: Bad request
+          content:
+            aplication/json:
+              schema:
+                $ref: "#/components/schemas/errorMessage"
+        403:
+          description: Forbidden
+          content:
+            aplication/json:
+              schema:
+                $ref: "#/components/schemas/errorMessage"
+        500:
+          description: Iternal server error
+          content:
+            aplication/json:
+              schema:
+                $ref: "#/components/schemas/errorMessage"
+  /subcategory/admin:
+    get:
+      tags:
+        - SubCategories
+      security:
+        - cookieAuth: []
+      responses:
+        200:
+          description: List sub categories
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/listNoPagination"
+        400:
+          description: Bad request
+          content:
+            aplication/json:
+              schema:
+                $ref: "#/components/schemas/errorMessage"
+        403:
+          description: Forbidden
+          content:
+            aplication/json:
+              schema:
+                $ref: "#/components/schemas/errorMessage"
+        500:
+          description: Iternal server error
+          content:
+            aplication/json:
+              schema:
+                $ref: "#/components/schemas/errorMessage"
+  /subcategory/:
+    post:
+      tags:
+        - SubCategories
+      requestBody:
+        description: Body with data new subcategory
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                 type: string
+                 example: "name"
+      security:
+        - cookieAuth: []
+      responses:
+        200:
+          description: SubCategory create
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/listNoPagination"
+        400:
+          description: Bad request
+          content:
+            aplication/json:
+              schema:
+                $ref: "#/components/schemas/errorMessage"
+        403:
+          description: Forbidden
+          content:
+            aplication/json:
+              schema:
+                $ref: "#/components/schemas/errorMessage"
+        500:
+          description: Iternal server error
+          content:
+            aplication/json:
+              schema:
+                $ref: "#/components/schemas/errorMessage"  
+  /subcategory/{id}:
+    put:
+      tags:
+        - SubCategories
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: string
+          required: true
+          description: Subcategory mongo id
+      requestBody:
+        description: Body with data new subcategory
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                 type: string
+                 example: "name"
+      security:
+        - cookieAuth: []
+      responses:
+        200:
+          description: SubCategory updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/listNoPagination"
+        400:
+          description: Bad request
+          content:
+            aplication/json:
+              schema:
+                $ref: "#/components/schemas/errorMessage"
+        403:
+          description: Forbidden
+          content:
+            aplication/json:
+              schema:
+                $ref: "#/components/schemas/errorMessage"
+        500:
+          description: Iternal server error
+          content:
+            aplication/json:
+              schema:
+                $ref: "#/components/schemas/errorMessage"              
+  /subcategory/admin/{id}:
+    put:
+      tags:
+        - SubCategories
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: string
+          required: true
+          description: Subcategory mongo id
+      security:
+        - cookieAuth: []
+      responses:
+        200:
+          description: SubCategory update
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/listNoPagination"
+        400:
+          description: Bad request
+          content:
+            aplication/json:
+              schema:
+                $ref: "#/components/schemas/errorMessage"
+        403:
+          description: Forbidden
+          content:
+            aplication/json:
+              schema:
+                $ref: "#/components/schemas/errorMessage"
+        500:
+          description: Iternal server error
+          content:
+            aplication/json:
+              schema:
+                $ref: "#/components/schemas/errorMessage"              
+  /signup/:
+    post:
+      tags:
+        - Auth
+      requestBody:
+        description: Body with data new user
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              $ref: "#/components/schemas/user"
+      responses:
+        200:
+          description: User register
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/responseSuccessfulAuth"
+        400:
+          description: Bad request
+          content:
+            aplication/json:
+              schema:
+                $ref: "#/components/schemas/errorMessage"
+        500:
+          description: Iternal server error
+          content:
+            aplication/json:
+              schema:
+                $ref: "#/components/schemas/errorMessage"
+  /login/:
+    post:
+      tags:
+        - Auth
+      requestBody:
+        description: Login user
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  example: correo@correo.com
+                password:
+                  type: string
+                  example: Abc123**12
+      security: []
+      responses:
+        200:
+          description: Successful login
+          headers:
+            Set-Cookie:
+              schema:
+                type: string
+                example: cookie=abcde12345; Path=/; HttpOnly
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/responseSuccessfulAuth"
+
+        400:
+          description: Bad request
+          content:
+            aplication/json:
+              schema:
+                $ref: "#/components/schemas/errorMessage"
+        401:
+          description: Bad request
+          content:
+            aplication/json:
+              schema:
+                $ref: "#/components/schemas/errorMessage"
+        500:
+          description: Iternal server error
+          content:
+            aplication/json:
+              schema:
+                $ref: "#/components/schemas/errorMessage"
+  /logout/:
+    post:
+      tags:
+        - Auth
+      responses:
+        200:
+          description: Successful login
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok:
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    example: "Successfully Message"
+  /session/:
+    get:
+      tags:
+        - Auth
+      security:
+        - cookieAuth: []
+      responses:
+        200:
+          description: session recovery
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/responseSuccessfulAuth"
+        400:
+          description: Bad request
+          content:
+            aplication/json:
+              schema:
+                $ref: "#/components/schemas/errorMessage"
+        403:
+          description: Forbidden
+          content:
+            aplication/json:
+              schema:
+                $ref: "#/components/schemas/errorMessage"
+        500:
+          description: Iternal server error
+          content:
+            aplication/json:
+              schema:
+                $ref: "#/components/schemas/errorMessage"
+
+  /user/:
+    put:
+      tags:
+        - Users
+      security:
+        - cookieAuth: []
+      requestBody:
+        description: Body with data user
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  example: "name"
+                email:
+                  type: string
+                  example: correo@correo.com
+                password:
+                  type: string
+                  example: "Abc123**12"
+                image:
+                  type: string
+                  format: binary
+      responses:
+        200:
+          description: Update user
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/responseSuccessfulAuth"
+        400:
+          description: Bad request
+          content:
+            aplication/json:
+              schema:
+                $ref: "#/components/schemas/errorMessage"
+        500:
+          description: Iternal server error
+          content:
+            aplication/json:
+              schema:
+                $ref: "#/components/schemas/errorMessage"
+  /user/{id}:
+    put:
+      tags:
+        - Users
+      security:
+        - cookieAuth: []
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: string
+          required: true
+          description: User mongo id
+      requestBody:
+        description: Body with data user
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  example: "name"
+                email:
+                  type: string
+                  example: correo@correo.com
+                role:
+                  type: integer
+                  example: 1
+                password:
+                  type: string
+                  example: "Abc123**12"
+                image:
+                  type: string
+                  format: binary
+                status:
+                  type: boolean
+                  example: true
+      responses:
+        200:
+          description: User register
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/responseSuccessfulAuth"
+        400:
+          description: Bad request
+          content:
+            aplication/json:
+              schema:
+                $ref: "#/components/schemas/errorMessage"
+        500:
+          description: Iternal server error
+          content:
+            aplication/json:
+              schema:
+                $ref: "#/components/schemas/errorMessage"
+  /user:
+    get:
+      tags:
+        - Users
+      security:
+        - cookieAuth: []
+      responses:
+        200:
+          description: List users
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/listPagination"
+        400:
+          description: Bad request
+          content:
+            aplication/json:
+              schema:
+                $ref: "#/components/schemas/errorMessage"
+        403:
+          description: Forbidden
+          content:
+            aplication/json:
+              schema:
+                $ref: "#/components/schemas/errorMessage"
+        500:
+          description: Iternal server error
+          content:
+            aplication/json:
+              schema:
+                $ref: "#/components/schemas/errorMessage"
+components:
+  schemas:
+    user:
+      type: object
+      properties:
+        name:
+          type: string
+          example: "name"
+        email:
+          type: string
+          example: correo@correo.com
+        role:
+          type: integer
+          example: 1
+        password:
+          type: string
+          example: "Abc123**12"
+        image:
+          type: string
+          format: binary
+    responseSuccessfulAuth:
+      type: object
+      properties:
+        ok:
+          type: boolean
+          example: true
+        message:
+          type: string
+          example: Lorem Ipsum is simply dummy text of the printing and typesetting
+        name:
+          type: string
+          example: name
+        email:
+          type: string
+          example: correo@correocom
+        image:
+          type: string
+          example: http://localhost:8081/public/user/adba2f76-2a65-4566-bdae-9b8a0a7ac2c4.jpg
+        role:
+          type: integer
+          example: 1
+        id:
+          type: string
+          example: correo@correocom
+    errorMessage:
+      type: object
+      properties:
+        ok:
+          type: boolean
+          example: false
+        errors:
+          type: array
+          items:
+            type: object
+            properties:
+              message:
+                type: string
+                example: "Lorem Ipsum is simply dummy text of the printing and typesetting"
+    listPagination:
+      type: object
+      properties:
+        ok:
+          type: boolean
+          example: true
+        message:
+          type: string
+          example: Lorem Ipsum is simply dummy text of the printing and typesetting
+        data:
+          type: object
+          properties:
+            docs:
+              type: array
+              items:
+                type: object
+            information:
+              type: object
+              properties:
+                totalDocs:
+                  type: integer
+                  example: 200
+                limit:
+                  type: integer
+                  example: 10
+                totalPages:
+                  type: integer
+                  example: 20
+                page:
+                  type: integer
+                  example: 1
+                pagingCounter:
+                  type: integer
+                  example: 1
+                hasPrevPage:
+                  type: boolean
+                  example: false
+                hasNextPage:
+                  type: boolean
+                  example: true
+                prevPage:
+                  type: string
+                  example: null
+                nextPage:
+                  type: string
+                  example: bull
+    listNoPagination:
+      type: object
+      properties:
+        ok:
+          type: boolean
+          example: true
+        message:
+          type: string
+          example: Lorem Ipsum is simply dummy text of the printing and typesetting
+        data:
+          type: object
+          properties:
+            docs:
+              type: array
+              items:
+                type: object
+  securitySchemes:
+    cookieAuth:
+      type: apiKey
+      in: cookie
+      name: token
