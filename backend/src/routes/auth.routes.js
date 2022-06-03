@@ -4,6 +4,7 @@ import {
   errorResponse,
   logoutResponse,
 } from "../helpers/responses.helper.js";
+import { verifyToken } from "../middlewares/auth.middleware.js";
 import { validateExtensionImages } from "../middlewares/validations.middleware.js";
 import { AuthService } from "../services/auth.service.js";
 
@@ -39,6 +40,22 @@ export class AuhtRoute {
               response.user
             )
           : errorResponse(res, response.error);
+      }
+    );
+
+    this.#router.get(
+      "/session",
+      verifyToken,
+      (req = request, res = response) => {
+        const {iat,exp, ...payload } = req.payload;
+
+        return res
+          .status(200)
+          .json({
+            ok: true,
+            message: "Successful session recovery",
+            ...payload,
+          });
       }
     );
 

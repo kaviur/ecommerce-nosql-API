@@ -85,4 +85,11 @@ userSchema.methods.saveUrlImg = function (fileNames) {
     : `${callbackUrlDevelopment}/public/user/${fileNames[0]}`;
 };
 
+userSchema.methods.changePassword = async function (password) {
+  try {
+    this.password = await encripPassword(password);
+  } catch (error) {
+    console.log(error);
+  }
+}
 export default mongoose.model("User", userSchema);

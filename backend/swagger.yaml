@@ -14,13 +14,13 @@ servers:
 tags:
   - name: Auth
   - name: Users
-  - name: SubCategory
+  - name: SubCategories
 
 paths:
   /subcategory:
     get:
       tags:
-        - SubCategory
+        - SubCategories
       security:
         - cookieAuth: []
       responses:
@@ -29,7 +29,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/responseNoPagination"
+                $ref: "#/components/schemas/listNoPagination"
         400:
           description: Bad request
           content:
@@ -51,7 +51,7 @@ paths:
   /subcategory/admin:
     get:
       tags:
-        - SubCategory
+        - SubCategories
       security:
         - cookieAuth: []
       responses:
@@ -60,7 +60,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/responseNoPagination"
+                $ref: "#/components/schemas/listNoPagination"
         400:
           description: Bad request
           content:
@@ -82,7 +82,7 @@ paths:
   /subcategory/:
     post:
       tags:
-        - SubCategory
+        - SubCategories
       requestBody:
         description: Body with data new subcategory
         required: true
@@ -102,7 +102,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/responseNoPagination"
+                $ref: "#/components/schemas/listNoPagination"
         400:
           description: Bad request
           content:
@@ -124,7 +124,7 @@ paths:
   /subcategory/{id}:
     put:
       tags:
-        - SubCategory
+        - SubCategories
       parameters:
         - in: path
           name: id
@@ -151,7 +151,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/responseNoPagination"
+                $ref: "#/components/schemas/listNoPagination"
         400:
           description: Bad request
           content:
@@ -173,7 +173,7 @@ paths:
   /subcategory/admin/{id}:
     put:
       tags:
-        - SubCategory
+        - SubCategories
       parameters:
         - in: path
           name: id
@@ -189,7 +189,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/responseNoPagination"
+                $ref: "#/components/schemas/listNoPagination"
         400:
           description: Bad request
           content:
@@ -306,10 +306,89 @@ paths:
                   message:
                     type: string
                     example: "Successfully Message"
+  /session/:
+    get:
+      tags:
+        - Auth
+      security:
+        - cookieAuth: []
+      responses:
+        200:
+          description: session recovery
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/responseSuccessfulAuth"
+        400:
+          description: Bad request
+          content:
+            aplication/json:
+              schema:
+                $ref: "#/components/schemas/errorMessage"
+        403:
+          description: Forbidden
+          content:
+            aplication/json:
+              schema:
+                $ref: "#/components/schemas/errorMessage"
+        500:
+          description: Iternal server error
+          content:
+            aplication/json:
+              schema:
+                $ref: "#/components/schemas/errorMessage"
+
+  /user/:
+    put:
+      tags:
+        - Users
+      security:
+        - cookieAuth: []
+      requestBody:
+        description: Body with data user
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  example: "name"
+                email:
+                  type: string
+                  example: correo@correo.com
+                password:
+                  type: string
+                  example: "Abc123**12"
+                image:
+                  type: string
+                  format: binary
+      responses:
+        200:
+          description: Update user
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/responseSuccessfulAuth"
+        400:
+          description: Bad request
+          content:
+            aplication/json:
+              schema:
+                $ref: "#/components/schemas/errorMessage"
+        500:
+          description: Iternal server error
+          content:
+            aplication/json:
+              schema:
+                $ref: "#/components/schemas/errorMessage"
   /user/{id}:
     put:
       tags:
         - Users
+      security:
+        - cookieAuth: []
       parameters:
         - in: path
           name: id
@@ -323,7 +402,26 @@ paths:
         content:
           multipart/form-data:
             schema:
-              $ref: "#/components/schemas/user"
+              type: object
+              properties:
+                name:
+                  type: string
+                  example: "name"
+                email:
+                  type: string
+                  example: correo@correo.com
+                role:
+                  type: integer
+                  example: 1
+                password:
+                  type: string
+                  example: "Abc123**12"
+                image:
+                  type: string
+                  format: binary
+                status:
+                  type: boolean
+                  example: true
       responses:
         200:
           description: User register
@@ -355,7 +453,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/responsePagination"
+                $ref: "#/components/schemas/listPagination"
         400:
           description: Bad request
           content:
@@ -402,7 +500,7 @@ components:
           example: true
         message:
           type: string
-          example: The user has been created
+          example: Lorem Ipsum is simply dummy text of the printing and typesetting
         name:
           type: string
           example: name
@@ -431,8 +529,8 @@ components:
             properties:
               message:
                 type: string
-                example: "Error message"
-    responsePagination:
+                example: "Lorem Ipsum is simply dummy text of the printing and typesetting"
+    listPagination:
       type: object
       properties:
         ok:
@@ -440,7 +538,7 @@ components:
           example: true
         message:
           type: string
-          example: List data
+          example: Lorem Ipsum is simply dummy text of the printing and typesetting
         data:
           type: object
           properties:
@@ -478,7 +576,7 @@ components:
                 nextPage:
                   type: string
                   example: bull
-    responseNoPagination:
+    listNoPagination:
       type: object
       properties:
         ok:
@@ -486,7 +584,7 @@ components:
           example: true
         message:
           type: string
-          example: List data
+          example: Lorem Ipsum is simply dummy text of the printing and typesetting
         data:
           type: object
           properties:
