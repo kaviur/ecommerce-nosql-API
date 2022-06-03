@@ -20,26 +20,19 @@
     "cross-env": "^7.0.3",
     "dotenv": "^16.0.1",
     "express": "^4.18.1",
-<<<<<<< HEAD
-    "express-session": "^1.17.3",
-    "jsonwebtoken": "^8.5.1",
-    "mongoose": "^6.3.4",
-    "mongoose-paginate-v2": "^1.6.3",
-    "passport": "^0.6.0",
-    "passport-facebook": "^3.0.0",
-    "passport-github": "^1.1.0",
-    "passport-google-oauth20": "^2.0.0",
-    "passport-twitter": "^1.0.4",
-    "uuid": "^8.3.2"
-=======
     "express-fileupload": "^1.4.0",
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^6.3.4",
     "mongoose-paginate-v2": "^1.6.3",
     "swagger-ui-express": "^4.4.0",
     "uuid": "^8.3.2",
-    "yamljs": "^0.3.0"
->>>>>>> ed4972d4bb1666b7cbc0ee15bcbffcc8ac0fe2bc
+    "yamljs": "^0.3.0",
+    "express-session": "^1.17.3",
+    "passport": "^0.6.0",
+    "passport-facebook": "^3.0.0",
+    "passport-github": "^1.1.0",
+    "passport-google-oauth20": "^2.0.0",
+    "passport-twitter": "^1.0.4",
   },
   "devDependencies": {
     "morgan": "^1.10.0",
