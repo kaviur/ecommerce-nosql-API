@@ -3,14 +3,14 @@ var uuid = require('node-uuid'); // cómo sería con import?
 
 const creditCardSchema = new mongoose.Schema({
 
-  titularName: {
+  titularName: { // nombre como figura en el plastico
     type: String,
     require: [true, "The titular name is required"],
     trim: true,
     uppercase: true,
   },
   clientID:{  // nro de cliente ¿lo sacamos del nro de usuario? cómo se representa eso?
-    type: string,
+    type: Schema.ObjectId, ref: "User" 
   },
   numberCard:{ // identificacion del plastico usado
     type: integer,
@@ -46,4 +46,4 @@ creditCardSchema.methods.toJSON = function () {
   return creditCard;
 };
 
-export default mongoose.model("creditCard", creditCardSchema)
+export default mongoose.model("CreditCard", creditCardSchema)
