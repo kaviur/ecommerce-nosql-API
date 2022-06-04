@@ -61,7 +61,7 @@ export class AuthService {
 
     const user = {
       name:profile.displayName,
-      email:profile.emails?.length?profile.emails[0].value:"noemail@mail.com",
+      email:profile.emails?.length?profile.emails[0].value:null,
       profilePic: profile.photos?.length?profile.photos[0].value:"no_image.png",
       provider: profile.provider,
       idProvider:profile.id
@@ -69,12 +69,12 @@ export class AuthService {
 
     const response = await this.#userService.getOrCreate(user)
 
+    //no crea el usuario si se registra con un nuevo proveedor, ni hace el login si ya existe
     if(!response.created){
-        // TODO:Verificar si el correo está en uso y si el estatus correcto a responder
         return {
             success:false,
             status:409,
-            errors:response.errors
+            error:response.error
         }
     }
     

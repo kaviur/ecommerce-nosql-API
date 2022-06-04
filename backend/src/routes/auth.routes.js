@@ -2,8 +2,7 @@ import { request, response, Router } from "express";
 import {
   authResponse,
   errorResponse,
-  logoutResponse,
-  socialErrorResponse,
+  logoutResponse
 } from "../helpers/responses.helper.js";
 import { verifyToken } from "../middlewares/auth.middleware.js";
 import { validateExtensionImages } from "../middlewares/validations.middleware.js";
@@ -45,7 +44,7 @@ export class AuhtRoute {
       const response = await this.#services.socialLogin(user);
       response.success
       ?authResponse(res,200,true,"Successful login with google",response.user)
-      :socialErrorResponse(res,response.error);
+      :errorResponse(res,response.error);
     });
 
     this.#router.get("/facebook", passport.authenticate("facebook"));
@@ -58,7 +57,7 @@ export class AuhtRoute {
       const response = await this.#services.socialLogin(user);
       response.success
       ?authResponse(res,200,true,"Successful login with facebook",response.user)
-      :socialErrorResponse(res,response.error);
+      :errorResponse(res,response.error);
     });
 
     this.#router.get("/github", passport.authenticate("github"));
@@ -71,7 +70,7 @@ export class AuhtRoute {
       const response = await this.#services.socialLogin(user);
       response.success
       ?authResponse(res,200,true,"Successful login with github",response.user)
-      :socialErrorResponse(res,response.error);
+      :errorResponse(res,response.error);
     });
 
     this.#router.get("/twitter", passport.authenticate("twitter"));
@@ -86,7 +85,7 @@ export class AuhtRoute {
       const response = await this.#services.socialLogin(user);
       response.success
       ?authResponse(res,200,true,"Successful login with twitter",response.user)
-      :socialErrorResponse(res,response.error);
+      :errorResponse(res,response.error);
     });
 
     this.#router.get("/validate",verifyToken,(req,res)=>{

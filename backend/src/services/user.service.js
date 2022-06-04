@@ -15,7 +15,7 @@ export default class UserService {
       }
       return { created:true, success: true, user };
     } catch (error) {
-      return { success: false, error };
+      return { created:false, success: false, error };
     }
   }
 

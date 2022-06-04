@@ -29,12 +29,6 @@ const errorResponse = (res = response, error, status = 500) => {
   });
 };
 
-const socialErrorResponse = (res = response, error, status = 401) => {
-  return res.status(status).json({
-    ok: false,
-    message:"social login failed",
-  });
-};
 
 const authResponse = async (res = response, status, ok, message, data) => {
   const { payload, token } = data;
@@ -83,4 +77,4 @@ const logoutResponse = (res = response) => {
   });
 };
 
-export { errorResponse, authResponse, successfulResponse, logoutResponse, socialErrorResponse };
+export { errorResponse, authResponse, successfulResponse, logoutResponse };
