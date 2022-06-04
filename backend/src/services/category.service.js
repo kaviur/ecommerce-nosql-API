@@ -19,7 +19,14 @@ export default class CategoryService {
 
     async getAllCategories() {
         try {
-            const categories = await categoryModel.find({ status: true }).populate("subcategories", "name");
+            const allCategories = await categoryModel.find({status:true})
+            .populate({
+                path: "subcategories",
+                match: { status: true },
+            });
+
+            const categories = allCategories.filter(category => category.subcategories)
+            
             return { success: true, categories };
         } catch (error) {
             return { success: false, error };
@@ -28,38 +35,47 @@ export default class CategoryService {
 
     async getCategoryById(id) {
         try {
-        const category = await categoryModel.findById(id).populate("subcategories", "name");//TODO: Obtener sólo las subcategorías que tengan el estado = true
+        const category = await categoryModel.findById(id).populate("subcategories", "name");
         return { success: true, category };
         } catch (error) {
         return { success: false, error };
         }
     }
 
-    async updateCategory(id, data) {
+    async updateCategory(id, name) {
         try {
-        const category = await categoryModel.findByIdAndUpdate(id, data, { new: true });
-        return { success: true, category };
+            const category = await categoryModel.findOne({ _id: id, status: true }, { new: true });
+            category.name = name || category.name;
+            await category.save();
+            return { success: true, category };
         } catch (error) {
         return { success: false, error };
         }
     }
 
-    // async updateSubCategory(name, id) {
-    //     try {
-    //         const subcategory = await subCategoryModel.findOne(
-    //         {
-    //             _id: id,
-    //             status: true,
-    //         },
-    //         { new: true }
-    //         );
-    //         subcategory.name = name || subcategory.name;
-    //         await subcategory.save();
-    //         return { success: true, subcategory };
-    //     } catch (error) {
-    //         return { success: false, error };
-    //     }
-    // }
+    //verificar si ya existe esa subcategoría dentro de la categoría
+    async checkSubcategory(id, subcategoryId) {
+        try {
+            const category = await categoryModel.findById(id);
+            const subcategory = category.subcategories.find(subcategory => subcategory._id.toString() === subcategoryId.toString());
+            if (subcategory) {
+                return { success: false, error: "Subcategory already exists" };
+            } else {
+                return { success: true, message: "Subcategory does not exist" };
+            }
+        } catch (error) {
+            return { success: false, error };
+        }
+    }
+
+    async addSubcategory(id, subcategoryId) {
+        try {
+        const category = await categoryModel.findByIdAndUpdate(id, { $push: { subcategories: subcategoryId } }, { new: true });
+        return { success: true, category };
+        } catch (error) {
+        return { success: false, error };
+        }
+    }
 
     async changeStatus(id) {
         try {
@@ -73,7 +89,7 @@ export default class CategoryService {
 
     async removeSubcategory(id, subcategoryId) {
         try {
-        const category = await categoryModel.findByIdAndUpdate(id, { $pull: { subcategories: subcategoryId } });
+        const category = await categoryModel.findByIdAndUpdate(id, { $pull: { subcategories: subcategoryId } }, { new: true });
         return { success: true, category };
         } catch (error) {
         return { success: false, error };
