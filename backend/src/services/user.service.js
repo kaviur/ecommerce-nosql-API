@@ -20,7 +20,10 @@ export default class UserService {
 
   async getUserByEmail(email) {
     try {
-      const user = await userModel.findOne({ email, status: true });
+      const user = await userModel.findOne({
+        email: email.toUpperCase(),
+        status: true,
+      });
       return { success: true, user };
     } catch (error) {
       return { success: false, error };
@@ -91,6 +94,29 @@ export default class UserService {
       return { success: true, user };
     } catch (error) {
       imagesName.length > 0 && (await deleteImages(imagesName));
+      return { success: false, error };
+    }
+  }
+
+  async socialLogin(data, provider, idProvider) {
+    let user;
+    const { email } = data;
+    try {
+      user = await userModel.findOne({ email: email.toUpperCase() });
+      if (user) {
+        if (user.idProvider[provider] === idProvider)
+          return { success: true, user };
+        user.provider[provider] = true;
+        user.idProvider[provider] = idProvider;
+        await user.save();
+        return { success: true, user };
+      }
+
+      user = new userModel(data);
+
+      await user.save();
+      return { success: true, user };
+    } catch (error) {
       return { success: false, error };
     }
   }
