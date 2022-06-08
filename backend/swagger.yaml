@@ -15,76 +15,80 @@ tags:
   - name: Auth
   - name: Users
   - name: SubCategories
+  - name: SocialAuth
 
 paths:
   /subcategory:
     get:
+      description: "desription here"
       tags:
         - SubCategories
       security:
         - cookieAuth: []
       responses:
         200:
-          description: List sub categories
+          description: "desription here"
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/listNoPagination"
         400:
-          description: Bad request
+          description: "desription here"
           content:
             aplication/json:
               schema:
                 $ref: "#/components/schemas/errorMessage"
         403:
-          description: Forbidden
+          description: "desription here"
           content:
             aplication/json:
               schema:
                 $ref: "#/components/schemas/errorMessage"
         500:
-          description: Iternal server error
+          description: "desription here"
           content:
             aplication/json:
               schema:
                 $ref: "#/components/schemas/errorMessage"
   /subcategory/admin:
     get:
+      description: "desription here"
       tags:
         - SubCategories
       security:
         - cookieAuth: []
       responses:
         200:
-          description: List sub categories
+          description: "desription here"
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/listNoPagination"
         400:
-          description: Bad request
+          description: "desription here"
           content:
             aplication/json:
               schema:
                 $ref: "#/components/schemas/errorMessage"
         403:
-          description: Forbidden
+          description: "desription here"
           content:
             aplication/json:
               schema:
                 $ref: "#/components/schemas/errorMessage"
         500:
-          description: Iternal server error
+          description: "desription here"
           content:
             aplication/json:
               schema:
                 $ref: "#/components/schemas/errorMessage"
   /subcategory/:
     post:
+      description: "desription here"
       tags:
         - SubCategories
       requestBody:
-        description: Body with data new subcategory
+        description: "desription here"
         required: true
         content:
           application/json:
@@ -98,31 +102,32 @@ paths:
         - cookieAuth: []
       responses:
         200:
-          description: SubCategory create
+          description: "desription here"
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/listNoPagination"
         400:
-          description: Bad request
+          description: "desription here"
           content:
             aplication/json:
               schema:
                 $ref: "#/components/schemas/errorMessage"
         403:
-          description: Forbidden
+          description: "desription here"
           content:
             aplication/json:
               schema:
                 $ref: "#/components/schemas/errorMessage"
         500:
-          description: Iternal server error
+          description: "desription here"
           content:
             aplication/json:
               schema:
                 $ref: "#/components/schemas/errorMessage"  
   /subcategory/{id}:
     put:
+      description: "desription here"
       tags:
         - SubCategories
       parameters:
@@ -131,9 +136,9 @@ paths:
           schema:
             type: string
           required: true
-          description: Subcategory mongo id
+          description: "desription here"
       requestBody:
-        description: Body with data new subcategory
+        description: "desription here"
         required: true
         content:
           application/json:
@@ -147,31 +152,32 @@ paths:
         - cookieAuth: []
       responses:
         200:
-          description: SubCategory updated
+          description: "desription here"
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/listNoPagination"
         400:
-          description: Bad request
+          description: "desription here"
           content:
             aplication/json:
               schema:
                 $ref: "#/components/schemas/errorMessage"
         403:
-          description: Forbidden
+          description: "desription here"
           content:
             aplication/json:
               schema:
                 $ref: "#/components/schemas/errorMessage"
         500:
-          description: Iternal server error
+          description: "desription here"
           content:
             aplication/json:
               schema:
                 $ref: "#/components/schemas/errorMessage"              
   /subcategory/admin/{id}:
     put:
+      description: "desription here"
       tags:
         - SubCategories
       parameters:
@@ -180,40 +186,42 @@ paths:
           schema:
             type: string
           required: true
-          description: Subcategory mongo id
+          description: "desription here"
       security:
         - cookieAuth: []
       responses:
         200:
-          description: SubCategory update
+          description: "desription here"
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/listNoPagination"
         400:
-          description: Bad request
+          description: "desription here"
           content:
             aplication/json:
               schema:
                 $ref: "#/components/schemas/errorMessage"
         403:
-          description: Forbidden
+          description: "desription here"
           content:
             aplication/json:
               schema:
                 $ref: "#/components/schemas/errorMessage"
         500:
-          description: Iternal server error
+          description: "desription here"
           content:
             aplication/json:
               schema:
                 $ref: "#/components/schemas/errorMessage"              
+ 
   /signup/:
     post:
+      description: "desription here"
       tags:
         - Auth
       requestBody:
-        description: Body with data new user
+        description: "desription here"
         required: true
         content:
           multipart/form-data:
@@ -221,19 +229,19 @@ paths:
               $ref: "#/components/schemas/user"
       responses:
         200:
-          description: User register
+          description: "desription here"
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/responseSuccessfulAuth"
         400:
-          description: Bad request
+          description: "desription here"
           content:
             aplication/json:
               schema:
                 $ref: "#/components/schemas/errorMessage"
         500:
-          description: Iternal server error
+          description: "desription here"
           content:
             aplication/json:
               schema:
@@ -243,7 +251,7 @@ paths:
       tags:
         - Auth
       requestBody:
-        description: Login user
+        description: "desription here"
         required: true
         content:
           application/json:
@@ -259,7 +267,7 @@ paths:
       security: []
       responses:
         200:
-          description: Successful login
+          description: "desription here"
           headers:
             Set-Cookie:
               schema:
@@ -271,30 +279,31 @@ paths:
                 $ref: "#/components/schemas/responseSuccessfulAuth"
 
         400:
-          description: Bad request
+          description: "desription here"
           content:
             aplication/json:
               schema:
                 $ref: "#/components/schemas/errorMessage"
         401:
-          description: Bad request
+          description: "desription here"
           content:
             aplication/json:
               schema:
                 $ref: "#/components/schemas/errorMessage"
         500:
-          description: Iternal server error
+          description: "desription here"
           content:
             aplication/json:
               schema:
                 $ref: "#/components/schemas/errorMessage"
   /logout/:
     post:
+      description: "desription here"
       tags:
         - Auth
       responses:
         200:
-          description: Successful login
+          description: "desription here"
           content:
             application/json:
               schema:
@@ -308,25 +317,151 @@ paths:
                     example: "Successfully Message"
   /session/:
     get:
+      description: "desription here"
       tags:
         - Auth
       security:
         - cookieAuth: []
       responses:
         200:
-          description: session recovery
+          description: "desription here"
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/responseSuccessfulAuth"
+        400:
+          description: "desription here"
+          content:
+            aplication/json:
+              schema:
+                $ref: "#/components/schemas/errorMessage"
+        403:
+          description: "desription here"
+          content:
+            aplication/json:
+              schema:
+                $ref: "#/components/schemas/errorMessage"
+        500:
+          description: "desription here"
+          content:
+            aplication/json:
+              schema:
+                $ref: "#/components/schemas/errorMessage"
+  
+  /facebook/:
+    get:
+      description: "desription here"
+      tags:
+        - SocialAuth
+      responses:
+        200:
+          description: "desription here"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok:
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    example: "Successful login"
         400:
           description: Bad request
           content:
             aplication/json:
               schema:
                 $ref: "#/components/schemas/errorMessage"
-        403:
-          description: Forbidden
+        500:
+          description: Iternal server error
+          content:
+            aplication/json:
+              schema:
+                $ref: "#/components/schemas/errorMessage"
+  /twitter/:
+    get:
+      description: "desription here"
+      tags:
+        - SocialAuth
+      responses:
+        200:
+          description: "desription here"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok:
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    example: "Successful login"
+        400:
+          description: Bad request
+          content:
+            aplication/json:
+              schema:
+                $ref: "#/components/schemas/errorMessage"
+        500:
+          description: Iternal server error
+          content:
+            aplication/json:
+              schema:
+                $ref: "#/components/schemas/errorMessage"
+  /github/:
+    get:
+      description: "desription here"
+      tags:
+        - SocialAuth
+      responses:
+        200:
+          description: "desription here"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok:
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    example: "Successful login"
+        400:
+          description: Bad request
+          content:
+            aplication/json:
+              schema:
+                $ref: "#/components/schemas/errorMessage"
+        500:
+          description: Iternal server error
+          content:
+            aplication/json:
+              schema:
+                $ref: "#/components/schemas/errorMessage"
+  /instagram/:
+    get:
+      description: "desription here"
+      tags:
+        - SocialAuth
+      responses:
+        200:
+          description: "desription here"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok:
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    example: "Successful login"
+        400:
+          description: Bad request
           content:
             aplication/json:
               schema:
@@ -338,14 +473,48 @@ paths:
               schema:
                 $ref: "#/components/schemas/errorMessage"
 
+
+
+  /google/:
+    get:
+      description: "desription here"
+      tags:
+        - SocialAuth
+      responses:
+        200:
+          description: "desription here"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok:
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    example: "Successful login"
+        400:
+          description: Bad request
+          content:
+            aplication/json:
+              schema:
+                $ref: "#/components/schemas/errorMessage"
+        500:
+          description: Iternal server error
+          content:
+            aplication/json:
+              schema:
+                $ref: "#/components/schemas/errorMessage"
   /user/:
     put:
+      description: "desription here"
       tags:
         - Users
       security:
         - cookieAuth: []
       requestBody:
-        description: Body with data user
+        description: "desription here"
         required: true
         content:
           multipart/form-data:
@@ -366,25 +535,26 @@ paths:
                   format: binary
       responses:
         200:
-          description: Update user
+          description: "desription here"
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/responseSuccessfulAuth"
         400:
-          description: Bad request
+          description: "desription here"
           content:
             aplication/json:
               schema:
                 $ref: "#/components/schemas/errorMessage"
         500:
-          description: Iternal server error
+          description: "desription here"
           content:
             aplication/json:
               schema:
                 $ref: "#/components/schemas/errorMessage"
   /user/{id}:
     put:
+      description: "desription here"
       tags:
         - Users
       security:
@@ -395,9 +565,9 @@ paths:
           schema:
             type: string
           required: true
-          description: User mongo id
+          description: "desription here"
       requestBody:
-        description: Body with data user
+        description: "desription here"
         required: true
         content:
           multipart/form-data:
@@ -424,54 +594,56 @@ paths:
                   example: true
       responses:
         200:
-          description: User register
+          description: "desription here"
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/responseSuccessfulAuth"
         400:
-          description: Bad request
+          description: "desription here"
           content:
             aplication/json:
               schema:
                 $ref: "#/components/schemas/errorMessage"
         500:
-          description: Iternal server error
+          description: "desription here"
           content:
             aplication/json:
               schema:
                 $ref: "#/components/schemas/errorMessage"
   /user:
     get:
+      description: "desription here"
       tags:
         - Users
       security:
         - cookieAuth: []
       responses:
         200:
-          description: List users
+          description: "desription here"
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/listPagination"
         400:
-          description: Bad request
+          description: "desription here"
           content:
             aplication/json:
               schema:
                 $ref: "#/components/schemas/errorMessage"
         403:
-          description: Forbidden
+          description: "desription here"
           content:
             aplication/json:
               schema:
                 $ref: "#/components/schemas/errorMessage"
         500:
-          description: Iternal server error
+          description: "desription here"
           content:
             aplication/json:
               schema:
                 $ref: "#/components/schemas/errorMessage"
+
 components:
   schemas:
     user:

@@ -31,11 +31,11 @@ export class UserRoute {
 
     this.#router.put(
       "/",
-      [verifyToken,validateExtensionImages],
+      [verifyToken, validateExtensionImages],
       async (req = request, res = response) => {
         const { id } = req.payload;
         const { files } = req;
-        
+
         const response = await this.#services.updateUser(req.body, id, files);
         response.success
           ? successfulResponse(
@@ -51,12 +51,16 @@ export class UserRoute {
 
     this.#router.put(
       "/:id",
-      [verifyToken,validateExtensionImages],
+      [verifyToken, validateRol(3), validateExtensionImages],
       async (req = request, res = response) => {
         const { id } = req.params;
         const { files } = req;
-        
-        const response = await this.#services.updateUserAdmin(req.body, id, files);
+
+        const response = await this.#services.updateUserAdmin(
+          req.body,
+          id,
+          files
+        );
         response.success
           ? successfulResponse(
               res,
@@ -69,10 +73,6 @@ export class UserRoute {
       }
     );
   }
-
-
-
-  
 
   get router() {
     return this.#router;

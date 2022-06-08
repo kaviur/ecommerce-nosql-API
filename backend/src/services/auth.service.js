@@ -1,6 +1,7 @@
 import { validatePassword } from "../helpers/bcrypt.helper.js";
 import { createJWT } from "../helpers/jwt.helper.js";
 import UserService from "./user.service.js";
+import { v4 as uuid } from "uuid";
 
 export class AuthService {
   #userService;
@@ -17,6 +18,9 @@ export class AuthService {
         password,
         image,
         role,
+        provider: {
+          local: true,
+        },
       },
       files
     );
@@ -57,30 +61,32 @@ export class AuthService {
     }
   }
 
-  async socialLogin(profile){
-
+  async socialLogin(profile) {
     const user = {
-      name:profile.displayName,
-      email:profile.emails?.length?profile.emails[0].value:null,
-      profilePic: profile.photos?.length?profile.photos[0].value:"no_image.png",
-      provider: profile.provider,
-      idProvider:profile.id
-    }
+      name: profile.displayName,
+      email: profile.emails[0].value,
+      image: profile.photos[0].value,
+      password: uuid(),
+      provider: {
+        [profile.provider]: true,
+      },
+      idProvider: {
+        [profile.provider]: profile.id,
+      },
+    };
+    try {
+      const response = await this.#userService.socialLogin(
+        user,
+        profile.provider,
+        profile.id
+      );
+      if (!response.success) return response;
 
-    const response = await this.#userService.getOrCreate(user)
-
-    //no crea el usuario si se registra con un nuevo proveedor, ni hace el login si ya existe
-    if(!response.created){
-        return {
-            success:false,
-            status:409,
-            error:response.error
-        }
+      const data = await createJWT(response.user);
+      response.user = data;
+      return response;
+    } catch (error) {
+      return { success: false, error };
     }
-    
-    const data = await createJWT(response.user);
-    response.user = data;
-    return response;
   }
-
 }

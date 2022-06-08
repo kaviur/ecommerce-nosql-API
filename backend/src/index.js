@@ -1,4 +1,4 @@
-import { environment } from "./config/config.js";
+import { callbackUrl, environment } from "./config/config.js";
 import "colors";
 import { Server } from "./bootstrap/server.bootstrap.js";
 import { DataBase } from "./bootstrap/dataBase.bootstrap.js";
@@ -21,6 +21,8 @@ const dataBase = new DataBase();
   }
 })();
 
+
+console.log(callbackUrl);
 
 
 

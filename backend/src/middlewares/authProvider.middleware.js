@@ -1,64 +1,92 @@
-import { oauthClientID, oauthClientSecret, callback_url, facebook_app_id, facebook_app_secret, github_client_id, github_client_secret, twitter_consumer_id, twitter_consumer_secret } from '../config/config.js';
+import { Strategy as GoogleStrategy } from "passport-google-oauth20";
+import { Strategy as FacebookStrategy } from "passport-facebook";
+import { Strategy as TwitterStrategy } from "passport-twitter";
+import { Strategy as GithubStrategy } from "passport-github2";
+import { Strategy as InstagramStrategy } from "passport-instagram";
+import {
+  apiVersion,
+  callbackUrl,
+  facebookAppId,
+  facebookAppSecret,
+  githubAppId,
+  githubAppSecret,
+  googleClientId,
+  googleClientSecret,
+  instagramAppId,
+  instagramAppSecret,
+  twitterAppId,
+  twitterAppSecret,
+} from "../config/config.js";
 
-import { Strategy as GoogleStrategy } from 'passport-google-oauth20';
-import { Strategy as FacebookStrategy } from 'passport-facebook';
-import { Strategy as GitHubStrategy } from 'passport-github';
-import { Strategy as TwitterStrategy } from 'passport-twitter';
+const getProfile = (accessToken, refreshToken, profile, done) => {
+  console.log(profile);
+  done(null, { profile });
+};
 
-const callBackUrl = (provider)=>`${callback_url}/api/v1/${provider}/callback`
+const url = (provider) => `${callbackUrl}/api/${apiVersion}/${provider}/login`;
 
-const useGoogleStrategy = () =>{
-    return new GoogleStrategy({
-        clientID:oauthClientID,
-        clientSecret:oauthClientSecret,
-        callbackURL:callBackUrl("google")
-    },(accessToken,refreshToken,profile,done)=>{
-        console.log({accessToken,refreshToken,profile})
-        done(null,{profile})
-    })
-}
+const googleStrategy = () => {
+  return new GoogleStrategy(
+    {
+      clientID: googleClientId,
+      clientSecret: googleClientSecret,
+      callbackURL: url("google"),
+    },
+    getProfile
+  );
+};
 
-const useFacebookStrategy = () =>{
-    return new FacebookStrategy({
-        clientID:facebook_app_id,
-        clientSecret:facebook_app_secret,
-        callbackURL:callBackUrl("facebook"),
-        profileFields:['id','displayName','email','photos'],
-        //enableProof:true,
-        //passReqToCallback:true  
-    },(accessToken,refreshToken,profile,done)=>{
-        console.log({accessToken,refreshToken,profile})
-        done(null,{profile})
-    })
-}
+const facebookStrategy = () => {
+  return new FacebookStrategy(
+    {
+      clientID: facebookAppId,
+      clientSecret: facebookAppSecret,
+      callbackURL: url("facebook"),
+      profileFields: ["id", "emails", "displayName", "name", "photos"],
+    },
+    getProfile
+  );
+};
 
-const useGitHubStrategy = () =>{
-    return new GitHubStrategy({
-        clientID:github_client_id,
-        clientSecret:github_client_secret,
-        callbackURL:callBackUrl("github"),
-        profileFields:['id','displayName','email','photos']
-    },(accessToken,refreshToken,profile,done)=>{
-        console.log({accessToken,refreshToken,profile})
-        done(null,{profile})
-    })
-}
+const twitterStrategy = () => {
+  return new TwitterStrategy(
+    {
+      callbackURL: url("twitter"),
+      consumerKey: twitterAppId,
+      consumerSecret: twitterAppSecret,
+      includeEmail: true,
+    },
+    getProfile
+  );
+};
+const instagramStrategy = () => {
+  return new InstagramStrategy(
+    {
+      callbackURL: url("instagram"),
+      clientID: instagramAppId,
+      clientSecret: instagramAppSecret,
+      profileFields: ["id", "emails", "displayName", "name", "photos"],
+    },
+    getProfile
+  );
+};
 
-const useTwitterStrategy = () =>{
-    return new TwitterStrategy({
-        consumerKey:twitter_consumer_id,
-        consumerSecret:twitter_consumer_secret,
-        callbackURL:callBackUrl("twitter"),
-        profileFields:['id','displayName','email','photos']
-    },(accessToken,refreshToken,profile,done)=>{
-        console.log({accessToken,refreshToken,profile})
-        done(null,{profile})
-    })
-}
+const githubStrategy = () => {
+  return new GithubStrategy(
+    {
+      callbackURL: url("github"),
+      clientID: githubAppId,
+      clientSecret: githubAppSecret,
+      scope: ["user:email"],
+    },
+    getProfile
+  );
+};
 
 export {
-    useGoogleStrategy,
-    useFacebookStrategy,
-    useGitHubStrategy,
-    useTwitterStrategy
-}
+  googleStrategy,
+  facebookStrategy,
+  twitterStrategy,
+  githubStrategy,
+  instagramStrategy,
+};

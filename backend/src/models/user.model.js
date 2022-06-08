@@ -1,8 +1,6 @@
 import mongoose from "mongoose";
 import mongoosePaginate from "mongoose-paginate-v2";
-import {
-  callback_url
-} from "../config/config.js";
+import { callbackUrl } from "../config/config.js";
 import { encripPassword } from "../helpers/bcrypt.helper.js";
 
 const userSchema = new mongoose.Schema(
@@ -34,6 +32,54 @@ const userSchema = new mongoose.Schema(
     role: {
       type: Number,
       default: 1,
+    },
+    provider: {
+      local: {
+        type: Boolean,
+        default: false,
+      },
+      facebook: {
+        type: Boolean,
+        default: false,
+      },
+      google: {
+        type: Boolean,
+        default: false,
+      },
+      twitter: {
+        type: Boolean,
+        default: false,
+      },
+      github: {
+        type: Boolean,
+        default: false,
+      },
+      instagram: {
+        type: Boolean,
+        default: false,
+      },
+    },
+    idProvider: {
+      facebook: {
+        type: String,
+        default: null,
+      },
+      google: {
+        type: String,
+        default: null,
+      },
+      twitter: {
+        type: String,
+        default: null,
+      },
+      github: {
+        type: String,
+        default: null,
+      },
+      instagram: {
+        type: String,
+        default: null,
+      },
     },
     status: {
       type: Boolean,
@@ -76,15 +122,13 @@ userSchema.pre("save", async function (next) {
 });
 
 userSchema.methods.toJSON = function () {
-  const { password, __v,createdAt, updatedAt,...user } = this.toObject();
+  const { password, __v, createdAt, updatedAt, provider, idProvider, ...user } =
+    this.toObject();
   return user;
 };
 
 userSchema.methods.saveUrlImg = function (fileNames) {
-  // this.image = isProductionEnvironment
-  //   ? `${callbackUrl}/public/user/${fileNames[0]}`
-  //   : `${callbackUrlDevelopment}/public/user/${fileNames[0]}`;
-  this.image = `${callback_url}/public/user/${fileNames[0]}`;
+  this.image = `${callbackUrl}/public/user/${fileNames[0]}`;
 };
 
 userSchema.methods.changePassword = async function (password) {
@@ -93,5 +137,5 @@ userSchema.methods.changePassword = async function (password) {
   } catch (error) {
     console.log(error);
   }
-}
+};
 export default mongoose.model("User", userSchema);
