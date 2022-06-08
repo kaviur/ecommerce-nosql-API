@@ -7,5 +7,5 @@ export{
     userModel,
     subCategoryModel,
     creditCardModel,
-    paidOutModel
+    paidOutModel,
 }

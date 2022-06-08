@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-var uuid = require('node-uuid'); // cómo sería con import?
+// var uuid = require('node-uuid'); // cómo sería con import?
 
 const creditCardSchema = new mongoose.Schema({
 
@@ -10,24 +10,9 @@ const creditCardSchema = new mongoose.Schema({
     uppercase: true,
   },
   clientID:{  // nro de cliente ¿lo sacamos del nro de usuario? cómo se representa eso?
-    type: Schema.ObjectId, ref: "User" 
+    type: Schema.ObjectId, ref: "Users" 
   },
-  numberCard:{ // identificacion del plastico usado
-    type: integer,
-    length: 16,
-  },
-  expirationMonth:{
-    type: integer,
-    default: true,
-  },
-  expirationYear:{
-    type: integer,
-    default: true,
-  },
-  isCC:{ // si es creditcard = true, si es tarjeta de debito es false
-    type: Boolean,
-    default: true,
-  },
+
   brandCard:{
     type: integer,
     default: "VISA",
@@ -39,7 +24,8 @@ const creditCardSchema = new mongoose.Schema({
     default: true,
   },
 
-});
+},
+{ timestamps: true });
 
 creditCardSchema.methods.toJSON = function () {
   const { __v,createdAt, updatedAt,...creditCard } = this.toObject();

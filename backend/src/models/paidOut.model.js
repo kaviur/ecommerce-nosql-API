@@ -1,14 +1,14 @@
 import mongoose from "mongoose";
-var uuid = require('node-uuid');
+// var uuid = require('node-uuid');
 
 const PaidOutSchema = new mongoose.Schema({
   transactionID: { //nro de transaccion comercial 
-    type: String, 
+    type: [String], // estados posibles 
     default: function genUUID() {uuid.v1()}
   },
-  numberCard:{  // 16numeros de la tarjetade credito
+  numberCard:{  // 4 ultimos nros
     type: integer,
-    length: 16,
+    length: 4,
   },
   amountPaidOut: { // monto total pagado
     type: number,
@@ -17,9 +17,13 @@ const PaidOutSchema = new mongoose.Schema({
   clientID:{  // nro de cliente, dado que el nro de tarjeta puede variar
     type: Schema.ObjectId, ref: "User"    
   },
+  statusTransaction:{
+    type: string, // Rechazado / Aprobado ...
+    default: "Aprobado",
+  },
 
-
-});
+},
+{ timestamps: true });
 
 creditCardSchema.methods.toJSON = function () {
   const { __v,createdAt, updatedAt,...paidOut } = this.toObject();

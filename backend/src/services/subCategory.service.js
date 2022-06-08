@@ -1,6 +1,6 @@
 import { subCategoryModel } from "../models/index.js";
 
-export class SubCategoryservice {
+export class SubCategoryService {
   async getSubCategories(admin = false) {
     try {
       const data = !admin

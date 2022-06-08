@@ -24,6 +24,7 @@
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^6.3.4",
     "mongoose-paginate-v2": "^1.6.3",
+    "swagger": "^0.7.5",
     "swagger-ui-express": "^4.4.0",
     "uuid": "^8.3.2",
     "yamljs": "^0.3.0"

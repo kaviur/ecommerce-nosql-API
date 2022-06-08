@@ -4,14 +4,14 @@ import {
   successfulResponse,
 } from "../helpers/responses.helper.js";
 import { validateRol, verifyToken } from "../middlewares/auth.middleware.js";
-import { SubCategoryservice } from "../services/subCategory.service.js";
+import { SubCategoryService } from "../services/subCategory.service.js";
 
 export class SubCategoryRoute {
   #router;
   #service;
   constructor() {
     this.#router = Router();
-    this.#service = new SubCategoryservice();
+    this.#service = new SubCategoryService();
     this.#routes();
   }
 
