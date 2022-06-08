@@ -21,7 +21,12 @@ export const {
   githubAppSecret,
   instagramAppId,
   instagramAppSecret,
-  apiVersion
+  apiVersion,
+  email_port,
+  email_host,
+  email_secure,
+  email_user,
+  email_password
 } = {
   isProductionEnvironment: process.env.NODE_ENV === "production",
   port: process.env.PORT || 3000,
@@ -46,5 +51,10 @@ export const {
   githubAppSecret: process.env.GITHUB_APP_SECRET,
   instagramAppId: process.env.INSTAGRAM_APP_ID,
   instagramAppSecret: process.env.INSTAGRAM_APP_SECRET,
-  apiVersion:process.env.API_VERSION
+  apiVersion:process.env.API_VERSION,
+  email_host:process.env.EMAIL_HOST,
+  email_port:process.env.EMAIL_PORT,
+  email_secure:process.env.EMAIL_SECURE,
+  email_user:process.env.EMAIL_USER,
+  email_password:process.env.EMAIL_PASSWORD
 };
