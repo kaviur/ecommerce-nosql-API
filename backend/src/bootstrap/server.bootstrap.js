@@ -26,7 +26,9 @@ import {
   twitterStrategy,
 } from "../middlewares/authProvider.middleware.js";
 const __dirname = path.resolve();
-const swaggerDocument = YAML.load(`${__dirname}\\swagger.yaml`);
+console.log(__dirname);
+//const swaggerDocument = YAML.load(`${__dirname}\\swagger.yaml`);
+const swaggerDocument = YAML.load(`${__dirname}/swagger.yaml`);
 
 export class Server {
   #port;
@@ -80,7 +82,7 @@ export class Server {
     passport.use(facebookStrategy());
     passport.use(twitterStrategy());
     passport.use(githubStrategy());
-    passport.use(instagramStrategy());
+    //passport.use(instagramStrategy());
 
     passport.serializeUser((user, done) => {
       done(null, user);

@@ -13,7 +13,7 @@ const userSchema = new mongoose.Schema(
     },
     email: {
       type: String,
-      //required: [true, "Email is required"],
+      required: [true, "Email is required"],
       uppercase: true,
       trim: true,
       unique: [true, "The Email is already registered"],
@@ -101,9 +101,6 @@ const userSchema = new mongoose.Schema(
         },
       },
     ],
-    profilePic:String,
-    provider:String,
-    idProvider:String
   },
   { timestamps: true }
 );

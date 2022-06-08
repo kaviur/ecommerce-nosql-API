@@ -76,7 +76,7 @@ export class AuhtRoute {
     );
 
     this.#router.get(
-      "/google/login",
+      "/google/callback",
       passport.authenticate("google", { session: false }),
       this.#socialresponse
     );
@@ -87,7 +87,7 @@ export class AuhtRoute {
     );
 
     this.#router.get(
-      "/facebook/login",
+      "/facebook/callback",
       passport.authenticate("facebook", { session: false }),
       this.#socialresponse
     );
@@ -95,7 +95,7 @@ export class AuhtRoute {
     this.#router.get("/twitter", passport.authenticate("twitter"));
 
     this.#router.get(
-      "/twitter/login",
+      "/twitter/callback",
       passport.authenticate("twitter", { scope: ["user:email"] }),
       this.#socialresponse
     );
@@ -103,7 +103,7 @@ export class AuhtRoute {
     this.#router.get("/github", passport.authenticate("github"));
 
     this.#router.get(
-      "/github/login",
+      "/github/callback",
       passport.authenticate("github", { scope: ["user:email"] }),
       this.#socialresponse
     );
