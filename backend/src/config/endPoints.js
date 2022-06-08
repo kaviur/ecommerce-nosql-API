@@ -1,5 +1,9 @@
+import { apiVersion } from "./config.js";
+
+
+
 export const endPoints = {
-  user: "/api/v1/user",
-  auth: "/api/v1/",
-  subCategory: "/api/v1/subCategory",
+  user: `/api/${apiVersion}/user`,
+  auth: `/api/${apiVersion}/`,
+  subCategory: `/api/${apiVersion}/subCategory`,
 };

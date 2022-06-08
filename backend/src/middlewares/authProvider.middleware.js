@@ -4,6 +4,7 @@ import { Strategy as TwitterStrategy } from "passport-twitter";
 import { Strategy as GithubStrategy } from "passport-github2";
 import { Strategy as InstagramStrategy } from "passport-instagram";
 import {
+  apiVersion,
   callbackUrl,
   facebookAppId,
   facebookAppSecret,
@@ -22,7 +23,7 @@ const getProfile = (accessToken, refreshToken, profile, done) => {
   done(null, { profile });
 };
 
-const url = (provider) => `${callbackUrl}/api/v1/${provider}/login`;
+const url = (provider) => `${callbackUrl}/api/${apiVersion}/${provider}/login`;
 
 const googleStrategy = () => {
   return new GoogleStrategy(

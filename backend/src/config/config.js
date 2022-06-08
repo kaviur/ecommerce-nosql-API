@@ -21,6 +21,7 @@ export const {
   githubAppSecret,
   instagramAppId,
   instagramAppSecret,
+  apiVersion
 } = {
   isProductionEnvironment: process.env.NODE_ENV === "production",
   port: process.env.PORT || 3000,
@@ -34,8 +35,8 @@ export const {
   googleClientSecret: process.env.GOOGLE_CLIENT_SECRET,
   callbackUrl:
     process.env.NODE_ENV === "production"
-      ? process.env.CALLBACK_URL
-      : process.env.CALLBACK_URL_DEVELOPMENT,
+      ? `${process.env.CALLBACK_URL}:${process.env.PORT || 3000}`
+      : `${process.env.CALLBACK_URL_DEVELOPMENT}:${process.env.PORT || 3000}`,
   sessionSecret: process.env.SESION_SECRET,
   facebookAppId: process.env.FACEBOOK_APP_ID,
   facebookAppSecret: process.env.FACEBOOK_APP_SECRET,
@@ -45,4 +46,5 @@ export const {
   githubAppSecret: process.env.GITHUB_APP_SECRET,
   instagramAppId: process.env.INSTAGRAM_APP_ID,
   instagramAppSecret: process.env.INSTAGRAM_APP_SECRET,
+  apiVersion:process.env.API_VERSION
 };

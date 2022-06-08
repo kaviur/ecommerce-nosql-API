@@ -53,6 +53,7 @@ export default class UserService {
 
       user.name = data.name || user.name;
       user.email = data.email || user.email;
+      user.provider.local = true
       await user.save();
       if (data.password) user.changePassword(data.password);
       if (files) {
@@ -108,6 +109,7 @@ export default class UserService {
           return { success: true, user };
         user.provider[provider] = true;
         user.idProvider[provider] = idProvider;
+        user.image = data.image
         await user.save();
         return { success: true, user };
       }
