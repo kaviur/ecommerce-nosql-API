@@ -23,7 +23,7 @@ export class CategoryRoute {
             errorResponse(res, response.error);
         });
 
-        this.#router.get("/:id", [verifyToken, validateRol(2,3)], async (req, res) => {
+        this.#router.get("/:id", async (req, res) => {
             const response = await this.#services.getCategoryById(req.params.id);
             response.success
             ?

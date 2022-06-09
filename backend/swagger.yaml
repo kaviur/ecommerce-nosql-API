@@ -3,7 +3,7 @@ info:
   version: 1.0.0
   title: eCommerce
   description: >-
-    Este proyecto plantea la creacion de un eCommerce
+    Este proyecto plantea la creación de un eCommerce
   contact:
     name: Camilo Morales Sanchez
     email: moorales.camilo@gmial.com
@@ -15,25 +15,26 @@ tags:
   - name: Auth
   - name: Users
   - name: SubCategories
+  - name: Categories
   - name: SocialAuth
 
 paths:
   /subcategory:
     get:
-      description: "desription here"
+      description: "description here"
       tags:
         - SubCategories
       security:
         - cookieAuth: []
       responses:
         200:
-          description: "desription here"
+          description: "description here"
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/listNoPagination"
         400:
-          description: "desription here"
+          description: "description here"
           content:
             aplication/json:
               schema:
@@ -213,8 +214,305 @@ paths:
           content:
             aplication/json:
               schema:
-                $ref: "#/components/schemas/errorMessage"              
- 
+                $ref: "#/components/schemas/errorMessage"   
+  /category:
+    get:
+      description: "Obtener las todas las categorías activas junto con las subcategorías activas"
+      tags:
+        - Categories
+      security:
+        - cookieAuth: []
+      responses:
+        200:
+          description: "description here"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/listNoPagination"
+        400:
+          description: "description here"
+          content:
+            aplication/json:
+              schema:
+                $ref: "#/components/schemas/errorMessage"
+        403:
+          description: "desription here"
+          content:
+            aplication/json:
+              schema:
+                $ref: "#/components/schemas/errorMessage"
+        500:
+          description: "desription here"
+          content:
+            aplication/json:
+              schema:
+                $ref: "#/components/schemas/errorMessage"
+  /category/{id}:
+    get:
+      description: "Obtener categoría por id"
+      tags:
+        - Categories
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: string
+          required: true
+          description: "id de la categoría"
+      security:
+        - cookieAuth: []
+      responses:
+        200:
+          description: "description here"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/listNoPagination"
+        400:
+          description: "description here"
+          content:
+            aplication/json:
+              schema:
+                $ref: "#/components/schemas/errorMessage"
+        403:
+          description: "description here"
+          content:
+            aplication/json:
+              schema:
+                $ref: "#/components/schemas/errorMessage"
+        500:
+          description: "description here"
+          content:
+            aplication/json:
+              schema:
+                $ref: "#/components/schemas/errorMessage"
+  /category/:
+    post:
+      description: "Crear categoría"
+      tags:
+        - Categories
+      requestBody:
+        description: "Nombre de la categoría"
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  example: "categoría 1"
+      security:
+        - cookieAuth: []
+      responses:
+        200:
+          description: "description here"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/listNoPagination"
+        400:
+          description: "description here"
+          content:
+            aplication/json:
+              schema:
+                $ref: "#/components/schemas/errorMessage"
+        403:
+          description: "description here"
+          content:
+            aplication/json:
+              schema:
+                $ref: "#/components/schemas/errorMessage"
+        500:
+          description: "description here"
+          content:
+            aplication/json:
+              schema:
+                $ref: "#/components/schemas/errorMessage"
+  /category/{id}/:
+    put:
+      description: "Editar una categoría"
+      tags:
+        - Categories
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: string
+          required: true
+          description: "Id de la categoría"
+      requestBody:
+        description: "Nombre de la categoría"
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                 type: string
+                 example: "name"
+      security:
+        - cookieAuth: []
+      responses:
+        200:
+          description: "description here"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/listNoPagination"
+        400:
+          description: "description here"
+          content:
+            aplication/json:
+              schema:
+                $ref: "#/components/schemas/errorMessage"
+        403:
+          description: "description here"
+          content:
+            aplication/json:
+              schema:
+                $ref: "#/components/schemas/errorMessage"
+        500:
+          description: "description here"
+          content:
+            aplication/json:
+              schema:
+                $ref: "#/components/schemas/errorMessage"
+  /category/change_status/{id}:
+    put:
+      description: "Activar o desactivar una categoría"
+      tags:
+        - Categories
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: string
+          required: true
+          description: "Id de la categoría"
+      security:
+        - cookieAuth: []
+      responses:
+        200:
+          description: "description here"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/listNoPagination"
+        400:
+          description: "description here"
+          content:
+            aplication/json:
+              schema:
+                $ref: "#/components/schemas/errorMessage"
+        403:
+          description: "description here"
+          content:
+            aplication/json:
+              schema:
+                $ref: "#/components/schemas/errorMessage"
+        500:
+          description: "description here"
+          content:
+            aplication/json:
+              schema:
+                $ref: "#/components/schemas/errorMessage"
+  /category/{idCategory}/add_subcategory:
+    patch:
+      description: "Añadir una subcategoría a determinada categoría"
+      tags:
+        - Categories
+      parameters:
+        - in: path
+          name: idCategory
+          schema:
+            type: string
+          required: true
+          description: "Id de la categoría"
+      requestBody:
+        description: "Id de la subcategoría a añadir"
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                subcategoryId:
+                 type: string
+                 example: "fhhiei7eehu388394hhhg533"
+      security:
+        - cookieAuth: []
+      responses:
+        200:
+          description: "description here"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/listNoPagination"
+        400:
+          description: "description here"
+          content:
+            aplication/json:
+              schema:
+                $ref: "#/components/schemas/errorMessage"
+        403:
+          description: "description here"
+          content:
+            aplication/json:
+              schema:
+                $ref: "#/components/schemas/errorMessage"
+        500:
+          description: "description here"
+          content:
+            aplication/json:
+              schema:
+                $ref: "#/components/schemas/errorMessage"
+  /category/{id}/{subcategoryId}:
+    patch:
+      description: "Remover subcategoría de una categoría"
+      tags:
+        - Categories
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: string
+          required: true
+          description: "Id de la categoría"
+        - in: path
+          name: subcategoryId
+          schema:
+            type: string
+          required: true
+          description: "Id de la subcategoría"
+      security:
+        - cookieAuth: []
+      responses:
+        200:
+          description: "description here"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/listNoPagination"
+        400:
+          description: "description here"
+          content:
+            aplication/json:
+              schema:
+                $ref: "#/components/schemas/errorMessage"
+        403:
+          description: "description here"
+          content:
+            aplication/json:
+              schema:
+                $ref: "#/components/schemas/errorMessage"
+        500:
+          description: "description here"
+          content:
+            aplication/json:
+              schema:
+                $ref: "#/components/schemas/errorMessage"
   /signup/:
     post:
       description: "desription here"
@@ -350,12 +648,12 @@ paths:
   
   /facebook/:
     get:
-      description: "desription here"
+      description: "description here"
       tags:
         - SocialAuth
       responses:
         200:
-          description: "desription here"
+          description: "description here"
           content:
             application/json:
               schema:
@@ -381,12 +679,12 @@ paths:
                 $ref: "#/components/schemas/errorMessage"
   /twitter/:
     get:
-      description: "desription here"
+      description: "description here"
       tags:
         - SocialAuth
       responses:
         200:
-          description: "desription here"
+          description: "description here"
           content:
             application/json:
               schema:
@@ -412,12 +710,12 @@ paths:
                 $ref: "#/components/schemas/errorMessage"
   /github/:
     get:
-      description: "desription here"
+      description: "description here"
       tags:
         - SocialAuth
       responses:
         200:
-          description: "desription here"
+          description: "description here"
           content:
             application/json:
               schema:
@@ -443,12 +741,12 @@ paths:
                 $ref: "#/components/schemas/errorMessage"
   /instagram/:
     get:
-      description: "desription here"
+      description: "description here"
       tags:
         - SocialAuth
       responses:
         200:
-          description: "desription here"
+          description: "description here"
           content:
             application/json:
               schema:
@@ -477,12 +775,12 @@ paths:
 
   /google/:
     get:
-      description: "desription here"
+      description: "description here"
       tags:
         - SocialAuth
       responses:
         200:
-          description: "desription here"
+          description: "description here"
           content:
             application/json:
               schema:
@@ -508,13 +806,13 @@ paths:
                 $ref: "#/components/schemas/errorMessage"
   /user/:
     put:
-      description: "desription here"
+      description: "description here"
       tags:
         - Users
       security:
         - cookieAuth: []
       requestBody:
-        description: "desription here"
+        description: "description here"
         required: true
         content:
           multipart/form-data:
@@ -535,26 +833,26 @@ paths:
                   format: binary
       responses:
         200:
-          description: "desription here"
+          description: "description here"
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/responseSuccessfulAuth"
         400:
-          description: "desription here"
+          description: "description here"
           content:
             aplication/json:
               schema:
                 $ref: "#/components/schemas/errorMessage"
         500:
-          description: "desription here"
+          description: "description here"
           content:
             aplication/json:
               schema:
                 $ref: "#/components/schemas/errorMessage"
   /user/{id}:
     put:
-      description: "desription here"
+      description: "description here"
       tags:
         - Users
       security:
@@ -565,9 +863,9 @@ paths:
           schema:
             type: string
           required: true
-          description: "desription here"
+          description: "description here"
       requestBody:
-        description: "desription here"
+        description: "description here"
         required: true
         content:
           multipart/form-data:
@@ -594,51 +892,51 @@ paths:
                   example: true
       responses:
         200:
-          description: "desription here"
+          description: "description here"
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/responseSuccessfulAuth"
         400:
-          description: "desription here"
+          description: "description here"
           content:
             aplication/json:
               schema:
                 $ref: "#/components/schemas/errorMessage"
         500:
-          description: "desription here"
+          description: "description here"
           content:
             aplication/json:
               schema:
                 $ref: "#/components/schemas/errorMessage"
   /user:
     get:
-      description: "desription here"
+      description: "description here"
       tags:
         - Users
       security:
         - cookieAuth: []
       responses:
         200:
-          description: "desription here"
+          description: "description here"
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/listPagination"
         400:
-          description: "desription here"
+          description: "description here"
           content:
             aplication/json:
               schema:
                 $ref: "#/components/schemas/errorMessage"
         403:
-          description: "desription here"
+          description: "description here"
           content:
             aplication/json:
               schema:
                 $ref: "#/components/schemas/errorMessage"
         500:
-          description: "desription here"
+          description: "description here"
           content:
             aplication/json:
               schema:
