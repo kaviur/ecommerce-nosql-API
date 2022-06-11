@@ -1,12 +1,22 @@
 openapi: 3.0.0
 info:
   version: 1.0.0
-  title: eCommerce
+  title: eCommerce TzuzulCode - "do trabajo práctico"
   description: >-
-    Este proyecto plantea la creacion de un eCommerce
+    Aplicación desacoplada de ventas online sobre Bases de Datos MongoDB
+    - Rubro: vestimenta - 
+    Provee las siguientes funcionalidades:
+    1.- Organización de productos de acuerdo a categorias y subcategorías
+    2.- Registro, logín y autenticación con credenciales locales y redes sociales 
+    3.- Redes Sociales disponbles: Google, Facebook, Tweeter, GitHub, Instagram
+    4.- Sistema de pagos automatizado
+    5.- Galería de productos con carrusel de multiples imágenes
+
   contact:
-    name: Camilo Morales Sanchez
-    email: moorales.camilo@gmial.com
+    name: Camilo Morales Sanchez - Willy Escobar - Karem Urbano
+    email: moorales.camilo@gmail.com
+           willyescobar@gmail.com
+           mojojojo@gmail.com
 
 servers:
   - url: http://localhost:8081/api/v1

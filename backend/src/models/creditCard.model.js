@@ -12,6 +12,18 @@ const creditCardSchema = new mongoose.Schema({
   clientID:{  // nro de cliente ¿lo sacamos del nro de usuario? cómo se representa eso?
     type: Schema.ObjectId, ref: "Users" 
   },
+  numberCard:{  // 4 ultimos nros
+    type: integer,
+    length: 16,
+  },
+  dueMonth:{  // 4 ultimos nros
+    type: integer,
+    length: 2,
+  },
+  dueYear:{  // 4 ultimos nros
+    type: integer,
+    length: 2,
+  },
 
   brandCard:{
     type: integer,

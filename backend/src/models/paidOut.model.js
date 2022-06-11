@@ -8,9 +8,9 @@ const PaidOutSchema = new mongoose.Schema({
   },
   numberCard:{  // 4 ultimos nros
     type: integer,
-    length: 4,
+    length: 16,
   },
-  amountPaidOut: { // monto total pagado
+  amount: { // monto total pagado
     type: number,
     require: true, 
   },
@@ -30,4 +30,4 @@ creditCardSchema.methods.toJSON = function () {
   return paidOut;
 };
 
-export default mongoose.model("PaidOut", paidOutSchema)
+export default mongoose.model("PaidOut", PaidOutSchema)
