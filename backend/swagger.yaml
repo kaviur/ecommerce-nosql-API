@@ -1,12 +1,21 @@
 openapi: 3.0.0
 info:
   version: 1.0.0
-  title: eCommerce
+  title: eCommerce TzuzulCode - "Trabajo práctico Nro.2"
   description: >-
-    Este proyecto plantea la creacion de un eCommerce
+    Aplicación desacoplada de ventas online sobre Bases de Datos MongoDB
+    - Rubro: vestimenta - 
+    Provee las siguientes funcionalidades:
+    1.- Organización de productos de acuerdo a categorias y subcategorías
+    2.- Registro, logín y autenticación con credenciales locales y redes sociales 
+    3.- Redes Sociales disponbles: Google, Facebook, Tweeter, GitHub, Instagram
+    4.- Sistema de pagos automatizado
+    5.- Galería de productos con carrusel de multiples imágenes
   contact:
-    name: Camilo Morales Sanchez
+    name: Camilo Morales Sanchez - Willy Escobar - Karem Urbano
     email: moorales.camilo@gmial.com
+           willyescobar@gmail.com
+           mojojojo@gmail.com
 
 servers:
   - url: http://localhost:8081/api/v1
@@ -20,32 +29,32 @@ tags:
 paths:
   /subcategory:
     get:
-      description: "desription here"
+      description: "Ruta para administración de las subcategorias de productos"
       tags:
         - SubCategories
       security:
         - cookieAuth: []
       responses:
         200:
-          description: "desription here"
+          description: "devuelve la Lista subcategorias existente"
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/listNoPagination"
         400:
-          description: "desription here"
+          description: "El Pedido de consulta de lista de SubCategorias está mal realizado"
           content:
             aplication/json:
               schema:
                 $ref: "#/components/schemas/errorMessage"
         403:
-          description: "desription here"
+          description: "Forbidden: la petición es correcta pero el servidor se niega a ofrecerte el recurso por falta de autorización"
           content:
             aplication/json:
               schema:
                 $ref: "#/components/schemas/errorMessage"
         500:
-          description: "desription here"
+          description: "Problemas con el servidor"
           content:
             aplication/json:
               schema:
