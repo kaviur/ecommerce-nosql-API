@@ -36,7 +36,7 @@ paths:
         - cookieAuth: []
       responses:
         200:
-          description: "devuelve la Lista subcategorias existente"
+          description: "Devuelve la Lista subcategorias existente"
           content:
             application/json:
               schema:
@@ -61,43 +61,43 @@ paths:
                 $ref: "#/components/schemas/errorMessage"
   /subcategory/admin:
     get:
-      description: "desription here"
+      description: "Ruta para administración de las subcategorias de productos a nivel usuario ADMIN que incluye subcategorías borradas"
       tags:
         - SubCategories
       security:
         - cookieAuth: []
       responses:
         200:
-          description: "desription here"
+          description: "Devuelve la Lista subcategorias activas y también con marca de borrado"
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/listNoPagination"
         400:
-          description: "desription here"
+          description: "Petición de ADMIN sobre sub categorías mal realizada"
           content:
             aplication/json:
               schema:
                 $ref: "#/components/schemas/errorMessage"
         403:
-          description: "desription here"
+          description: "Forbidden: Rechazo por falta de autorización"
           content:
             aplication/json:
               schema:
                 $ref: "#/components/schemas/errorMessage"
         500:
-          description: "desription here"
+          description: "Error interno de servidor"
           content:
             aplication/json:
               schema:
                 $ref: "#/components/schemas/errorMessage"
   /subcategory/:
     post:
-      description: "desription here"
+      description: "Alta de sub Categorías"
       tags:
         - SubCategories
       requestBody:
-        description: "desription here"
+        description: "Datos necesarios para el alta de Sub Categorías"
         required: true
         content:
           application/json:
@@ -111,32 +111,32 @@ paths:
         - cookieAuth: []
       responses:
         200:
-          description: "desription here"
+          description: "Sub Categoría dada de alta satisfactoriamente"
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/listNoPagination"
         400:
-          description: "desription here"
+          description: "Sub Categoría NO creada a causa de petición mal realizada"
           content:
             aplication/json:
               schema:
                 $ref: "#/components/schemas/errorMessage"
         403:
-          description: "desription here"
+          description: "Forbidden: No existen suficientes privilegiospara crear una Sub Categoría"
           content:
             aplication/json:
               schema:
                 $ref: "#/components/schemas/errorMessage"
         500:
-          description: "desription here"
+          description: "No se pudo crear la Sub Categoría por un error interno de servidor"
           content:
             aplication/json:
               schema:
                 $ref: "#/components/schemas/errorMessage"  
   /subcategory/{id}:
     put:
-      description: "desription here"
+      description: "Modificación de Sub Categorías"
       tags:
         - SubCategories
       parameters:
@@ -145,9 +145,9 @@ paths:
           schema:
             type: string
           required: true
-          description: "desription here"
+          description: "Identificacior deSub Categoría"
       requestBody:
-        description: "desription here"
+        description: "Nombre de sub categoría a modificar"
         required: true
         content:
           application/json:
@@ -161,64 +161,64 @@ paths:
         - cookieAuth: []
       responses:
         200:
-          description: "desription here"
+          description: "Nombre de sub categoría cambiado exitosamente"
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/listNoPagination"
         400:
-          description: "desription here"
+          description: "Petición de cambio de nombre de cambiode sub categoría mal realizado"
           content:
             aplication/json:
               schema:
                 $ref: "#/components/schemas/errorMessage"
         403:
-          description: "desription here"
+          description: "Forbidden: No se está autorizado a cambiar el nombre de la sub categoría"
           content:
             aplication/json:
               schema:
                 $ref: "#/components/schemas/errorMessage"
         500:
-          description: "desription here"
+          description: "Por un Error interno de servidor no se pudo cambiar el nombre de la subcategoría"
           content:
             aplication/json:
               schema:
                 $ref: "#/components/schemas/errorMessage"              
   /subcategory/admin/{id}:
     put:
-      description: "desription here"
+      description: "Modificación de todos los atriburtos d euna subCategoríapor parte de un administrador"
       tags:
         - SubCategories
-      parameters:
+      parameters:  Se podrá cambiar el nombre y el estatus de activo
         - in: path
           name: id
           schema:
             type: string
           required: true
-          description: "desription here"
+          description: "Identificador de sub categroía a modificar"
       security:
         - cookieAuth: []
       responses:
         200:
-          description: "desription here"
+          description: "Sub categoría correctamente modificada"
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/listNoPagination"
         400:
-          description: "desription here"
+          description: "Modificación fallidaacausa de error en la petición"
           content:
             aplication/json:
               schema:
                 $ref: "#/components/schemas/errorMessage"
         403:
-          description: "desription here"
+          description: "Forbidden: Falta inicio de sesión"
           content:
             aplication/json:
               schema:
                 $ref: "#/components/schemas/errorMessage"
         500:
-          description: "desription here"
+          description: "Pedido no resuelto, Error Interno de Servidor"
           content:
             aplication/json:
               schema:
@@ -226,11 +226,11 @@ paths:
  
   /signup/:
     post:
-      description: "desription here"
+      description: "Ruta de Registro de Usuarios"
       tags:
         - Auth
       requestBody:
-        description: "desription here"
+        description: "Alta de usuario en el sistema"
         required: true
         content:
           multipart/form-data:
@@ -238,19 +238,19 @@ paths:
               $ref: "#/components/schemas/user"
       responses:
         200:
-          description: "desription here"
+          description: "Usuario registrado exitosamente"
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/responseSuccessfulAuth"
         400:
-          description: "desription here"
+          description: "Petición de registro erroneo"
           content:
             aplication/json:
               schema:
                 $ref: "#/components/schemas/errorMessage"
         500:
-          description: "desription here"
+          description: "Error interno de Servidor"
           content:
             aplication/json:
               schema:
@@ -260,7 +260,7 @@ paths:
       tags:
         - Auth
       requestBody:
-        description: "desription here"
+        description: "Pedido de autenticación de Usuarios"
         required: true
         content:
           application/json:
@@ -276,7 +276,7 @@ paths:
       security: []
       responses:
         200:
-          description: "desription here"
+          description: "Usuario autorizado a ingresar al sistema"
           headers:
             Set-Cookie:
               schema:
@@ -288,31 +288,31 @@ paths:
                 $ref: "#/components/schemas/responseSuccessfulAuth"
 
         400:
-          description: "desription here"
+          description: "Pedido de autorización con errores"
           content:
             aplication/json:
               schema:
                 $ref: "#/components/schemas/errorMessage"
         401:
-          description: "desription here"
+          description: "Forbidden: Cuenta erronea"
           content:
             aplication/json:
               schema:
                 $ref: "#/components/schemas/errorMessage"
         500:
-          description: "desription here"
+          description: "Error interno de servidor"
           content:
             aplication/json:
               schema:
                 $ref: "#/components/schemas/errorMessage"
   /logout/:
     post:
-      description: "desription here"
+      description: "Desconexion de Usuario enelsistema, fin de Sesión"
       tags:
         - Auth
       responses:
         200:
-          description: "desription here"
+          description: "Desconexión exitosa del sistema"
           content:
             application/json:
               schema:
@@ -326,32 +326,32 @@ paths:
                     example: "Successfully Message"
   /session/:
     get:
-      description: "desription here"
+      description: "Sesión a través de Redes Sociales"
       tags:
         - Auth
       security:
         - cookieAuth: []
       responses:
         200:
-          description: "desription here"
+          description: "Inicio de Sesión Con Redes Sociales Exitosa"
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/responseSuccessfulAuth"
         400:
-          description: "desription here"
+          description: "Ingres de sesion con redes sociales fallido, petición errónea"
           content:
             aplication/json:
               schema:
                 $ref: "#/components/schemas/errorMessage"
         403:
-          description: "desription here"
+          description: "Forbidden: Error con la cuenta de proveniente de Redes Sociales"
           content:
             aplication/json:
               schema:
                 $ref: "#/components/schemas/errorMessage"
         500:
-          description: "desription here"
+          description: "Error Interno de Servidor"
           content:
             aplication/json:
               schema:
@@ -359,12 +359,12 @@ paths:
   
   /facebook/:
     get:
-      description: "desription here"
+      description: "Obtención de credenciales en Facebook"
       tags:
         - SocialAuth
       responses:
         200:
-          description: "desription here"
+          description: "Ingreso a través de credenciales de Facebook exitosa"
           content:
             application/json:
               schema:
@@ -377,25 +377,25 @@ paths:
                     type: string
                     example: "Successful login"
         400:
-          description: Bad request
+          description: "Petición de ingreso a traves de facebook rechazada por errores en la petición"
           content:
             aplication/json:
               schema:
                 $ref: "#/components/schemas/errorMessage"
         500:
-          description: Iternal server error
+          description: "Error interno de Servidor""
           content:
             aplication/json:
               schema:
                 $ref: "#/components/schemas/errorMessage"
   /twitter/:
     get:
-      description: "desription here"
+      description: "Obtención de credenciales en Twitter"
       tags:
         - SocialAuth
       responses:
         200:
-          description: "desription here"
+          description: "Ingreso a través de credenciales de Twitter exitosa"
           content:
             application/json:
               schema:
@@ -408,25 +408,25 @@ paths:
                     type: string
                     example: "Successful login"
         400:
-          description: Bad request
+          description: "Petición de ingreso a traves de Twitter rechazada por errores en la petición"
           content:
             aplication/json:
               schema:
                 $ref: "#/components/schemas/errorMessage"
         500:
-          description: Iternal server error
+          description: "Error interno de Servidor"
           content:
             aplication/json:
               schema:
                 $ref: "#/components/schemas/errorMessage"
   /github/:
     get:
-      description: "desription here"
+      description: "Obtención de credenciales en GitHub"
       tags:
         - SocialAuth
       responses:
         200:
-          description: "desription here"
+          description: "Ingreso a través de credenciales de GitHub exitoso"
           content:
             application/json:
               schema:
@@ -439,25 +439,25 @@ paths:
                     type: string
                     example: "Successful login"
         400:
-          description: Bad request
+          description: "Petición de ingreso a traves de GitHub rechazada por errores en la petición"
           content:
             aplication/json:
               schema:
                 $ref: "#/components/schemas/errorMessage"
         500:
-          description: Iternal server error
+          description: "Error interno de Servidor"
           content:
             aplication/json:
               schema:
                 $ref: "#/components/schemas/errorMessage"
   /instagram/:
     get:
-      description: "desription here"
+      description: "Obtención de credenciales en Instagram"
       tags:
         - SocialAuth
       responses:
         200:
-          description: "desription here"
+          description: "Ingreso a través de credenciales de Instagram exitosa"
           content:
             application/json:
               schema:
@@ -470,13 +470,13 @@ paths:
                     type: string
                     example: "Successful login"
         400:
-          description: Bad request
+          description: "Petición de ingreso a través de Instagram rechazada por errores en la petición"
           content:
             aplication/json:
               schema:
                 $ref: "#/components/schemas/errorMessage"
         500:
-          description: Iternal server error
+          description: "Error interno de Servidor"
           content:
             aplication/json:
               schema:
@@ -486,12 +486,12 @@ paths:
 
   /google/:
     get:
-      description: "desription here"
+      description: "Obtención de credenciales en Google"
       tags:
         - SocialAuth
       responses:
         200:
-          description: "desription here"
+          description: "Ingreso a través de credenciales de Google exitoso"
           content:
             application/json:
               schema:
@@ -504,26 +504,26 @@ paths:
                     type: string
                     example: "Successful login"
         400:
-          description: Bad request
+          description: "Petición de ingreso a través de Google rechazada por errores en la petición"
           content:
             aplication/json:
               schema:
                 $ref: "#/components/schemas/errorMessage"
         500:
-          description: Iternal server error
+          description: "Error interno de Servidor"
           content:
             aplication/json:
               schema:
                 $ref: "#/components/schemas/errorMessage"
   /user/:
     put:
-      description: "desription here"
+      description: "Modificación de datos de Usuario"
       tags:
         - Users
       security:
         - cookieAuth: []
       requestBody:
-        description: "desription here"
+        description: "Peticiponde actualizacion de informacion de usuarios"
         required: true
         content:
           multipart/form-data:
@@ -544,26 +544,26 @@ paths:
                   format: binary
       responses:
         200:
-          description: "desription here"
+          description: "Modificación de datos de usuario exitosa"
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/responseSuccessfulAuth"
         400:
-          description: "desription here"
+          description: "Eroor en la petición de modificacion de datos deUsuario"
           content:
             aplication/json:
               schema:
                 $ref: "#/components/schemas/errorMessage"
         500:
-          description: "desription here"
+          description: "error interno de Servidor"
           content:
             aplication/json:
               schema:
                 $ref: "#/components/schemas/errorMessage"
   /user/{id}:
     put:
-      description: "desription here"
+      description: "Modificación de Usuario a partir de su id"
       tags:
         - Users
       security:
@@ -574,9 +574,9 @@ paths:
           schema:
             type: string
           required: true
-          description: "desription here"
+          description: "Identificador de Usuario"
       requestBody:
-        description: "desription here"
+        description: "Mofificacion de datos"
         required: true
         content:
           multipart/form-data:
@@ -603,51 +603,51 @@ paths:
                   example: true
       responses:
         200:
-          description: "desription here"
+          description: "Datos de usuario se han modificado exitosamente"
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/responseSuccessfulAuth"
         400:
-          description: "desription here"
+          description: "Rechazo de petición: pedido mal realizado"
           content:
             aplication/json:
               schema:
                 $ref: "#/components/schemas/errorMessage"
         500:
-          description: "desription here"
+          description: "Error interno de servidor"
           content:
             aplication/json:
               schema:
                 $ref: "#/components/schemas/errorMessage"
   /user:
     get:
-      description: "desription here"
+      description: "Obtener Lista de Ususarios"
       tags:
         - Users
       security:
         - cookieAuth: []
       responses:
         200:
-          description: "desription here"
+          description: "Listade usuarios obtenida exitosamente"
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/listPagination"
         400:
-          description: "desription here"
+          description: "Error en el pedido de lista de usuarios"
           content:
             aplication/json:
               schema:
                 $ref: "#/components/schemas/errorMessage"
         403:
-          description: "desription here"
+          description: "No es posible realizar la peticion, posible error de cuenta"
           content:
             aplication/json:
               schema:
                 $ref: "#/components/schemas/errorMessage"
         500:
-          description: "desription here"
+          description: "Error interno de Servidor"
           content:
             aplication/json:
               schema:
