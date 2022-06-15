@@ -1,5 +1,5 @@
 import { deleteImages, uploadImage } from "../helpers/images.helper.js";
-import { userModel } from "../models/index.js";
+import { cartModel, userModel } from "../models/index.js";
 
 export default class UserService {
   async postUser(data, files = null) {
@@ -12,6 +12,8 @@ export default class UserService {
         user.saveUrlImg(imagesName);
         await user.save();
       }
+
+      await cartModel.create({ _id: user._id, items: [] });
       return { success: true, user };
     } catch (error) {
       return { success: false, error };
@@ -53,7 +55,7 @@ export default class UserService {
 
       user.name = data.name || user.name;
       user.email = data.email || user.email;
-      user.provider.local = true
+      user.provider.local = true;
       await user.save();
       if (data.password) user.changePassword(data.password);
       if (files) {
@@ -105,18 +107,21 @@ export default class UserService {
     try {
       user = await userModel.findOne({ email: email.toUpperCase() });
       if (user) {
+        const cart = await cartModel.findOne({ _id: user._id });
+        if (!cart) {
+          await cartModel.create({ _id: user._id, items: [] });
+        }
         if (user.idProvider[provider] === idProvider)
           return { success: true, user };
         user.provider[provider] = true;
         user.idProvider[provider] = idProvider;
-        user.image = data.image
+        user.image = data.image;
         await user.save();
         return { success: true, user };
       }
-
       user = new userModel(data);
-
       await user.save();
+      await cartModel.create({ _id: user._id, items: [] });
       return { success: true, user };
     } catch (error) {
       return { success: false, error };

@@ -2,6 +2,7 @@ import { validatePassword } from "../helpers/bcrypt.helper.js";
 import { createJWT } from "../helpers/jwt.helper.js";
 import UserService from "./user.service.js";
 import { v4 as uuid } from "uuid";
+import cartModel from "../models/cart.model.js";
 
 export class AuthService {
   #userService;
@@ -53,6 +54,11 @@ export class AuthService {
         return { success: false, status: 401, error: { message } };
 
       const data = await createJWT(response.user);
+
+      const cart = await cartModel.findOne({_id:data.payload.id})
+      if (!cart) {
+        await cartModel.create({_id:data.payload.id,items:[]})
+      }
       response.user = data;
       return response;
     } catch (error) {

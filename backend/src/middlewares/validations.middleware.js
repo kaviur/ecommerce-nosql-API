@@ -30,4 +30,21 @@ const validateExtensionImages = (req = request, res = response, next) => {
   next();
 };
 
-export { validateExtensionImages };
+const validateImages = (req = request, res = response, next) => {
+  const { files } = req;
+  try {
+    if (
+      !files ||
+      Object.keys(files).length === 0 ||
+      !files.image ||
+      files.length == 0
+    ) {
+      throw new Error("Images are required");
+    }
+  } catch (error) {
+    return errorResponse(res, error, 400);
+  }
+  validateExtensionImages(req, res, next);
+};
+
+export { validateExtensionImages, validateImages };

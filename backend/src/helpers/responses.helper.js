@@ -51,7 +51,7 @@ const authResponse = async (
         .status(status)
         .cookie("token", token, {
           httpOnly: true,
-          secure: isProductionEnvironment,
+          secure: true,
           sameSite: "none",
           expires: new Date(exp * 1000),
         })
@@ -60,7 +60,7 @@ const authResponse = async (
         .status(status)
         .cookie("token", token, {
           httpOnly: true,
-          secure: isProductionEnvironment,
+          secure: true,
           sameSite: "none",
           expires: new Date(exp * 1000),
         })
