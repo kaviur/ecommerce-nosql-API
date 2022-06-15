@@ -17,7 +17,7 @@ import {
   port,
   sessionSecret,
 } from "../config/config.js";
-import { authRoute, subCategoryRoute, userRoute, categoryRoute } from "../routes/index.js";
+import { authRoute, subCategoryRoute, userRoute, categoryRoute, productRoute } from "../routes/index.js";
 import {
   facebookStrategy,
   githubStrategy,
@@ -98,6 +98,7 @@ export class Server {
     this.#app.use(this.#paths.auth, authRoute);
     this.#app.use(this.#paths.subCategory, subCategoryRoute);
     this.#app.use(this.#paths.category, categoryRoute);
+    this.#app.use(this.#paths.product, productRoute);
     this.#app.use(
       "/api-docs",
       swaggerUi.serve,

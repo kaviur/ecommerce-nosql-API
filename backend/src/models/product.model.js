@@ -12,12 +12,12 @@ const productSchema = new mongoose.Schema({
         trim: true
     },
     price: {
-        type: Float,
+        type: Number,
         require: [true, "The price is required"],
         trim: true
     },
     discount: {
-        type: Float
+        type: Number,
     },
     categoryID: {
         type: mongoose.Schema.Types.ObjectId,
@@ -32,7 +32,7 @@ const productSchema = new mongoose.Schema({
     stock: [
         {
             quantity: {
-                type: Float,
+                type: Number,
                 require: [true, "The quantity is required"],
                 trim: true
             },
@@ -59,7 +59,7 @@ const productSchema = new mongoose.Schema({
     sizes: [{
         type: String,
         trim: true,
-        uppercase,
+        uppercase: true,
         enum: ["S", "M", "L", "XL", "XXL"]
     }],
     colors: [{
@@ -70,13 +70,8 @@ const productSchema = new mongoose.Schema({
     brand: {
         type: String,
         trim: true,
-        uppercase,
         default: "N/A",
         enum: ["N/A", "Adidas", "Nike", "Puma", "Reebok", "Asics", "New Balance", "Under Armour", "Vans", "Onitsuka", "Under Armour", "Puma", "Reebok", "Asics", "New Balance", "Vans", "Onitsuka"]
-    },
-    stars: {
-        type: Number,
-        default: 0
     },
     reviews: [{
         type: mongoose.Schema.Types.ObjectId,
@@ -111,11 +106,6 @@ const productSchema = new mongoose.Schema({
     }
 },
 { timestamps: true }
-, 
-{
-    toJSON: { virtuals: true },
-    toObject: { virtuals: true }
-}
 );
 
 export default mongoose.model("Product", productSchema);

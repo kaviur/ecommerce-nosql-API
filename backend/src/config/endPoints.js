@@ -7,4 +7,5 @@ export const endPoints = {
   auth: `/api/${apiVersion}/`,
   subCategory: `/api/${apiVersion}/subCategory`,
   category: `/api/${apiVersion}/category`,
+  product: `/api/${apiVersion}/product`,
 };

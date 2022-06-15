@@ -1,4 +1,4 @@
-import { productModel } from '../models/product.model';
+import { productModel } from '../models/index.js';
 
 export default class ProductService {
     
@@ -22,8 +22,17 @@ export default class ProductService {
 
         async getProductById(id) {
             try {
-                const product = await productModel.findById(id);
+                const product = await productModel.findById(id).populate('reviews');
                 return { success: true, product };
+            } catch (error) {
+                return { success: false, error };
+            }
+        }
+
+        async getProductsBySeller(sellerId) {
+            try {
+                const products = await productModel.find({ sellerId:sellerId });
+                return { success: true, products };
             } catch (error) {
                 return { success: false, error };
             }
@@ -86,7 +95,7 @@ export default class ProductService {
         //     }
         // }
 
-        //filtrar por todas las opciones
+        //filtrar por cualquier opción
         async getProductsByPriceRangeAndOtherFilters(priceRange, priceLessThan, category, subcategory, name, popular, size, color, brand) {
             try {
                 // si no selecciona ningún filtro muestra por defecto todos los productos
@@ -134,15 +143,15 @@ export default class ProductService {
         //filtro del buscador
         async getCoincidencesOfSearch(search) {
             try {
-                //const products = await productModel.find({ name: { $regex: search, $options: "i" } });
                 const products = await productModel.find({ 
                     $or: [
                         { name: { $regex: search, $options: "i" } }, 
                         { description: { $regex: search, $options: "i" } },
                         { brand: { $regex: search, $options: "i" } },
                         { color: { $regex: search, $options: "i" } },
-                        { size: { $regex: search, $options: "i" } }
-                        //{ category: { $regex: search, $options: "i" } },
+                        { size: { $regex: search, $options: "i" } },
+                        { sku: { $regex: search, $options: "i" } }
+                        //{ category: { $regex: search, $options: "i" } }, // todo: hacer que la coincidencia incluya el nombre de la categoria y la subcategoria
                         //{ subcategory: { $regex: search, $options: "i" } }
                     ] 
                 });
