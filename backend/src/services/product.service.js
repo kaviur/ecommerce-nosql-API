@@ -123,27 +123,14 @@ export default class ProductService {
                     filters.$and.push({ price: { $lte: priceLessThan } });
                 }
 
-                if (category) {
-                    filters.$and.push({ category: category });
-                }
-                if (subcategory) {
-                    filters.$and.push({ subcategory: subcategory });
-                }
-                if (name) {
-                    filters.$and.push({ name: { $regex: name, $options: "i" } });
-                }
-                if (popular) {
-                    filters.$and.push({ popular: popular });
-                }
-                if (size) {
-                    filters.$and.push({ size: size });
-                }
-                if (color) {
-                    filters.$and.push({ color: color });
-                }
-                if (brand) {
-                    filters.$and.push({ brand: brand });
-                }
+                if (name)filters.$and.push({ name: { $regex: name, $options: 'i' } });
+                if (category) filters.$and.push({ category: category });
+                if (subcategory) filters.$and.push({ subcategory: subcategory });
+                if (popular) filters.$and.push({ popular: popular });
+                if (size) filters.$and.push({ size: size });
+                if (color) filters.$and.push({ color: color });
+                if (brand) filters.$and.push({ brand: brand });
+
                 filters.$and.push({ status: true });
 
                 const products = await productModel.find(filters);
@@ -164,6 +151,7 @@ export default class ProductService {
                         { color: { $regex: search, $options: "i" } },
                         { size: { $regex: search, $options: "i" } },
                         { sku: { $regex: search, $options: "i" } },
+                        //{ subCategoryID: { $regex: search, $options: "i" } },
                         //{ category: { $regex: search, $options: "i" } }, // todo: hacer que la coincidencia incluya el nombre de la categoria y la subcategoria
                         //{ subcategory: { $regex: search, $options: "i" } }
                     ] 
@@ -177,7 +165,7 @@ export default class ProductService {
         async verifyStock(id, quantity) {
             const product = await productModel.findById(id);
             if(product.stock < quantity) {
-                return { success: false, message: 'No hay suficiente stock' };
+                return { success: false, message: `Actualmente hay en stock ${product.stock} unidades del producto ${product.name}` };
             }
             return { success: true };
         }
