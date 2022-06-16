@@ -31,7 +31,7 @@ export default class ProductService {
 
         async getAllProducts() {
             try {
-                const products = await productModel.find({});
+                const products = await productModel.find({status: true});
                 return { success: true, products };
             } catch (error) {
                 return { success: false, error };
@@ -106,57 +106,6 @@ export default class ProductService {
             }
         }
 
-        //filters
-        // async getProductsByCategory(categoryId) {
-        //     try {
-        //         const products = await productModel.find({ category: categoryId });
-        //         return { success: true, products };
-        //     } catch (error) {
-        //         return { success: false, error };
-        //     }
-        // }
-
-        // async getByCategoryAndSubcategory(categoryId, subcategoryId) {
-        //     try {
-        //         const products = await productModel.find({ category: categoryId, subcategory: subcategoryId });
-        //         return { success: true, products };
-        //     } catch (error) {
-        //         return { success: false, error };
-        //     }
-        // }
-
-        // async getProductsByName(name) {
-        //     try {
-        //         const products = await productModel.find({ name: { $regex: name, $options: "i" } });
-        //         return { success: true, products };
-        //     } catch (error) {
-        //         return { success: false, error };
-        //     }
-        // }
-
-
-        async getProductsByPriceRangeAndOtherFiltersss(name) {
-            try {
-                // si no selecciona ningún filtro muestra por defecto todos los productos
-                console.log("name desde el servicio----",name);
-                if(!name) {
-                    console.log("no name");
-                    return await this.getAllProducts();
-                }
-
-                const filters = {
-                    $and: []
-                }
-                if (name) {
-                    filters.$and.push({ name: { $regex: name, $options: "i" } });
-                }
-                const products = await productModel.find(filters);
-                return { success: true, products };
-            } catch (error) {
-                return { success: false, error };
-            }
-        } 
-
         //filtrar por cualquier opción
         async getProductsByPriceRangeAndOtherFilters(name, priceRange, priceLessThan, category, subcategory, popular, size, color, brand) {
             try {
@@ -195,6 +144,8 @@ export default class ProductService {
                 if (brand) {
                     filters.$and.push({ brand: brand });
                 }
+                filters.$and.push({ status: true });
+
                 const products = await productModel.find(filters);
                 return { success: true, products };
             } catch (error) {
@@ -212,24 +163,23 @@ export default class ProductService {
                         { brand: { $regex: search, $options: "i" } },
                         { color: { $regex: search, $options: "i" } },
                         { size: { $regex: search, $options: "i" } },
-                        { sku: { $regex: search, $options: "i" } }
+                        { sku: { $regex: search, $options: "i" } },
                         //{ category: { $regex: search, $options: "i" } }, // todo: hacer que la coincidencia incluya el nombre de la categoria y la subcategoria
                         //{ subcategory: { $regex: search, $options: "i" } }
                     ] 
-                });
+                }).populate('subCategoryID', 'name');
                 return { success: true, products };
             } catch (error) {
                 return { success: false, error };
             }
         }
-
-        // async getProductsByPriceRangeAndCategoryAndSubcategoryAndName(priceRange, categoryId, subcategoryId, name) {
-        //     try {
-        //         const products = await productModel.find({ price: { $gte: priceRange[0], $lte: priceRange[1] }, category: categoryId, subcategory: subcategoryId, name: { $regex: name, $options: "i" } });
-        //         return { success: true, products };
-        //     } catch (error) {
-        //         return { success: false, error };
-        //     }
-        // }
+        
+        async verifyStock(id, quantity) {
+            const product = await productModel.findById(id);
+            if(product.stock < quantity) {
+                return { success: false, message: 'No hay suficiente stock' };
+            }
+            return { success: true };
+        }
 
     }
