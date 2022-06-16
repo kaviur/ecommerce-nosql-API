@@ -51,18 +51,21 @@ export class ProductRoute {
             errorResponse(res, response.error);
         });
 
+        //búsqueda excluyente
         this.#router.post("/filters", async (req, res) => {
-            const { name } = req.body;
-            const response = await this.#services.getProductsByPriceRangeAndOtherFilters(name);
+            const { name, priceRange, priceLessThan, category, subcategory, popular, size, color, brand } = req.body;
+            const response = await this.#services.getProductsByPriceRangeAndOtherFilters(name, priceRange, priceLessThan, category, subcategory, popular, size, color, brand);
             response.success
             ?
-            successfulResponse(res, 200, true, "Products were successfully retrieved", response.products)
+            response.products.length > 0?successfulResponse(res, 200, true, "Products were successfully retrieved", response.products):successfulResponse(res, 200, false, "No products were found with that requirement", response.products)
             :
             errorResponse(res, response.error);
         });
 
+        //búsqueda incluyente
         this.#router.post("/search", async (req, res) => {
-            const response = await this.#services.getCoincidencesOfSearch(req.body);
+            const { termOfSearch } = req.body;
+            const response = await this.#services.getCoincidencesOfSearch(termOfSearch);
             response.success
             ?
             successfulResponse(res, 200, true, "Products were successfully retrieved", response.products)
@@ -72,7 +75,7 @@ export class ProductRoute {
 
         //TODO: IMAGENES DE PRODUCTOS
 
-        this.#router.put("/:id", async (req, res) => {//todo:excluir 
+        this.#router.put("/:id", [verifyToken, validateRol(2,3)], async (req, res) => {//todo:excluir 
             const response = await this.#services.updateProduct(req.params.id,req.body);
             response.success
             ?
@@ -81,7 +84,7 @@ export class ProductRoute {
             errorResponse(res, response.error);
         });
     
-        this.#router.put("change_status/:id", [verifyToken, validateRol(2,3)], async (req, res) => {
+        this.#router.put("/change_status/:id", [verifyToken, validateRol(2,3)], async (req, res) => {
             const response = await this.#services.changeStatus(req.params.id);
             response.success
             ?

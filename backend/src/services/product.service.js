@@ -4,6 +4,24 @@ export default class ProductService {
     
         async createProduct(data) {
             try {
+                let str = data.name.replace(/^\s+|\s+$/g, ''); // trim
+                str = str.toLowerCase();
+            
+                // remove accents, swap ñ for n, etc
+                var from = "ãàáäâáº½èéëêìíïîõòóöôùúüûñç·/_,:;";
+                var to   = "aaaaaeeeeeiiiiooooouuuunc------";
+
+                for (var i=0, l=from.length ; i<l ; i++) {
+                    str = str.replace(new RegExp(from.charAt(i), 'g'), to.charAt(i));
+                }
+        
+                str = str.replace(/[^a-z0-9 -]/g, '') // remove invalid chars
+                .replace(/\s+/g, '-') // collapse whitespace and replace by -
+
+                let random = Math.floor(Math.random() * (99999 - 10000)) + 10000;
+
+                data.slug = str+random;
+
                 const product = await productModel.create({ ...data });
                 return { success: true, product };
             } catch (error) {
@@ -41,6 +59,27 @@ export default class ProductService {
         //TODO: que se pueda editar todo menos el id del vendedor, ni el estado
         async updateProduct(id, data) {
             try {
+                const productToUpdate= await productModel.findById(id);
+
+                if(data.name && productToUpdate.name != data.name) {      
+                    let str = data.name.replace(/^\s+|\s+$/g, ''); // trim
+                    str = str.toLowerCase();
+                
+                    // remove accents, swap ñ for n, etc
+                    var from = "ãàáäâáº½èéëêìíïîõòóöôùúüûñç·/_,:;";
+                    var to   = "aaaaaeeeeeiiiiooooouuuunc------";
+
+                    for (var i=0, l=from.length ; i<l ; i++) {
+                        str = str.replace(new RegExp(from.charAt(i), 'g'), to.charAt(i));
+                    }
+            
+                    str = str.replace(/[^a-z0-9 -]/g, '') // remove invalid chars
+                    .replace(/\s+/g, '-') // collapse whitespace and replace by -
+
+                    let random = Math.floor(Math.random() * (99999 - 10000)) + 10000;
+                    data.slug = str+random;
+                }
+
                 const product = await productModel.findOneAndUpdate({ _id: id }, { ...data }, { new: true });
                 return { success: true, product };
             } catch (error) {
@@ -57,7 +96,7 @@ export default class ProductService {
             }
         }
 
-        async changeStatusProduct(id) {
+        async changeStatus(id) {
             try {
                 const productData = await productModel.findById(id);
                 const product = await productModel.findOneAndUpdate({ _id: id }, { status: !productData.status }, { new: true });
@@ -95,12 +134,35 @@ export default class ProductService {
         //     }
         // }
 
-        //filtrar por cualquier opción
-        async getProductsByPriceRangeAndOtherFilters(priceRange, priceLessThan, category, subcategory, name, popular, size, color, brand) {
+
+        async getProductsByPriceRangeAndOtherFiltersss(name) {
             try {
                 // si no selecciona ningún filtro muestra por defecto todos los productos
-                if(!priceRange, !priceLessThan, !category, !subcategory, !name, !popular, !size, !color, !brand) {
-                    return await productModel.find({});
+                console.log("name desde el servicio----",name);
+                if(!name) {
+                    console.log("no name");
+                    return await this.getAllProducts();
+                }
+
+                const filters = {
+                    $and: []
+                }
+                if (name) {
+                    filters.$and.push({ name: { $regex: name, $options: "i" } });
+                }
+                const products = await productModel.find(filters);
+                return { success: true, products };
+            } catch (error) {
+                return { success: false, error };
+            }
+        } 
+
+        //filtrar por cualquier opción
+        async getProductsByPriceRangeAndOtherFilters(name, priceRange, priceLessThan, category, subcategory, popular, size, color, brand) {
+            try {
+                // si no selecciona ningún filtro muestra por defecto todos los productos
+                if(!name && !priceRange && !priceLessThan && !category && !subcategory && !popular && !size && !color && !brand) {
+                    return await this.getAllProducts();
                 }
 
                 const filters = {

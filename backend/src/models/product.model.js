@@ -29,25 +29,11 @@ const productSchema = new mongoose.Schema({
         ref: "SubCategory",
         require: [true, "The sub-category is required"]
     },
-    stock: [
-        {
-            quantity: {
-                type: Number,
-                require: [true, "The quantity is required"],
-                trim: true
-            },
-            size: {
-                type: String,
-                require: [true, "The size is required"],
-                trim: true
-            },
-            color: {
-                type: String,
-                require: [true, "The color is required"],
-                trim: true
-            }
-        }
-    ],
+    stock: {
+        type: Number,
+        require: [true, "The stock is required"],
+        trim: true
+    },
     images: [{
         type: String,
         trim: true
@@ -59,19 +45,16 @@ const productSchema = new mongoose.Schema({
     sizes: [{
         type: String,
         trim: true,
-        uppercase: true,
-        enum: ["S", "M", "L", "XL", "XXL"]
+        uppercase: true
     }],
     colors: [{
         type: String,
-        trim: true,
-        enum: ["Black", "White", "Red", "Blue", "Green", "Yellow", "Orange", "Pink", "Purple", "Brown", "Grey"]
+        trim: true
     }],
     brand: {
         type: String,
         trim: true,
-        default: "N/A",
-        enum: ["N/A", "Adidas", "Nike", "Puma", "Reebok", "Asics", "New Balance", "Under Armour", "Vans", "Onitsuka", "Under Armour", "Puma", "Reebok", "Asics", "New Balance", "Vans", "Onitsuka"]
+        default: "N/A"
     },
     reviews: [{
         type: mongoose.Schema.Types.ObjectId,
@@ -80,7 +63,7 @@ const productSchema = new mongoose.Schema({
     slug: {
         type: String,
         trim: true,
-        unique: true
+        //unique: true
     },
     sku: {
         type: String,
