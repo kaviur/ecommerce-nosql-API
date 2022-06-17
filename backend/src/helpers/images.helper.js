@@ -5,7 +5,7 @@ import { promisify } from "util";
 
 const __dirname = path.resolve();
 
-const uploadImage = (files, pathImg = "products") => {
+const uploadImage = (files, pathImg = "users") => {
   return new Promise((resolve, reject) => {
     let image = [];
     let imagesName = [];
