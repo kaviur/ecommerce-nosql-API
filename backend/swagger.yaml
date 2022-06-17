@@ -137,7 +137,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/errorMessage"
   /cart/remove-item:
-    post:
+    delete:
       description: "Eliminar un producto del carrito"
       tags:
         - Cart
