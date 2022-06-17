@@ -1,7 +1,7 @@
 import jwt from "jsonwebtoken";
 import { jwtSecret } from "../config/config.js";
 
-export const createJWT = (user) => {
+export const createJWT = (user,expiresIn="15d") => {
   const payload = {
     name: user.name,
     email: user.email,
@@ -11,7 +11,7 @@ export const createJWT = (user) => {
   };
 
   return new Promise((resolve, reject) => {
-    jwt.sign(payload, jwtSecret, { expiresIn: "15d" }, (err, token) => {
+    jwt.sign(payload, jwtSecret, { expiresIn: expiresIn }, (err, token) => {
       if (err) {
         return reject(err);
       }

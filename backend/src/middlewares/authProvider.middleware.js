@@ -23,7 +23,7 @@ const getProfile = (accessToken, refreshToken, profile, done) => {
   done(null, { profile });
 };
 
-const url = (provider) => `${callbackUrl}/api/${apiVersion}/${provider}/callback`;
+const url = (provider) => `${callbackUrl}/api/${apiVersion}/${provider}/login`;
 
 const googleStrategy = () => {
   return new GoogleStrategy(

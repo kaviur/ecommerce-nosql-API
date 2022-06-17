@@ -25,7 +25,7 @@ export class DataBase {
         }?retryWrites=true&w=majority`,
         {
           useNewUrlParser: true,
-          useUnifiedTopology: true,
+          useUnifiedTopology: true
         }
       );
       this.#dbClient.on("error", (error) => {

@@ -5,6 +5,7 @@ import {
   authResponse,
   errorResponse,
   logoutResponse,
+  successfulResponse,
 } from "../helpers/responses.helper.js";
 import { verifyToken } from "../middlewares/auth.middleware.js";
 import { validateExtensionImages } from "../middlewares/validations.middleware.js";
@@ -27,6 +28,17 @@ export class AuhtRoute {
       });
     });
 
+    this.#router.get(
+      "/email_validation/:token",
+      async (req = request, res = response) => {
+        const { token } = req.params;
+        const response = await services.validateEmail(token);
+        response.success
+          ? authResponse(res, 200, true, "User logged", response.user)
+          : errorResponse(res, response.error);
+      }
+    );
+
     this.#router.post("/login", async (req = request, res = response) => {
       const response = await services.login(req.body);
       response.success
@@ -41,7 +53,7 @@ export class AuhtRoute {
         const { files } = req;
         const response = await services.signup(req.body, files);
         response.success
-          ? authResponse(
+          ? successfulResponse(
               res,
               201,
               true,
@@ -76,7 +88,7 @@ export class AuhtRoute {
     );
 
     this.#router.get(
-      "/google/callback",
+      "/google/login",
       passport.authenticate("google", { session: false }),
       this.#socialresponse
     );
@@ -87,7 +99,7 @@ export class AuhtRoute {
     );
 
     this.#router.get(
-      "/facebook/callback",
+      "/facebook/login",
       passport.authenticate("facebook", { session: false }),
       this.#socialresponse
     );
@@ -95,7 +107,7 @@ export class AuhtRoute {
     this.#router.get("/twitter", passport.authenticate("twitter"));
 
     this.#router.get(
-      "/twitter/callback",
+      "/twitter/login",
       passport.authenticate("twitter", { scope: ["user:email"] }),
       this.#socialresponse
     );
@@ -103,7 +115,7 @@ export class AuhtRoute {
     this.#router.get("/github", passport.authenticate("github"));
 
     this.#router.get(
-      "/github/callback",
+      "/github/login",
       passport.authenticate("github", { scope: ["user:email"] }),
       this.#socialresponse
     );

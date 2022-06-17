@@ -1,7 +1,6 @@
 import { response } from "express";
 import {
   callbackUrl,
-  isProductionEnvironment,
   jwtSecret,
 } from "../config/config.js";
 import jwt from "jsonwebtoken";
@@ -51,7 +50,7 @@ const authResponse = async (
         .status(status)
         .cookie("token", token, {
           httpOnly: true,
-          secure: isProductionEnvironment,
+          secure: true,
           sameSite: "none",
           expires: new Date(exp * 1000),
         })
@@ -60,7 +59,7 @@ const authResponse = async (
         .status(status)
         .cookie("token", token, {
           httpOnly: true,
-          secure: isProductionEnvironment,
+          secure: true,
           sameSite: "none",
           expires: new Date(exp * 1000),
         })
