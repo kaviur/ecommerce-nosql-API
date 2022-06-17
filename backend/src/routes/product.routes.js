@@ -23,8 +23,20 @@ export class ProductRoute {
             errorResponse(res, response.error);
         });
 
-        this.#router.get("/:id", async (req, res) => {
-            const response = await this.#services.getProductById(req.params.id);
+        //búsqueda incluyente
+        this.#router.get("/search", async (req, res) => {
+            const { termOfSearch } = req.query;
+            console.log(termOfSearch);
+            const response = await this.#services.getCoincidencesOfSearch(termOfSearch);
+            response.success
+            ?
+            successfulResponse(res, 200, true, "Products were successfully retrieved", response.products)
+            :
+            errorResponse(res, response.error);
+        });
+
+        this.#router.get("/:slug", async (req, res) => {
+            const response = await this.#services.getProductBySlug(req.params.slug);
             response.success
             ?
             successfulResponse(res, 200, true, "Product was successfully retrieved", response.product)
@@ -42,6 +54,16 @@ export class ProductRoute {
             errorResponse(res, response.error);
         });
 
+        //productos por categoria y subcategoria
+        // this.#router.get("/category/:categoryId/subcategory/:subcategoryId", async (req, res) => {
+        //     const response = await this.#services.getProductsByCategoryAndSubcategory(req.params.categoryId, req.params.subcategoryId);
+        //     response.success
+        //     ?
+        //     successfulResponse(res, 200, true, "Products were successfully retrieved", response.products)
+        //     :
+        //     errorResponse(res, response.error);
+        // });
+
         this.#router.post("/", [verifyToken, validateRol(2,3)], async (req, res) => {
             const response = await this.#services.createProduct(req.body);
             response.success
@@ -54,6 +76,7 @@ export class ProductRoute {
         //búsqueda excluyente
         this.#router.post("/filters", async (req, res) => {
             const { name, priceRange, priceLessThan, category, subcategory, popular, size, color, brand } = req.body;
+            console.log(category);
             const response = await this.#services.getProductsByPriceRangeAndOtherFilters(name, priceRange, priceLessThan, category, subcategory, popular, size, color, brand);
             response.success
             ?
@@ -62,16 +85,7 @@ export class ProductRoute {
             errorResponse(res, response.error);
         });
 
-        //búsqueda incluyente
-        this.#router.post("/search", async (req, res) => {
-            const { termOfSearch } = req.body;
-            const response = await this.#services.getCoincidencesOfSearch(termOfSearch);
-            response.success
-            ?
-            successfulResponse(res, 200, true, "Products were successfully retrieved", response.products)
-            :
-            errorResponse(res, response.error);
-        });
+        
 
         //TODO: IMAGENES DE PRODUCTOS
 

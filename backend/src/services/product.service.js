@@ -38,10 +38,15 @@ export default class ProductService {
             }
         }
 
-        async getProductById(id) {
+        async getProductBySlug(slug) {
             try {
-                const product = await productModel.findById(id).populate('reviews');
+                const product = await productModel.findOne({ slug: slug }).populate('reviews');
+
+                if(!product) {
+                    return { success: false, error: 'Product not found' };
+                }
                 return { success: true, product };
+                
             } catch (error) {
                 return { success: false, error };
             }
@@ -89,8 +94,8 @@ export default class ProductService {
 
         async deleteProduct(id) {
             try {
-                const product = await productModel.findOneAndUpdate({ _id: id }, { status: false });
-                return { success: true, product };
+                const product = await productModel.findByIdAndDelete(id);
+                return { success:true }
             } catch (error) {
                 return { success: false, error };
             }
@@ -124,8 +129,8 @@ export default class ProductService {
                 }
 
                 if (name)filters.$and.push({ name: { $regex: name, $options: 'i' } });
-                if (category) filters.$and.push({ category: category });
-                if (subcategory) filters.$and.push({ subcategory: subcategory });
+                if (category) filters.$and.push({ categoryID: category });
+                if (subcategory) filters.$and.push({ subCategoryID: subcategory });
                 if (popular) filters.$and.push({ popular: popular });
                 if (size) filters.$and.push({ size: size });
                 if (color) filters.$and.push({ color: color });
@@ -141,7 +146,7 @@ export default class ProductService {
         } 
         
         //filtro del buscador
-        async getCoincidencesOfSearch(search) {
+        async getCoincidencesOfSearch(search, categoryId, subcategoryId) {
             try {
                 const products = await productModel.find({ 
                     $or: [
@@ -150,12 +155,16 @@ export default class ProductService {
                         { brand: { $regex: search, $options: "i" } },
                         { color: { $regex: search, $options: "i" } },
                         { size: { $regex: search, $options: "i" } },
-                        { sku: { $regex: search, $options: "i" } },
+                        //{ subCategoryID:{$elemMatch: {subCategoryID: {$regex: search, $options: "i" }}} }
                         //{ subCategoryID: { $regex: search, $options: "i" } },
                         //{ category: { $regex: search, $options: "i" } }, // todo: hacer que la coincidencia incluya el nombre de la categoria y la subcategoria
                         //{ subcategory: { $regex: search, $options: "i" } }
-                    ] 
-                }).populate('subCategoryID', 'name');
+                    ],
+                    $and: [
+                        { status: true }, 
+                    ]
+                }).populate('categoryID','name').populate('subCategoryID','name');
+                
                 return { success: true, products };
             } catch (error) {
                 return { success: false, error };
