@@ -1,6 +1,6 @@
 const { stripeSecretKey } = require("../config")
 const stripe = require("stripe")(stripeSecretKey)
-const endpointSecret = "whsec_2d849de04e6aa72abd49bf02b669777334504a448b75a97e166203f8fb714ffe";
+const endpointSecret = "whsec_6325d22f602d2eb4c390b0f4102d0286897d950865d3e338857529640574f6ee";
 const CartModel = require("../models/cart")
 const UserModel = require("../models/user")
 

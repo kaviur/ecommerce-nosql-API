@@ -6,6 +6,11 @@ const PaymentService = require("../services/payments")
 // https://stripe.com/docs/webhooks
 // https://stripe.com/docs/webhooks/signatures
 
+// escucho los eventos de stripe:
+// entorno local: http://localhost:3000/webhooks/stripe
+// https://dashboard.stripe.com/test/webhooks
+// https://dashboard.stripe.com/test/webhooks/create?endpoint_location=local
+
 function webhooks(app){
     const router = Router()
     const paymentServ = new PaymentService()
@@ -14,6 +19,7 @@ function webhooks(app){
 
     router.post("/stripe",async (req,res)=>{
         const sig = req.headers['stripe-signature'];
+        // recibe el certificado de stripe
 
         const result = await paymentServ.confirm(req.body,sig)
 
