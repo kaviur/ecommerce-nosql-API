@@ -3,24 +3,7 @@ import { productModel } from "../models/index.js";
 export default class ProductService {
   async createProduct(data) {
     try {
-      let str = data.name.replace(/^\s+|\s+$/g, ""); // trim
-      str = str.toLowerCase();
-
-      // remove accents, swap ñ for n, etc
-      var from = "ãàáäâáº½èéëêìíïîõòóöôùúüûñç·/_,:;";
-      var to = "aaaaaeeeeeiiiiooooouuuunc------";
-
-      for (var i = 0, l = from.length; i < l; i++) {
-        str = str.replace(new RegExp(from.charAt(i), "g"), to.charAt(i));
-      }
-
-      str = str
-        .replace(/[^a-z0-9 -]/g, "") // remove invalid chars
-        .replace(/\s+/g, "-"); // collapse whitespace and replace by -
-
-      let random = Math.floor(Math.random() * (99999 - 10000)) + 10000;
-
-      data.slug = str + random;
+      data.slug = this.createSlug(data);
 
       const product = await productModel.create({ ...data });
       return { success: true, product };
@@ -70,23 +53,7 @@ export default class ProductService {
       const productToUpdate = await productModel.findById(id);
 
       if (data.name && productToUpdate.name != data.name) {
-        let str = data.name.replace(/^\s+|\s+$/g, ""); // trim
-        str = str.toLowerCase();
-
-        // remove accents, swap ñ for n, etc
-        var from = "ãàáäâáº½èéëêìíïîõòóöôùúüûñç·/_,:;";
-        var to = "aaaaaeeeeeiiiiooooouuuunc------";
-
-        for (var i = 0, l = from.length; i < l; i++) {
-          str = str.replace(new RegExp(from.charAt(i), "g"), to.charAt(i));
-        }
-
-        str = str
-          .replace(/[^a-z0-9 -]/g, "") // remove invalid chars
-          .replace(/\s+/g, "-"); // collapse whitespace and replace by -
-
-        let random = Math.floor(Math.random() * (99999 - 10000)) + 10000;
-        data.slug = str + random;
+        data.slug = this.createSlug(data);
       }
 
       const product = await productModel.findOneAndUpdate(
@@ -102,7 +69,7 @@ export default class ProductService {
 
   async deleteProduct(id) {
     try {
-      const product = await productModel.findByIdAndDelete(id);
+      await productModel.findByIdAndDelete(id);
       return { success: true };
     } catch (error) {
       return { success: false, error };
@@ -183,22 +150,21 @@ export default class ProductService {
   async getCoincidencesOfSearch(search, categoryId, subcategoryId) {
     try {
       const regularExpression = RegExp(search);
-      const products = await productModel
-        .find({
-          $or: [
-            { name: regularExpression },
-            { description: regularExpression },
-            { brand: regularExpression },
-            { colors: regularExpression },
-            { sku: regularExpression },
+      const products = await productModel.find({
+        $or: [
+          { name: regularExpression },
+          { description: regularExpression },
+          { brand: regularExpression },
+          { colors: regularExpression },
+          { sku: regularExpression },
 
-            //{ subCategoryID:{$elemMatch: {subCategoryID: {$regex: search, $options: "i" }}} }
-            //{ subCategoryID: { $regex: search, $options: "i" } },
-            //{ category: { $regex: search, $options: "i" } }, // todo: hacer que la coincidencia incluya el nombre de la categoria y la subcategoria
-            //{ subcategory: { $regex: search, $options: "i" } }
-          ],
-          $and: [{ status: true }],
-        })
+          //{ subCategoryID:{$elemMatch: {subCategoryID: {$regex: search, $options: "i" }}} }
+          //{ subCategoryID: { $regex: search, $options: "i" } },
+          //{ category: { $regex: search, $options: "i" } }, // todo: hacer que la coincidencia incluya el nombre de la categoria y la subcategoria
+          //{ subcategory: { $regex: search, $options: "i" } }
+        ],
+        $and: [{ status: true }],
+      });
 
       return { success: true, products };
     } catch (error) {
@@ -215,5 +181,26 @@ export default class ProductService {
       };
     }
     return { success: true };
+  }
+
+  createSlug(data) {
+    let str = data.name.replace(/^\s+|\s+$/g, ""); // trim
+    str = str.toLowerCase();
+
+    // remove accents, swap ñ for n, etc
+    var from = "ãàáäâáº½èéëêìíïîõòóöôùúüûñç·/_,:;";
+    var to = "aaaaaeeeeeiiiiooooouuuunc------";
+
+    for (var i = 0, l = from.length; i < l; i++) {
+      str = str.replace(new RegExp(from.charAt(i), "g"), to.charAt(i));
+    }
+
+    str = str
+      .replace(/[^a-z0-9 -]/g, "") // remove invalid chars
+      .replace(/\s+/g, "-"); // collapse whitespace and replace by -
+
+    let random = Math.floor(Math.random() * (99999 - 10000)) + 10000;
+
+    return str + random;
   }
 }
