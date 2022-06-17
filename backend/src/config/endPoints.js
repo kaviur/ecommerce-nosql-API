@@ -9,4 +9,6 @@ export const endPoints = {
   cart: `/api/${apiVersion}/cart`,
   category: `/api/${apiVersion}/category`,
   product: `/api/${apiVersion}/product`,
+  //GFE
+  webhooks: `/api/${apiVersion}/webhooks`,
 };
