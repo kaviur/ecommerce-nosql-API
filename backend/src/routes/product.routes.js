@@ -54,16 +54,6 @@ export class ProductRoute {
             errorResponse(res, response.error);
         });
 
-        //productos por categoria y subcategoria
-        // this.#router.get("/category/:categoryId/subcategory/:subcategoryId", async (req, res) => {
-        //     const response = await this.#services.getProductsByCategoryAndSubcategory(req.params.categoryId, req.params.subcategoryId);
-        //     response.success
-        //     ?
-        //     successfulResponse(res, 200, true, "Products were successfully retrieved", response.products)
-        //     :
-        //     errorResponse(res, response.error);
-        // });
-
         this.#router.post("/", [verifyToken, validateRol(2,3)], async (req, res) => {
             const response = await this.#services.createProduct(req.body);
             response.success
@@ -84,7 +74,6 @@ export class ProductRoute {
             :
             errorResponse(res, response.error);
         });
-
         
 
         //TODO: IMAGENES DE PRODUCTOS

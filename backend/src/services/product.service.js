@@ -145,29 +145,25 @@ export default class ProductService {
             }
         } 
         
+
         //filtro del buscador
         async getCoincidencesOfSearch(search, categoryId, subcategoryId) {
             try {
-                const products = await productModel.find({ 
-                    $or: [
-                        { name: { $regex: search, $options: "i" } }, 
-                        { description: { $regex: search, $options: "i" } },
-                        { brand: { $regex: search, $options: "i" } },
-                        { color: { $regex: search, $options: "i" } },
-                        { size: { $regex: search, $options: "i" } },
-                        //{ subCategoryID:{$elemMatch: {subCategoryID: {$regex: search, $options: "i" }}} }
-                        //{ subCategoryID: { $regex: search, $options: "i" } },
-                        //{ category: { $regex: search, $options: "i" } }, // todo: hacer que la coincidencia incluya el nombre de la categoria y la subcategoria
-                        //{ subcategory: { $regex: search, $options: "i" } }
-                    ],
-                    $and: [
-                        { status: true }, 
-                    ]
-                }).populate('categoryID','name').populate('subCategoryID','name');
-                
-                return { success: true, products };
+            const regularExpression = RegExp(search, 'i');
+            const products = await productModel.find({
+                $or: [
+                { name: regularExpression },
+                { description: regularExpression },
+                { brand: regularExpression },
+                { colors: regularExpression },
+                { sku: regularExpression }
+                ],
+                $and: [{ status: true }],
+            });
+
+            return { success: true, products };
             } catch (error) {
-                return { success: false, error };
+            return { success: false, error };
             }
         }
         
