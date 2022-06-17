@@ -1,5 +1,6 @@
 const { stripeSecretKey } = require("../config")
 const stripe = require("stripe")(stripeSecretKey)
+// This is the Willy Stripe CLI webhook secret for testing your endpoint locally:
 const endpointSecret = "whsec_6325d22f602d2eb4c390b0f4102d0286897d950865d3e338857529640574f6ee";
 const CartModel = require("../models/cart")
 const UserModel = require("../models/user")
