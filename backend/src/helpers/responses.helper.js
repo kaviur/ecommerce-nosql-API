@@ -1,7 +1,6 @@
 import { response } from "express";
 import {
   callbackUrl,
-  isProductionEnvironment,
   jwtSecret,
 } from "../config/config.js";
 import jwt from "jsonwebtoken";

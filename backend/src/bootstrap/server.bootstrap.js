@@ -17,7 +17,8 @@ import {
   port,
   sessionSecret,
 } from "../config/config.js";
-import { authRoute, cartRoute, subCategoryRoute, userRoute } from "../routes/index.js";
+
+import { authRoute, subCategoryRoute, userRoute, categoryRoute, productRoute,cartRoute } from "../routes/index.js";
 import {
   facebookStrategy,
   githubStrategy,
@@ -26,7 +27,9 @@ import {
   twitterStrategy,
 } from "../middlewares/authProvider.middleware.js";
 const __dirname = path.resolve();
-const swaggerDocument = YAML.load(`${__dirname}\\swagger.yaml`);
+console.log(__dirname);
+//const swaggerDocument = YAML.load(`${__dirname}\\swagger.yaml`);
+const swaggerDocument = YAML.load(`${__dirname}/swagger.yaml`);
 
 export class Server {
   #port;
@@ -48,7 +51,13 @@ export class Server {
     this.#app.use(express.json());
     this.#app.use(express.urlencoded({ extended: true }));
     this.#app.use(morgan("dev"));
-    this.#app.use(cookieParser());
+    this.#app.use(cookieParser())
+    this.#app.use(passport.initialize());
+    this.#app.use(session({
+      secret: "keyboard cat",
+      resave: false,
+      saveUninitialized: true,
+    }));
     this.#app.use(
       fileUpload({
         useTempFiles: true,
@@ -74,7 +83,7 @@ export class Server {
     passport.use(facebookStrategy());
     passport.use(twitterStrategy());
     passport.use(githubStrategy());
-    passport.use(instagramStrategy());
+    //passport.use(instagramStrategy());
 
     passport.serializeUser((user, done) => {
       done(null, user);
@@ -90,6 +99,8 @@ export class Server {
     this.#app.use(this.#paths.auth, authRoute);
     this.#app.use(this.#paths.subCategory, subCategoryRoute);
     this.#app.use(this.#paths.cart, cartRoute);
+    this.#app.use(this.#paths.category, categoryRoute);
+    this.#app.use(this.#paths.product, productRoute);
     this.#app.use(
       "/api-docs",
       swaggerUi.serve,
@@ -98,7 +109,7 @@ export class Server {
   }
 
   initServer() {
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve, reject) => {          
       this.#app
         .listen(this.#port)
         .on("listening", () => {

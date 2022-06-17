@@ -13,7 +13,7 @@ export default class UserService {
         await user.save();
       }
 
-      await cartModel.create({ _id: user._id, items: [] });
+      
       return { success: true, user };
     } catch (error) {
       return { success: false, error };
@@ -26,6 +26,8 @@ export default class UserService {
         email: email.toUpperCase(),
         status: true,
       });
+      if (!user) throw new Error("User not found");
+      if (!user.emailVerified) throw new Error("Email verification required");
       return { success: true, user };
     } catch (error) {
       return { success: false, error };
@@ -106,6 +108,7 @@ export default class UserService {
     const { email } = data;
     try {
       user = await userModel.findOne({ email: email.toUpperCase() });
+      console.log(user);
       if (user) {
         const cart = await cartModel.findOne({ _id: user._id });
         if (!cart) {

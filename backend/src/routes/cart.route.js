@@ -46,7 +46,7 @@ export class CartRoute {
       async (req = request, res = response) => {
         const { id } = req.payload;
         const { amount, product } = req.body;
-        const response = await this.#services.addItem(id, amount);
+        const response = await this.#services.addItem(id, amount,product);
         response.success
           ? successfulResponse(res, 200, true, "Product added", response.cart)
           : errorResponse(res, response.error);
@@ -58,8 +58,8 @@ export class CartRoute {
       verifyToken,
       async (req = request, res = response) => {
         const { id } = req.payload;
-        const { amount } = req.body;
-        const response = await this.#services.updateAmount(id, amount);
+        const { amount,product } = req.body;
+        const response = await this.#services.updateAmount(id, amount,product);
         response.success
           ? successfulResponse(res, 200, true, "Amount update", response.cart)
           : errorResponse(res, response.error);

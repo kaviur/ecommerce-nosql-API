@@ -1,9 +1,16 @@
 import userModel from './user.model.js'
+import categoryModel from './category.model.js'
 import subCategoryModel from './subCategory.model.js'
 import cartModel from './cart.model.js'
+import productModel from './product.model.js'
+import reviewModel from './review.model.js'
+
 
 export{
     cartModel,
     userModel,
-    subCategoryModel
+    subCategoryModel,
+    categoryModel,
+    productModel,
+    reviewModel
 }

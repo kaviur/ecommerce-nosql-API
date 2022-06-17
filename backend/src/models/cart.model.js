@@ -7,12 +7,12 @@ const cartSchema = new mongosee.Schema({
   },
   items: [
     { 
-    //   _id: {
-    //     tyPe: mongosee.Schema.Types.ObjectId,
-    //     ref: "Product",
-    //     required: [true, "Product is required"],
-    //     unique: [true, "Producto exist"],
-    //   },
+      _id: {
+        type: mongosee.Schema.Types.ObjectId,
+        ref: "Product",
+        required: [true, "Product is required"],
+        unique: [true, "Producto exist"],
+      },
       amount: {
         type: Number,
         min: 0,

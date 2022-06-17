@@ -3,7 +3,9 @@ import { cartModel } from "../models/index.js";
 export class CartService {
   async getItems(idUser) {
     try {
-      const cart = await cartModel.find({ _id: idUser });
+      const cart = await cartModel
+        .find({ _id: idUser })
+        .populate({ path: "items._id", select: ["name", "price", "sku"] });
       return { success: true, cart };
     } catch (error) {
       return { success: false, error };
@@ -25,11 +27,11 @@ export class CartService {
         idUser,
         {
           $push: {
-            items: { amount },
+            items: { amount, _id: product },
           },
         },
         { new: true }
-      );
+      ).populate({ path: "items._id", select: ["name", "price", "sku"] });
 
       return { success: true, cart };
     } catch (error) {
@@ -37,12 +39,12 @@ export class CartService {
     }
   }
 
-  async updateAmount(idUser, amount) {
+  async updateAmount(idUser, amount,product) {
     try {
       const cart = await cartModel.findOneAndUpdate(
         {
           _id: idUser,
-          "items._id": "62aa44fddd937f9815cc6bcc",
+          "items._id": product,
         },
         {
           $set: {
@@ -50,7 +52,8 @@ export class CartService {
           },
         },
         { new: true }
-      );
+      ).populate({ path: "items._id", select: ["name", "price", "sku"] });
+      if (!cart) throw new Error("Product not found in cart")
       return { success: true, cart };
     } catch (error) {
       return { success: false, error };
