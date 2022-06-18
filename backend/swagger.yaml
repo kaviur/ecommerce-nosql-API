@@ -25,6 +25,7 @@ tags:
   - name: Categories
   - name: SocialAuth
   - name: Cart
+  - name: Producto
 
 paths:
   /cart:
@@ -673,7 +674,7 @@ paths:
           content:
             aplication/json:
               schema:
-                $ref: "#/components/schemas/errorMessage"
+                $ref: "#/components/schemas/errorMessage"  
   /signup/:
     post:
       description: "Ruta de Registro de Usuarios"

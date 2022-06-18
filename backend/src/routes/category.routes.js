@@ -1,17 +1,17 @@
-import { request, response, Router } from "express";
+import { Router } from "express";
 import { errorResponse, successfulResponse } from "../helpers/responses.helper.js";
 import CategoryService from "../services/category.service.js";
 import { verifyToken, validateRol } from "../middlewares/auth.middleware.js";
 
 
 export class CategoryRoute {
-  #router;
-  #services;
-  constructor() {
-    this.#router = Router();
-    this.#services = new CategoryService();
-    this.#routes();
-  }
+    #router;
+    #services;
+    constructor() {
+        this.#router = Router();
+        this.#services = new CategoryService();
+        this.#routes();
+    }
 
     #routes() {
         this.#router.get("/", async (req, res) => {
