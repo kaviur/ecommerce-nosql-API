@@ -56,5 +56,7 @@ export const {
   email_port:process.env.EMAIL_PORT,
   email_secure:process.env.EMAIL_SECURE,
   email_user:process.env.EMAIL_USER,
-  email_password:process.env.EMAIL_PASSWORD
+  email_password:process.env.EMAIL_PASSWORD,
+  stripePublicKey:process.env.STRIPE_PK,
+  stripeSecretKey:process.env.STRIPE_SK,
 };

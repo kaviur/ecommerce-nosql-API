@@ -1,5 +1,8 @@
+const { stripeSecretKey } = require("../config")
 import { deleteImages, uploadImage } from "../helpers/images.helper.js";
 import { cartModel, userModel } from "../models/index.js";
+const stripe = require("stripe")(stripeSecretKey)
+const uuid = require("uuid")
 
 export default class UserService {
   async postUser(data, files = null) {
