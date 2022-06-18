@@ -1,5 +1,5 @@
 const {Router} = require("express")
-const PaymentService = require("../services/payments")
+const PaymentService = require("../services/payments.service")
 
 // administro la ruta de webhooks, el cual es un endpoint de stripe
 // y se encarga de confirmar el pago
