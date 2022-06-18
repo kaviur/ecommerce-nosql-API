@@ -1,4 +1,4 @@
-import { Router } from "express";
+import { request, response, Router } from "express";
 import {
   errorResponse,
   successfulResponse,
@@ -17,7 +17,7 @@ export class ProductRoute {
   }
 
   #routes() {
-    this.#router.get("/filters", async (req, res) => {
+    this.#router.get("/filters", verifyToken, async (req, res) => {
       const {
         name,
         priceRange,
@@ -65,7 +65,7 @@ export class ProductRoute {
         : errorResponse(res, response.error);
     });
 
-    this.#router.get("/", async (req, res) => {
+    this.#router.get("/", verifyToken, async (req, res) => {
       const { limit = 10, page = 1 } = req.query;
       const response = await this.#services.getAllProducts(limit, page);
       response.success
@@ -79,7 +79,7 @@ export class ProductRoute {
         : errorResponse(res, response.error);
     });
 
-    this.#router.get("/search", async (req, res) => {
+    this.#router.get("/search", verifyToken, async (req, res) => {
       const { termOfSearch, page = 1, limit = 10 } = req.query;
 
       const response = await this.#services.getCoincidencesOfSearch(
@@ -98,7 +98,7 @@ export class ProductRoute {
         : errorResponse(res, response.error);
     });
 
-    this.#router.get("/:slug", async (req, res) => {
+    this.#router.get("/:slug", verifyToken, async (req, res) => {
       const response = await this.#services.getProductBySlug(req.params.slug);
       response.success
         ? successfulResponse(
@@ -111,7 +111,7 @@ export class ProductRoute {
         : errorResponse(res, response.error);
     });
 
-    this.#router.get("/by_seller/:sellerId", async (req, res) => {
+    this.#router.get("/by_seller/:sellerId", verifyToken, async (req, res) => {
       const { page = 1, limit = 10 } = req.query;
       const response = await this.#services.getProductsBySeller(
         req.params.sellerId,
@@ -148,8 +148,27 @@ export class ProductRoute {
       }
     );
 
-    //búsqueda excluyente
+    this.#router.post(
+      "/add-image/:id",
+      [verifyToken, validateRol(2, 3), validateImages],
+      async (req = request, res = response) => {
+        const { files } = req;
+        const { id: productId } = req.params;
+        const { id: iduser, role } = req.payload;
 
+        const response = await this.#services.addImage(
+          productId,
+          iduser,
+          role,
+          files
+        );
+        response.success
+          ? successfulResponse(res, 200, true, "Images added in product")
+          : errorResponse(res, response.error);
+      }
+    );
+
+    //búsqueda excluyente
     this.#router.delete(
       "/:id",
       [verifyToken, validateRol(2, 3)],
@@ -163,6 +182,27 @@ export class ProductRoute {
               "Product was successfully deleted"
             )
           : errorResponse(res, response.error);
+      }
+    );
+
+    this.#router.put(
+      "/remove-image/:id",
+      [verifyToken, validateRol(2, 3)],
+      async (req = request, res = response) => {
+        const { id: userId, role } = req.payload;
+        const { id: productId } = req.params;
+        const { image = null } = req.body;
+        !image && errorResponse(res, { message: "Image is required" }, 400);
+
+        const repponse = await this.#services.removeImage(
+          userId,
+          productId,
+          image,
+          role
+        );
+        repponse.success
+          ? successfulResponse(res, 200, true, "Image remove", repponse.product)
+          : errorResponse(res, repponse.error);
       }
     );
   }
