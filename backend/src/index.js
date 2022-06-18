@@ -3,7 +3,7 @@ import "colors";
 import { Server } from "./bootstrap/server.bootstrap.js";
 import { DataBase } from "./bootstrap/dataBase.bootstrap.js";
 
-
+ 
 const server = new Server();
 const dataBase = new DataBase();
 

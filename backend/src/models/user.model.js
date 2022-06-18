@@ -33,6 +33,7 @@ const userSchema = new mongoose.Schema(
       type: Number,
       default: 1,
     },
+    stripeCustomerID:String,
     provider: {
       local: {
         type: Boolean,

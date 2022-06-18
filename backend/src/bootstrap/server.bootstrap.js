@@ -19,6 +19,7 @@ import {
 } from "../config/config.js";
 
 import { authRoute, subCategoryRoute, userRoute, categoryRoute, productRoute,cartRoute } from "../routes/index.js";
+
 import {
   facebookStrategy,
   githubStrategy,
@@ -48,6 +49,7 @@ export class Server {
     this.#app.use(
       cors({ origin: ["http://localhost:8081"], credentials: true })
     );
+    this.#app.use("/api/webhooks/stripe",express.raw({type: 'application/json'}))
     this.#app.use(express.json());
     this.#app.use(express.urlencoded({ extended: true }));
     this.#app.use(morgan("dev"));
