@@ -4,7 +4,6 @@ export default class ProductService {
   async createProduct(data) {
     try {
       data.slug = this.createSlug(data);
-
       const product = await productModel.create({ ...data });
       return { success: true, product };
     } catch (error) {
@@ -177,7 +176,7 @@ export default class ProductService {
     if (product.stock < quantity) {
       return {
         success: false,
-        message: `Actualmente hay en stock ${product.stock} unidades del producto ${product.name}`,
+        message: `the product ${product.name} only has ${product.stock} units in stock`,
       };
     }
     return { success: true };

@@ -22,16 +22,33 @@ export class CartService {
   }
 
   async addItem(idUser, amount, product) {
+    let cart;
     try {
-      const cart = await cartModel.findByIdAndUpdate(
-        idUser,
-        {
-          $push: {
-            items: { amount, _id: product },
+      cart = await cartModel
+        .findOneAndUpdate(
+          { _id: idUser, "items._id": product },
+          {
+            $set: {
+              "items.$.amount": amount,
+            },
           },
-        },
-        { new: true }
-      ).populate({ path: "items._id", select: ["name", "price", "sku"] });
+          { new: true }
+        )
+        .populate({ path: "items._id", select: ["name", "price", "sku"] });
+
+      if (!cart) {
+        cart = await cartModel
+          .findOneAndUpdate(
+            { _id: idUser },
+            {
+              $push: {
+                items: { amount, _id: product },
+              },
+            },
+            { new: true }
+          )
+          .populate({ path: "items._id", select: ["name", "price", "sku"] });
+      }
 
       return { success: true, cart };
     } catch (error) {
@@ -39,26 +56,7 @@ export class CartService {
     }
   }
 
-  async updateAmount(idUser, amount,product) {
-    try {
-      const cart = await cartModel.findOneAndUpdate(
-        {
-          _id: idUser,
-          "items._id": product,
-        },
-        {
-          $set: {
-            "items.$.amount": amount,
-          },
-        },
-        { new: true }
-      ).populate({ path: "items._id", select: ["name", "price", "sku"] });
-      if (!cart) throw new Error("Product not found in cart")
-      return { success: true, cart };
-    } catch (error) {
-      return { success: false, error };
-    }
-  }
+ 
 
   async removeItem(idUser, productId) {
     try {

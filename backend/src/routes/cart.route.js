@@ -53,18 +53,7 @@ export class CartRoute {
       }
     );
 
-    this.router.put(
-      "/amount",
-      verifyToken,
-      async (req = request, res = response) => {
-        const { id } = req.payload;
-        const { amount,product } = req.body;
-        const response = await this.#services.updateAmount(id, amount,product);
-        response.success
-          ? successfulResponse(res, 200, true, "Amount update", response.cart)
-          : errorResponse(res, response.error);
-      }
-    );
+    
     this.#router.delete(
       "/remove-item",
       verifyToken,

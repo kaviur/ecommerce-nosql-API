@@ -180,53 +180,6 @@ paths:
             aplication/json:
               schema:
                 $ref: "#/components/schemas/errorMessage"
-  /cart/amount:
-    put:
-      description: "Cambia la cantidad de un producto del carrito"
-      tags:
-        - Cart
-      requestBody:
-        description: "Se le pasa el id del producto y la cantidad a modificar"
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                amount:
-                  type: number
-                  example: 1
-                product:
-                  type: string
-                  example: "62aa04ff6e95f9f27cdf6742"
-      security:
-      security:
-        - cookieAuth: []
-      responses:
-        200:
-          description: "Cantidad de producto cambiada correctamente"
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/listNoPagination"
-        400:
-          description: "No se puede moficar cantidad de producto del carrito por un error en la petición"
-          content:
-            aplication/json:
-              schema:
-                $ref: "#/components/schemas/errorMessage"
-        403:
-          description: "Forbidden: el servidor no puede responder la petición"
-          content:
-            aplication/json:
-              schema:
-                $ref: "#/components/schemas/errorMessage"
-        500:
-          description: "Error de servidor"
-          content:
-            aplication/json:
-              schema:
-                $ref: "#/components/schemas/errorMessage"
   /subcategory:
     get:
       description: "Obtiene las subcategorias de productos"

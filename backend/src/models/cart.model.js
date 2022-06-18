@@ -5,21 +5,22 @@ const cartSchema = new mongosee.Schema({
     type: mongosee.Schema.Types.ObjectId,
     ref: "User",
   },
-  items: [
-    { 
+  items: {
+    type: Array,
+    items: {
       _id: {
         type: mongosee.Schema.Types.ObjectId,
         ref: "Product",
-        required: [true, "Product is required"],
-        unique: [true, "Producto exist"],
+        unique: [true, "The product already exists"],
       },
       amount: {
         type: Number,
         min: 0,
+        default: 0,
         required: [true, "Amount is required"],
       },
     },
-  ],
+  },
 });
 
 cartSchema.methods.toJSON = function () {

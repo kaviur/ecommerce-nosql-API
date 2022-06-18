@@ -7,6 +7,7 @@ import sendEmail from "../libs/emails.js";
 import { jwtSecret, apiVersion, callbackUrl } from "../config/config.js";
 import Jwt from "jsonwebtoken";
 import userModel from "../models/user.model.js";
+import { templateEmail } from "../libs/templateEmail.js";
 
 export class AuthService {
   #userService;
@@ -17,6 +18,7 @@ export class AuthService {
   async validateEmail(token) {
     try {
       const { email } = Jwt.verify(token, jwtSecret);
+      Jwt.destroy(token)
       const userUpdate = await userModel.findOneAndUpdate(
         { email },
         { emailVerified: true },
@@ -48,14 +50,13 @@ export class AuthService {
     );
     if (response.success) {
       try {
-        const {token} = await createJWT(response.user,"1h");
+        const { token } = await createJWT(response.user, "1h");
+        const url = `${callbackUrl}/api/${apiVersion}/email_validation/${token}`;
+        const htmlEmail = templateEmail(url, response.user.name);
         await sendEmail(
           response.user.email,
-          "Confirma tu email",
-          "Bienvenido a la aplicación",
-          `<h1>Hola ${name}, bienvenid@ a ecommerce.com,</h1> 
-          <p>Para confirmar tu dirección de correo haz click en el siguiente enlace:</p>
-          <p><a href=${callbackUrl}/api/${apiVersion}/email_validation/${token}>Confirmar email</a></p>`
+          "Confirm your email",
+          htmlEmail
         );
 
         return response;
@@ -100,7 +101,7 @@ export class AuthService {
       name: profile.displayName,
       email: profile.emails[0].value,
       image: profile.photos[0].value,
-      emailVerified:true,
+      emailVerified: true,
       password: uuid(),
       provider: {
         [profile.provider]: true,
