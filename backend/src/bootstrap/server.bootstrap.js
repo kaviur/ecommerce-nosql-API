@@ -74,6 +74,7 @@ export class Server {
       })
     );
     this.#app.use(`/public/user`, express.static(`src/storage/users/`));
+    this.#app.use(`/public/product`, express.static(`src/storage/products/`));
     this.#app.use(passport.initialize());
     this.#passportMiddleware();
   }

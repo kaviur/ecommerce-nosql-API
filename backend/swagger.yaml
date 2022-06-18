@@ -12,7 +12,7 @@ info:
     4.- Sistema de pagos automatizado
     5.- Galería de productos con carrusel de multiples imágenes
   contact:
-    name: Camilo Morales Sanchez - Willy Escobar - Karem Urbano
+    name: Camilo Morales Sanchez - Willy Escobar - Karen Urbano
     email: moorales.camilo@gmail.com 
 
 servers:
@@ -138,22 +138,18 @@ paths:
             aplication/json:
               schema:
                 $ref: "#/components/schemas/errorMessage"
-  /cart/remove-item:
+  /cart/remove-item/{id}:
     delete:
       description: "Eliminar un producto del carrito"
       tags:
         - Cart
-      requestBody:
-        description: "datos de producto a eliminar"
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                product:
-                  type: string
-                  example: "62aa04ff6e95f9f27cdf6742"
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: string
+          required: true
+          description: "Identificador de producto"
       security:
         - cookieAuth: []
       responses:

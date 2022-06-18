@@ -28,6 +28,8 @@ export class ProductRoute {
         size,
         color,
         brand,
+        limit = 10,
+        page = 1,
       } = req.query;
       console.log(category);
       const response =
@@ -40,45 +42,50 @@ export class ProductRoute {
           popular,
           size,
           color,
-          brand
+          brand,
+          limit,
+          page
         );
       response.success
-        ? response.products.length > 0
+        ? response.data.products.length > 0
           ? successfulResponse(
               res,
               200,
               true,
               "Products were successfully retrieved",
-              response.products
+              response.data
             )
           : successfulResponse(
               res,
               200,
               false,
               "No products were found with that requirement",
-              response.products
+              response.data
             )
         : errorResponse(res, response.error);
     });
 
     this.#router.get("/", async (req, res) => {
-      const response = await this.#services.getAllProducts();
+      const { limit = 10, page = 1 } = req.query;
+      const response = await this.#services.getAllProducts(limit, page);
       response.success
         ? successfulResponse(
             res,
             200,
             true,
             "Products were successfully retrieved",
-            response.products
+            response.data
           )
         : errorResponse(res, response.error);
     });
 
     this.#router.get("/search", async (req, res) => {
-      const { termOfSearch } = req.query;
-      console.log(termOfSearch);
+      const { termOfSearch, page = 1, limit = 10 } = req.query;
+
       const response = await this.#services.getCoincidencesOfSearch(
-        termOfSearch
+        termOfSearch,
+        page,
+        limit
       );
       response.success
         ? successfulResponse(
@@ -86,7 +93,7 @@ export class ProductRoute {
             200,
             true,
             "Products were successfully retrieved",
-            response.products
+            response.data
           )
         : errorResponse(res, response.error);
     });
@@ -105,8 +112,11 @@ export class ProductRoute {
     });
 
     this.#router.get("/by_seller/:sellerId", async (req, res) => {
+      const { page = 1, limit = 10 } = req.query;
       const response = await this.#services.getProductsBySeller(
-        req.params.sellerId
+        req.params.sellerId,
+        page,
+        limit
       );
       response.success
         ? successfulResponse(
@@ -114,16 +124,18 @@ export class ProductRoute {
             200,
             true,
             "Products were successfully retrieved",
-            response.products
+            response.data
           )
         : errorResponse(res, response.error);
     });
 
     this.#router.post(
       "/",
-      [verifyToken, validateRol(2, 3),validateImages],
+      [verifyToken, validateRol(2, 3), validateImages],
       async (req, res) => {
-        const response = await this.#services.createProduct(req.body);
+        const { files } = req;
+        req.body.sellerId = req.payload.id;
+        const response = await this.#services.createProduct(req.body, files);
         response.success
           ? successfulResponse(
               res,

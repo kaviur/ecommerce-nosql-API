@@ -55,11 +55,11 @@ export class CartRoute {
 
     
     this.#router.delete(
-      "/remove-item",
+      "/remove-item/:id",
       verifyToken,
       async (req = request, res = response) => {
         const { id } = req.payload;
-        const { product } = req.body;
+        const { id:product } = req.params;
         const response = await this.#services.removeItem(id, product);
         response.success
           ? successfulResponse(res, 200, true, "Item removed", response.cart)

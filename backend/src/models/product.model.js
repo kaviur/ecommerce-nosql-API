@@ -1,19 +1,21 @@
 import mongoose from "mongoose";
+import mongoseePaginate from 'mongoose-paginate-v2'
+import { callbackUrl } from "../config/config.js";
 
 const productSchema = new mongoose.Schema({
     name: {
         type: String,
-        require: [true, "The name is required"],
+        required: [true, "The name is required"],
         trim: true
     },
     description: {
         type: String,
-        require: [true, "The description is required"],
+        required: [true, "The description is required"],
         trim: true
     },
     price: {
         type: Number,
-        require: [true, "The price is required"],
+        required: [true, "The price is required"],
         trim: true
     },
     discount: {
@@ -22,16 +24,16 @@ const productSchema = new mongoose.Schema({
     categoryID: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "Category",
-        require: [true, "The category is required"]
+        required: [true, "The category is required"]
     },
     subCategoryID: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "SubCategory",
-        require: [true, "The sub-category is required"]
+        required: [true, "The sub-category is required"]
     },
     stock: {
         type: Number,
-        require: [true, "The stock is required"],
+        required: [true, "The stock is required"],
         trim: true
     },
     images: [{
@@ -85,10 +87,18 @@ const productSchema = new mongoose.Schema({
     sellerId: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "User",
-        require: [true, "The seller is required"]
+        required: [true, "The seller is required"]
     }
 },
 { timestamps: true }
 );
+
+productSchema.plugin(mongoseePaginate)
+
+productSchema.methods.saveImages = function (filesName) {
+    filesName.forEach(name => {
+        this.images.push(`${callbackUrl}/public/product/${name}`)
+    });
+}
 
 export default mongoose.model("Product", productSchema);

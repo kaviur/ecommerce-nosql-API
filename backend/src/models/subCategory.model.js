@@ -3,7 +3,7 @@ import mongoose from "mongoose";
 const subCategorySchema = new mongoose.Schema({
   name: {
     type: String,
-    require: [true, "The name is required"],
+    required: [true, "The name is required"],
     unique: [true, "The sub-category is already registered "],
     trim: true,
     uppercase: true,
