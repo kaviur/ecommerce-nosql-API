@@ -148,7 +148,23 @@ export class ProductRoute {
       }
     );
 
-    //búsqueda excluyente
+    this.#router.put("/:id", [verifyToken, validateRol(2,3)], async (req, res) => {//todo:excluir 
+      const response = await this.#services.updateProduct(req.params.id,req.body);
+      response.success
+      ?
+      successfulResponse(res, 200, true, "Product was successfully updated", response.product)
+      :
+      errorResponse(res, response.error);
+    });
+
+    this.#router.put("/change_status/:id", [verifyToken, validateRol(2,3)], async (req, res) => {
+        const response = await this.#services.changeStatus(req.params.id);
+        response.success
+        ?
+        successfulResponse(res, 200, true, "Product was successfully updated", response.product)
+        :
+        errorResponse(res, response.error);
+    });
 
     this.#router.delete(
       "/:id",
