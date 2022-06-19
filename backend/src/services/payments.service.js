@@ -6,7 +6,7 @@ const CartModel = require("../models/cart")
 const UserModel = require("../models/user")
 
 class Payments{
-    // Payment session
+    // Payment session (genero orden de pago)
     async createIntent(amount,idUser,stripeCustomerID){
         const intent = await stripe.paymentIntents.create({
             amount,//price

@@ -1,12 +1,14 @@
 const { stripeSecretKey } = require("../config")
 import { deleteImages, uploadImage } from "../helpers/images.helper.js";
 import { cartModel, userModel } from "../models/index.js";
+const CartService = require("../services/cart.service.js")
 const stripe = require("stripe")(stripeSecretKey)
 const uuid = require("uuid")
 
 export default class UserService {
   async postUser(data, files = null) {
     let imagesName;
+    let stripeCustomerID // tzuzul-stripe
     try {
       const user = new userModel({ ...data });
       await user.save();
@@ -22,7 +24,31 @@ export default class UserService {
       return { success: false, error };
     }
   }
-
+  //*************Tzuzul-stripe */
+  async create(data){
+    let stripeCustomerID
+    try{
+        const customer = await stripe.customers.create({
+            name:data.name,
+            email:data.email
+        })
+        stripeCustomerID = customer.id
+        const user = await UserModel.create({
+            ...data,
+            stripeCustomerID
+        })
+        const cartServ = new CartService()
+        const cart = await cartServ.create(user.id)
+        return {
+            created:true,
+            user
+        }
+    }catch(error){
+        const customer = await stripe.customers.del(stripeCustomerID)
+        return dbError(error)
+    }
+}
+//***********  */
   async getUserByEmail(email) {
     try {
       const user = await userModel.findOne({
@@ -133,4 +159,7 @@ export default class UserService {
       return { success: false, error };
     }
   }
+
+ 
+
 }
