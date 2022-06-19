@@ -18,7 +18,6 @@ export class AuthService {
   async validateEmail(token) {
     try {
       const { email } = Jwt.verify(token, jwtSecret);
-      Jwt.destroy(token)
       const userUpdate = await userModel.findOneAndUpdate(
         { email },
         { emailVerified: true },

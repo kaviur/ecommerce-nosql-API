@@ -226,10 +226,63 @@ export default class ProductService {
     if (product.stock < quantity) {
       return {
         success: false,
-        message: `The product ${product.name} has only ${product.stock} units`,
+        error: {
+          message: `The product ${product.name} has only ${product.stock} units`,
+        },
       };
     }
     return { success: true };
+  }
+
+  async addImage(idProduct, idUser, role, files) {
+    let nameImages = [];
+    try {
+      const product = await productModel.findOne({
+        _id: idProduct,
+        status: true,
+      });
+      if (!product)
+        return {
+          success: false,
+          error: { message: `Product not found` },
+        };
+
+      if (role !== 3 && product.sellerId.toString() !== idUser)
+        return { success: false, error: "insufficient permissions" };
+      nameImages = await uploadImage(files, "products");
+      product.saveImages(nameImages);
+      product.save();
+      return { success: true };
+    } catch (error) {
+      nameImages.length > 0 && (await deleteImages(nameImages, "products"));
+      return { success: false, error };
+    }
+  }
+
+  async removeImage(userId, productId, image, role) {
+    try {
+      let product = await productModel.findOne({
+        _id: productId,
+        status: true,
+      });
+      if (!product)
+        return {
+          success: false,
+          error: `Product not found`,
+        };
+      if (role !== 3 && product.sellerId.toString() !== userId)
+        return { success: false, error:"insufficient permissions" };
+      product = await productModel.findOneAndUpdate(
+        { _id: productId },
+        { $pull: { images:  image  } },
+        { new: true }
+      );
+      await deleteImages(image);
+
+      return { success: true, product };
+    } catch (error) {
+      return { success: false, error };
+    }
   }
 
   createSlug(data) {

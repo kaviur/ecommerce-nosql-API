@@ -58,10 +58,6 @@ const productSchema = new mongoose.Schema({
         trim: true,
         default: "N/A"
     },
-    reviews: [{
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Review"
-    }],
     slug: {
         type: String,
         trim: true,

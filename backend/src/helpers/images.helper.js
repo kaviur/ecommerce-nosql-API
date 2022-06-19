@@ -39,15 +39,25 @@ const deleteImages = async (imageName, imagePath = "users") => {
   const pathDeleteimg = `src/storage/${imagePath}`;
   if (Array.isArray(imageName)) {
     imageName.forEach((img) => {
-      promisify(fs.unlink)(
-        path.resolve(__dirname, pathDeleteimg, img.split("/").pop())
-      );
+      let pathImage = path.join(__dirname, pathDeleteimg, img.split("/").pop());
+      if (fs.existsSync(pathImage)) {
+        promisify(fs.unlink)(
+          path.resolve(pathImage)
+        );
+      }
     });
     return;
   }
-  promisify(fs.unlink)(
-    path.resolve(__dirname, pathDeleteimg, imageName.split("/").pop())
+  const pathImage = path.join(
+    __dirname,
+    pathDeleteimg,
+    imageName.split("/").pop()
   );
+  if (fs.existsSync(pathImage)) {
+    promisify(fs.unlink)(
+      path.resolve(pathImage)
+    );
+  }
 };
 
 export { uploadImage, deleteImages };

@@ -300,6 +300,263 @@ paths:
             aplication/json:
               schema:
                 $ref: "#/components/schemas/errorMessage"
+  /product:
+    post:
+      description: "Crear producto (admin y vendedor)"
+      tags:
+        - Products
+      requestBody:
+        description: "Información del producto a crear"
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              $ref: "#/components/schemas/product"
+      security:
+        - cookieAuth: []
+      responses:
+        200:
+          description: "description here"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/listNoPagination"
+        400:
+          description: "description here"
+          content:
+            aplication/json:
+              schema:
+                $ref: "#/components/schemas/errorMessage"
+        403:
+          description: "description here"
+          content:
+            aplication/json:
+              schema:
+                $ref: "#/components/schemas/errorMessage"
+        500:
+          description: "description here"
+          content:
+            aplication/json:
+              schema:
+                $ref: "#/components/schemas/errorMessage"
+  /product/add-image/{id}:
+    post:
+      description: "Crear producto (admin y vendedor)"
+      tags:
+        - Products
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: string
+          required: true
+          description: "id del producto"
+      requestBody:
+        description: "Información del producto a crear"
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                image:
+                  type: string
+                  format: binary
+      security:
+        - cookieAuth: []
+      responses:
+        200:
+          description: "description here"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/listNoPagination"
+        400:
+          description: "description here"
+          content:
+            aplication/json:
+              schema:
+                $ref: "#/components/schemas/errorMessage"
+        403:
+          description: "description here"
+          content:
+            aplication/json:
+              schema:
+                $ref: "#/components/schemas/errorMessage"
+        500:
+          description: "description here"
+          content:
+            aplication/json:
+              schema:
+                $ref: "#/components/schemas/errorMessage"
+  /product/remove-image/{id}/:
+    put:
+      description: "Remover una imagen"
+      tags:
+        - Products
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: string
+          required: true
+          description: "Id del producto"
+      requestBody:
+        description: "Ruta del producto"
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                image:
+                 type: string
+                 example: "http://localhost:8081/public/product/0b3314ee-3ea5-470a-a3e7-625a03454544.jpg"
+      security:
+        - cookieAuth: []
+      responses:
+        200:
+          description: "description here"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/listNoPagination"
+        400:
+          description: "description here"
+          content:
+            aplication/json:
+              schema:
+                $ref: "#/components/schemas/errorMessage"
+        403:
+          description: "description here"
+          content:
+            aplication/json:
+              schema:
+                $ref: "#/components/schemas/errorMessage"
+        500:
+          description: "description here"
+          content:
+            aplication/json:
+              schema:
+                $ref: "#/components/schemas/errorMessage"
+  /product/{id}:
+    put:
+      description: "Editar producto (admin y vendedor)"
+      tags:
+        - Products
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: string
+          required: true
+          description: "Id del producto a modificar"
+      requestBody:
+        description: "Información del producto a editar"
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              $ref: "#/components/schemas/product"
+      security:
+        - cookieAuth: []
+      responses:
+        200:
+          description: "description here"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/listNoPagination"
+        400:
+          description: "description here"
+          content:
+            aplication/json:
+              schema:
+                $ref: "#/components/schemas/errorMessage"
+        403:
+          description: "description here"
+          content:
+            aplication/json:
+              schema:
+                $ref: "#/components/schemas/errorMessage"
+        500:
+          description: "description here"
+          content:
+            aplication/json:
+              schema:
+                $ref: "#/components/schemas/errorMessage"
+  /product/change_status/{id}:
+    put:
+      description: "Habilitar o inhabilitar un producto"
+      tags:
+        - Products
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: string
+          required: true
+          description: "Id del producto"
+      security:
+        - cookieAuth: []
+      responses:
+        200:
+          description: "description here"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/listNoPagination"
+        400:
+          description: "description here"
+          content:
+            aplication/json:
+              schema:
+                $ref: "#/components/schemas/errorMessage"
+        403:
+          description: "description here"
+          content:
+            aplication/json:
+              schema:
+                $ref: "#/components/schemas/errorMessage"
+        500:
+          description: "description here"
+          content:
+            aplication/json:
+              schema:
+                $ref: "#/components/schemas/errorMessage"
+  /product/{id}/:
+    delete:
+      description: "Eliminar producto"
+      tags:
+        - Products
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: string
+          required: true
+          description: "Identificador del producto"
+      security:
+        - cookieAuth: []
+      responses:
+        200:
+          description: "Review was successfully deleted"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/listNoPagination"
+        403:
+          description: "Forbidden: insufficient permissions"
+          content:
+            aplication/json:
+              schema:
+                $ref: "#/components/schemas/errorMessage"
+        500:
+          description: "You are not allowed to delete this review - Review not found"
+          content:
+            aplication/json:
+              schema:
+                $ref: "#/components/schemas/errorMessage"
   /review/{id}:
     get:
       description: "Detalle de la review"
@@ -1650,6 +1907,50 @@ components:
         image:
           type: string
           format: binary
+    product:
+      type: object
+      properties:
+        name:
+          type: string
+          example: "camisa"
+        description:
+          type: string
+          example: camisa elaborada en algodón
+        price:
+          type: integer
+          example: 200
+        discount:
+          type: integer
+          example: 20
+        categoryID:
+          type: string
+          example: "62994629ff0d5c0f5458aa5d"
+        subcategoryID:
+          type: string
+          example: "62abcc1dd2a929b000f603aa"
+        stock:
+          type: integer
+          example: 40
+        # images:
+        #   type: string
+        #   format: binary
+        popular:
+          type: boolean
+          example: true
+        sizes: 
+          type: array
+          items:
+            type: string
+        colors:
+          type: array
+          items:
+            type: string
+        brand:
+          type: string
+          example: "Zara"
+        sku:
+          type: string
+          example: "AH1dd3O"
     responseSuccessfulAuth:
       type: object
       properties:
