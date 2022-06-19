@@ -20,7 +20,7 @@ export class ProductRoute {
     this.#router.get("/filters", async (req, res) => {
       const {
         name,
-        priceRange,
+        priceHigherThan,
         priceLessThan,
         category,
         subcategory,
@@ -35,7 +35,7 @@ export class ProductRoute {
       const response =
         await this.#services.getProductsByPriceRangeAndOtherFilters(
           name,
-          priceRange,
+          priceHigherThan,
           priceLessThan,
           category,
           subcategory,
