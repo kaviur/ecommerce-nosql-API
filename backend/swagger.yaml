@@ -19,15 +19,802 @@ servers:
   - url: http://localhost:8081/api/v1
 
 tags:
-  - name: Auth
   - name: Users
+  - name: Auth
+  - name: SocialAuth
   - name: SubCategories
   - name: Categories
-  - name: SocialAuth
+  - name: Products
+  - name: Reviews
   - name: Cart
-  - name: Producto
 
 paths:
+  /product/:
+    get:
+      description: "Obtener todos los productos paginados"
+      tags:
+        - Products
+      security:
+        - cookieAuth: []
+      responses:
+        200:
+          description: "description here"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/listNoPagination"
+        400:
+          description: "description here"
+          content:
+            aplication/json:
+              schema:
+                $ref: "#/components/schemas/errorMessage"
+        403:
+          description: "description here"
+          content:
+            aplication/json:
+              schema:
+                $ref: "#/components/schemas/errorMessage"
+        500:
+          description: "description here"
+          content:
+            aplication/json:
+              schema:
+                $ref: "#/components/schemas/errorMessage"
+  /product/{slug}/:
+    get:
+      description: "Obtener info de un producto"
+      tags:
+        - Products
+      parameters:
+        - in: path
+          name: slug
+          schema:
+            type: string
+          required: true
+          description: "identificador del producto amigable con los buscadores"
+      security:
+        - cookieAuth: []
+      responses:
+        200:
+          description: "description here"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/listNoPagination"
+        400:
+          description: "description here"
+          content:
+            aplication/json:
+              schema:
+                $ref: "#/components/schemas/errorMessage"
+        403:
+          description: "description here"
+          content:
+            aplication/json:
+              schema:
+                $ref: "#/components/schemas/errorMessage"
+        500:
+          description: "description here"
+          content:
+            aplication/json:
+              schema:
+                $ref: "#/components/schemas/errorMessage"
+  /product/by_seller/{sellerId}:
+    get:
+      description: "Obtener todos los productos con paginado cuztomizable que ha publicado un vendedor"
+      tags:
+        - Products
+      parameters:
+        - in: path
+          name: sellerId
+          schema:
+            type: string
+          required: true
+          description: Id del vendedor
+        - in: query
+          name: limit
+          schema:
+            type: integer
+          required: false
+          description: "cantidad de productos a mostrar"
+        - in: query
+          name: page
+          schema:
+            type: integer
+          required: false
+          description: "página a mostrar" 
+      security:
+        - cookieAuth: []
+      responses:
+        200:
+          description: "description here"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/listNoPagination"
+        400:
+          description: "description here"
+          content:
+            aplication/json:
+              schema:
+                $ref: "#/components/schemas/errorMessage"
+        403:
+          description: "description here"
+          content:
+            aplication/json:
+              schema:
+                $ref: "#/components/schemas/errorMessage"
+        500:
+          description: "description here"
+          content:
+            aplication/json:
+              schema:
+                $ref: "#/components/schemas/errorMessage"
+  /product/filters:
+    get:
+      description: "Obtener todos los productos resultantes del filtro paginados"
+      tags:
+        - Products
+      parameters:
+        - in: query
+          name: name
+          schema:
+            type: string
+          required: false
+          description: "nombre del producto"
+        - in: query
+          name: priceHigherThan
+          schema:
+            type: number
+          required: false
+          description: "precio superior a:"
+        - in: query
+          name: priceLessThan
+          schema:
+            type: number
+          required: false
+          description: "precio inferior a:"
+        - in: query
+          name: category
+          schema:
+            type: string
+          required: false
+          description: "id de la categoría"
+        - in: query
+          name: subcategory
+          schema:
+            type: string
+          required: false
+          description: "id de la subcategoría"
+        - in: query
+          name: popular
+          schema:
+            type: boolean
+          required: false
+          description: "si el producto es de lo más vendido"
+        - in: query
+          name: color
+          schema:
+            type: string
+          required: false
+          description: "color del producto"
+        - in: query
+          name: brand
+          schema:
+            type: string
+          required: false
+          description: "marca del producto"
+        - in: query
+          name: size
+          schema:
+            type: string
+          required: false
+          description: "talla del producto" 
+        - in: query
+          name: limit
+          schema:
+            type: integer
+          required: false
+          description: "cantidad de productos a mostrar"
+        - in: query
+          name: page
+          schema:
+            type: integer
+          required: false
+          description: "página a mostrar"       
+      security:
+        - cookieAuth: []
+      responses:
+        200:
+          description: "description here"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/listNoPagination"
+        400:
+          description: "description here"
+          content:
+            aplication/json:
+              schema:
+                $ref: "#/components/schemas/errorMessage"
+        403:
+          description: "description here"
+          content:
+            aplication/json:
+              schema:
+                $ref: "#/components/schemas/errorMessage"
+        500:
+          description: "description here"
+          content:
+            aplication/json:
+              schema:
+                $ref: "#/components/schemas/errorMessage"
+  /product/search:
+    get:
+      description: "Obtener todos los productos activos con un paginado cuztomizable cuyo nombre, descripción, marca, color, sku, categoría o subcategoría coincida con el término de búsqueda."
+      tags:
+        - Products
+      parameters:
+        - in: query
+          name: termOfSearch
+          schema:
+            type: string
+          required: false 
+        - in: query
+          name: limit
+          schema:
+            type: integer
+          required: false
+          description: "cantidad de productos a mostrar"
+        - in: query
+          name: page
+          schema:
+            type: integer
+          required: false
+          description: "página a mostrar"       
+      security:
+        - cookieAuth: []
+      responses:
+        200:
+          description: "description here"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/listNoPagination"
+        400:
+          description: "description here"
+          content:
+            aplication/json:
+              schema:
+                $ref: "#/components/schemas/errorMessage"
+        403:
+          description: "description here"
+          content:
+            aplication/json:
+              schema:
+                $ref: "#/components/schemas/errorMessage"
+        500:
+          description: "description here"
+          content:
+            aplication/json:
+              schema:
+                $ref: "#/components/schemas/errorMessage"
+  /product:
+    post:
+      description: "Crear producto (admin y vendedor)"
+      tags:
+        - Products
+      requestBody:
+        description: "Información del producto a crear"
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              $ref: "#/components/schemas/product"
+      security:
+        - cookieAuth: []
+      responses:
+        200:
+          description: "description here"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/listNoPagination"
+        400:
+          description: "description here"
+          content:
+            aplication/json:
+              schema:
+                $ref: "#/components/schemas/errorMessage"
+        403:
+          description: "description here"
+          content:
+            aplication/json:
+              schema:
+                $ref: "#/components/schemas/errorMessage"
+        500:
+          description: "description here"
+          content:
+            aplication/json:
+              schema:
+                $ref: "#/components/schemas/errorMessage"
+  /product/add-image/{id}:
+    post:
+      description: "Crear producto (admin y vendedor)"
+      tags:
+        - Products
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: string
+          required: true
+          description: "id del producto"
+      requestBody:
+        description: "Información del producto a crear"
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                image:
+                  type: string
+                  format: binary
+      security:
+        - cookieAuth: []
+      responses:
+        200:
+          description: "description here"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/listNoPagination"
+        400:
+          description: "description here"
+          content:
+            aplication/json:
+              schema:
+                $ref: "#/components/schemas/errorMessage"
+        403:
+          description: "description here"
+          content:
+            aplication/json:
+              schema:
+                $ref: "#/components/schemas/errorMessage"
+        500:
+          description: "description here"
+          content:
+            aplication/json:
+              schema:
+                $ref: "#/components/schemas/errorMessage"
+  /product/remove-image/{id}/:
+    put:
+      description: "Remover una imagen"
+      tags:
+        - Products
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: string
+          required: true
+          description: "Id del producto"
+      requestBody:
+        description: "Ruta del producto"
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                image:
+                 type: string
+                 example: "http://localhost:8081/public/product/0b3314ee-3ea5-470a-a3e7-625a03454544.jpg"
+      security:
+        - cookieAuth: []
+      responses:
+        200:
+          description: "description here"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/listNoPagination"
+        400:
+          description: "description here"
+          content:
+            aplication/json:
+              schema:
+                $ref: "#/components/schemas/errorMessage"
+        403:
+          description: "description here"
+          content:
+            aplication/json:
+              schema:
+                $ref: "#/components/schemas/errorMessage"
+        500:
+          description: "description here"
+          content:
+            aplication/json:
+              schema:
+                $ref: "#/components/schemas/errorMessage"
+  /product/{id}:
+    put:
+      description: "Editar producto (admin y vendedor)"
+      tags:
+        - Products
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: string
+          required: true
+          description: "Id del producto a modificar"
+      requestBody:
+        description: "Información del producto a editar"
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              $ref: "#/components/schemas/product"
+      security:
+        - cookieAuth: []
+      responses:
+        200:
+          description: "description here"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/listNoPagination"
+        400:
+          description: "description here"
+          content:
+            aplication/json:
+              schema:
+                $ref: "#/components/schemas/errorMessage"
+        403:
+          description: "description here"
+          content:
+            aplication/json:
+              schema:
+                $ref: "#/components/schemas/errorMessage"
+        500:
+          description: "description here"
+          content:
+            aplication/json:
+              schema:
+                $ref: "#/components/schemas/errorMessage"
+  /product/change_status/{id}:
+    put:
+      description: "Habilitar o inhabilitar un producto"
+      tags:
+        - Products
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: string
+          required: true
+          description: "Id del producto"
+      security:
+        - cookieAuth: []
+      responses:
+        200:
+          description: "description here"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/listNoPagination"
+        400:
+          description: "description here"
+          content:
+            aplication/json:
+              schema:
+                $ref: "#/components/schemas/errorMessage"
+        403:
+          description: "description here"
+          content:
+            aplication/json:
+              schema:
+                $ref: "#/components/schemas/errorMessage"
+        500:
+          description: "description here"
+          content:
+            aplication/json:
+              schema:
+                $ref: "#/components/schemas/errorMessage"
+  /product/{id}/:
+    delete:
+      description: "Eliminar producto"
+      tags:
+        - Products
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: string
+          required: true
+          description: "Identificador del producto"
+      security:
+        - cookieAuth: []
+      responses:
+        200:
+          description: "Review was successfully deleted"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/listNoPagination"
+        403:
+          description: "Forbidden: insufficient permissions"
+          content:
+            aplication/json:
+              schema:
+                $ref: "#/components/schemas/errorMessage"
+        500:
+          description: "You are not allowed to delete this review - Review not found"
+          content:
+            aplication/json:
+              schema:
+                $ref: "#/components/schemas/errorMessage"
+  /review/{id}:
+    get:
+      description: "Detalle de la review"
+      tags:
+        - Reviews
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: string
+          required: true
+          description: "id de la review"
+      security:
+        - cookieAuth: []
+      responses:
+        200:
+          description: "description here"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/listNoPagination"
+        400:
+          description: "description here"
+          content:
+            aplication/json:
+              schema:
+                $ref: "#/components/schemas/errorMessage"
+        403:
+          description: "description here"
+          content:
+            aplication/json:
+              schema:
+                $ref: "#/components/schemas/errorMessage"
+        500:
+          description: "description here"
+          content:
+            aplication/json:
+              schema:
+                $ref: "#/components/schemas/errorMessage"
+  /review/reviewsOfProduct/{productId}:
+    get:
+      description: "Obtener las reviews de un producto"
+      tags:
+        - Reviews
+      parameters:
+        - in: path
+          name: productId
+          schema:
+            type: string
+          required: true
+          description: "id del producto"
+      security:
+        - cookieAuth: []
+      responses:
+        200:
+          description: "description here"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/listNoPagination"
+        400:
+          description: "description here"
+          content:
+            aplication/json:
+              schema:
+                $ref: "#/components/schemas/errorMessage"
+        403:
+          description: "description here"
+          content:
+            aplication/json:
+              schema:
+                $ref: "#/components/schemas/errorMessage"
+        500:
+          description: "description here"
+          content:
+            aplication/json:
+              schema:
+                $ref: "#/components/schemas/errorMessage"
+  /review/reviewsOfUser/{userId}:
+    get:
+      description: "Obtener las reviews de un usuario"
+      tags:
+        - Reviews
+      parameters:
+        - in: path
+          name: userId
+          schema:
+            type: string
+          required: true
+          description: "id del usuario"
+      security:
+        - cookieAuth: []
+      responses:
+        200:
+          description: "description here"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/listNoPagination"
+        400:
+          description: "description here"
+          content:
+            aplication/json:
+              schema:
+                $ref: "#/components/schemas/errorMessage"
+        403:
+          description: "description here"
+          content:
+            aplication/json:
+              schema:
+                $ref: "#/components/schemas/errorMessage"
+        500:
+          description: "description here"
+          content:
+            aplication/json:
+              schema:
+                $ref: "#/components/schemas/errorMessage"
+  /review/:
+    post:
+      description: "Crear review"
+      tags:
+        - Reviews
+      requestBody:
+        description: "Título de la review"
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                title:
+                  type: string
+                  example: "Muy buena calidad"
+                comment:
+                  type: string
+                  example: "Muy buena calidad, lo volvería a comprar"
+                stars:
+                  type: number
+                  example: 5
+                productID:
+                  type: string
+                  example: "62aa4344d97f192a509a1263"
+      security:
+        - cookieAuth: []
+      responses:
+        200:
+          description: "description here"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/listNoPagination"
+        400:
+          description: "description here"
+          content:
+            aplication/json:
+              schema:
+                $ref: "#/components/schemas/errorMessage"
+        403:
+          description: "description here"
+          content:
+            aplication/json:
+              schema:
+                $ref: "#/components/schemas/errorMessage"
+        500:
+          description: "description here"
+          content:
+            aplication/json:
+              schema:
+                $ref: "#/components/schemas/errorMessage"
+  /review/{id}/:
+    put:
+      description: "Editar una review (sólo si es el autor)"
+      tags:
+        - Reviews
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: string
+          required: true
+          description: "Id de la review"
+      requestBody:
+        description: "Nombre de la review"
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                title:
+                  type: string
+                  example: "Muy buena calidad"
+                comment:
+                  type: string
+                  example: "Muy buena calidad, lo volvería a comprar"
+                stars:
+                  type: number
+                  example: 5
+      security:
+        - cookieAuth: []
+      responses:
+        200:
+          description: "description here"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/listNoPagination"
+        400:
+          description: "description here"
+          content:
+            aplication/json:
+              schema:
+                $ref: "#/components/schemas/errorMessage"
+        403:
+          description: "description here"
+          content:
+            aplication/json:
+              schema:
+                $ref: "#/components/schemas/errorMessage"
+        500:
+          description: "description here"
+          content:
+            aplication/json:
+              schema:
+                $ref: "#/components/schemas/errorMessage"
+  /review/delete_review/{id}:
+    delete:
+      description: "Eliminar una review"
+      tags:
+        - Reviews
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: string
+          required: true
+          description: "Identificador de la review"
+      security:
+        - cookieAuth: []
+      responses:
+        200:
+          description: "Review was successfully deleted"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/listNoPagination"
+        403:
+          description: "Forbidden: insufficient permissions"
+          content:
+            aplication/json:
+              schema:
+                $ref: "#/components/schemas/errorMessage"
+        500:
+          description: "You are not allowed to delete this review - Review not found"
+          content:
+            aplication/json:
+              schema:
+                $ref: "#/components/schemas/errorMessage"
   /cart:
     get:
       description: "Ruta para administración del carrito de compras"
@@ -450,7 +1237,7 @@ paths:
       tags:
         - Categories
       requestBody:
-        description: "Nombre de la categoría"
+        description: "Info de la categoría"
         required: true
         content:
           application/json:
@@ -1120,6 +1907,50 @@ components:
         image:
           type: string
           format: binary
+    product:
+      type: object
+      properties:
+        name:
+          type: string
+          example: "camisa"
+        description:
+          type: string
+          example: camisa elaborada en algodón
+        price:
+          type: integer
+          example: 200
+        discount:
+          type: integer
+          example: 20
+        categoryID:
+          type: string
+          example: "62994629ff0d5c0f5458aa5d"
+        subcategoryID:
+          type: string
+          example: "62abcc1dd2a929b000f603aa"
+        stock:
+          type: integer
+          example: 40
+        # images:
+        #   type: string
+        #   format: binary
+        popular:
+          type: boolean
+          example: true
+        sizes: 
+          type: array
+          items:
+            type: string
+        colors:
+          type: array
+          items:
+            type: string
+        brand:
+          type: string
+          example: "Zara"
+        sku:
+          type: string
+          example: "AH1dd3O"
     responseSuccessfulAuth:
       type: object
       properties:

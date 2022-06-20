@@ -119,7 +119,7 @@ export default class ProductService {
   //filtrar por cualquier opción
   async getProductsByPriceRangeAndOtherFilters(
     name,
-    priceRange,
+    priceHigherThan,
     priceLessThan,
     category,
     subcategory,
@@ -134,7 +134,7 @@ export default class ProductService {
       // si no selecciona ningún filtro muestra por defecto todos los productos
       if (
         !name &&
-        !priceRange &&
+        !priceHigherThan &&
         !priceLessThan &&
         !category &&
         !subcategory &&
@@ -149,20 +149,25 @@ export default class ProductService {
       const filters = {
         $and: [],
       };
-      if (priceRange) {
+      if (priceHigherThan && priceLessThan) {
         filters.$and.push({
-          price: { $gte: priceRange[0], $lte: priceRange[1] },
+          price: {
+            $gte: priceHigherThan,
+            $lte: priceLessThan,
+          }
         });
-      } else if (priceLessThan) {
+      } else if (priceLessThan && !priceHigherThan) {
         filters.$and.push({ price: { $lte: priceLessThan } });
+      } else if (priceHigherThan && !priceLessThan) {
+        filters.$and.push({ price: { $gte: priceHigherThan } });
       }
 
       if (name) filters.$and.push({ name: { $regex: name, $options: "i" } });
       if (category) filters.$and.push({ categoryID: category });
       if (subcategory) filters.$and.push({ subCategoryID: subcategory });
       if (popular) filters.$and.push({ popular: popular });
-      if (size) filters.$and.push({ size: size });
-      if (color) filters.$and.push({ color: color });
+      if (color) filters.$and.push({ colors:{$elemMatch:{$regex:color}} });
+      if (size) filters.$and.push({ sizes:{$elemMatch:{$regex:size}} });
       if (brand) filters.$and.push({ brand: brand });
 
       filters.$and.push({ status: true });
