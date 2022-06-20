@@ -14,7 +14,7 @@ export class ReviewRoute {
     }
 
     #routes() {
-        this.#router.get("/reviewsOfProduct/:productId", async (req, res) => {
+        this.#router.get("/reviewsOfProduct/:productId", [verifyToken],async (req, res) => {
             const { productId } = req.params;
             const response = await this.#services.getReviewsByProductId(productId);
             response.success
@@ -34,7 +34,7 @@ export class ReviewRoute {
             errorResponse(res, response.error);
         });
 
-        this.#router.get("/:id", async (req, res) => {
+        this.#router.get("/:id",[verifyToken], async (req, res) => {
             const response = await this.#services.getReviewById(req.params.id);
             response.success
             ?

@@ -14,7 +14,7 @@ export class CategoryRoute {
     }
 
     #routes() {
-        this.#router.get("/", async (req, res) => {
+        this.#router.get("/",[verifyToken], async (req, res) => {
             const response = await this.#services.getAllCategories();
             response.success
             ?
@@ -23,7 +23,7 @@ export class CategoryRoute {
             errorResponse(res, response.error);
         });
 
-        this.#router.get("/:id", async (req, res) => {
+        this.#router.get("/:id", [verifyToken],async (req, res) => {
             const response = await this.#services.getCategoryById(req.params.id);
             response.success
             ?

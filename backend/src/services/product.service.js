@@ -1,4 +1,8 @@
-import { productModel } from "../models/index.js";
+import {
+  categoryModel,
+  productModel,
+  subCategoryModel,
+} from "../models/index.js";
 import { deleteImages, uploadImage } from "../helpers/images.helper.js";
 export default class ProductService {
   async createProduct(data, files) {
@@ -39,9 +43,7 @@ export default class ProductService {
 
   async getProductBySlug(slug) {
     try {
-      const product = await productModel
-        .findOne({ slug: slug })
-        .populate("reviews");
+      const product = await productModel.findOne({ slug: slug });
 
       if (!product) {
         return { success: false, error: "Product not found" };
@@ -72,6 +74,7 @@ export default class ProductService {
       return { success: false, error };
     }
   }
+  0;
 
   //TODO: que se pueda editar todo menos el id del vendedor, ni el estado
   async updateProduct(id, data) {
@@ -154,7 +157,7 @@ export default class ProductService {
           price: {
             $gte: priceHigherThan,
             $lte: priceLessThan,
-          }
+          },
         });
       } else if (priceLessThan && !priceHigherThan) {
         filters.$and.push({ price: { $lte: priceLessThan } });
@@ -166,8 +169,9 @@ export default class ProductService {
       if (category) filters.$and.push({ categoryID: category });
       if (subcategory) filters.$and.push({ subCategoryID: subcategory });
       if (popular) filters.$and.push({ popular: popular });
-      if (color) filters.$and.push({ colors:{$elemMatch:{$regex:color}} });
-      if (size) filters.$and.push({ sizes:{$elemMatch:{$regex:size}} });
+      if (color)
+        filters.$and.push({ colors: { $elemMatch: { $regex: color } } });
+      if (size) filters.$and.push({ sizes: { $elemMatch: { $regex: size } } });
       if (brand) filters.$and.push({ brand: brand });
 
       filters.$and.push({ status: true });
@@ -194,9 +198,18 @@ export default class ProductService {
   async getCoincidencesOfSearch(search, page, limit) {
     try {
       const regularExpression = RegExp(search, "i");
+
+      const [categories, subCategories] = await Promise.all([
+        categoryModel.find({ name: regularExpression }),
+        subCategoryModel.find({ name: regularExpression }),
+      ]);
       const { docs: products, ...information } = await productModel.paginate(
         {
           $or: [
+            ...subCategories.map((subCategory) => ({
+              subCategoryID: subCategory._id,
+            })),
+            ...categories.map((category) => ({ categoryID: category._id })),
             { name: regularExpression },
             { description: regularExpression },
             { brand: regularExpression },
@@ -245,14 +258,15 @@ export default class ProductService {
         return {
           success: false,
           error: { message: `Product not found` },
+          status: 404,
         };
 
       if (role !== 3 && product.sellerId.toString() !== idUser)
         return { success: false, error: "insufficient permissions" };
       nameImages = await uploadImage(files, "products");
       product.saveImages(nameImages);
-      product.save();
-      return { success: true };
+      await product.save();
+      return { success: true, product };
     } catch (error) {
       nameImages.length > 0 && (await deleteImages(nameImages, "products"));
       return { success: false, error };
@@ -271,10 +285,10 @@ export default class ProductService {
           error: `Product not found`,
         };
       if (role !== 3 && product.sellerId.toString() !== userId)
-        return { success: false, error:"insufficient permissions" };
+        return { success: false, error: "insufficient permissions" };
       product = await productModel.findOneAndUpdate(
         { _id: productId },
-        { $pull: { images:  image  } },
+        { $pull: { images: image } },
         { new: true }
       );
       await deleteImages(image);

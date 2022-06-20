@@ -163,8 +163,8 @@ export class ProductRoute {
           files
         );
         response.success
-          ? successfulResponse(res, 200, true, "Images added in product")
-          : errorResponse(res, response.error);
+          ? successfulResponse(res, 200, true, "Images added in product",response.product)
+          : errorResponse(res, response.error,response.status||500);
       }
     );
 

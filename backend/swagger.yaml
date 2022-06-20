@@ -27,8 +27,41 @@ tags:
   - name: Products
   - name: Reviews
   - name: Cart
+  - name: Payment
 
 paths:
+  /payment/pay:
+    post:
+      description: "Crea intento de pago"
+      tags:
+        - Payment
+      security:
+        - cookieAuth: []
+      responses:
+        200:
+          description: "Existe un carrito por pagar"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/listNoPagination"
+        400:
+          description: "Bad request"
+          content:
+            aplication/json:
+              schema:
+                $ref: "#/components/schemas/errorMessage"
+        403:
+          description: "Es necesario el token"
+          content:
+            aplication/json:
+              schema:
+                $ref: "#/components/schemas/errorMessage"
+        500:
+          description: "Internal error server"
+          content:
+            aplication/json:
+              schema:
+                $ref: "#/components/schemas/errorMessage"
   /product/:
     get:
       description: "Obtener todos los productos paginados"
@@ -36,6 +69,19 @@ paths:
         - Products
       security:
         - cookieAuth: []
+      parameters: 
+        - in: query
+          name: limit
+          schema:
+            type: integer
+          required: false
+          description: "cantidad de productos a mostrar"
+        - in: query
+          name: page
+          schema:
+            type: integer
+          required: false
+          description: "página a mostrar" 
       responses:
         200:
           description: "description here"
@@ -360,8 +406,10 @@ paths:
               type: object
               properties:
                 image:
-                  type: string
-                  format: binary
+                  type: array
+                  items:
+                    type: string
+                    format: binary
       security:
         - cookieAuth: []
       responses:
@@ -1925,15 +1973,17 @@ components:
         categoryID:
           type: string
           example: "62994629ff0d5c0f5458aa5d"
-        subcategoryID:
+        subCategoryID:
           type: string
           example: "62abcc1dd2a929b000f603aa"
         stock:
           type: integer
           example: 40
-        # images:
-        #   type: string
-        #   format: binary
+        image:
+          type: array
+          items:
+            type: string
+            format: binary
         popular:
           type: boolean
           example: true
