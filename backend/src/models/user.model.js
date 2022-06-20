@@ -32,6 +32,8 @@ const userSchema = new mongoose.Schema(
     role: {
       type: Number,
       default: 1,
+      min:1,
+      max:3
     },
     provider: {
       local: {
