@@ -1,7 +1,13 @@
 import { deleteImages, uploadImage } from "../helpers/images.helper.js";
 import { cartModel, userModel } from "../models/index.js";
+import Stripe from "stripe";
+import { stripe_secret } from "../config/config.js";
 
 export default class UserService {
+  #stripe;
+  constructor() {
+    this.#stripe = new Stripe(stripe_secret);
+  }
   async postUser(data, files = null) {
     let imagesName;
     try {
@@ -13,7 +19,6 @@ export default class UserService {
         await user.save();
       }
 
-      
       return { success: true, user };
     } catch (error) {
       return { success: false, error };
@@ -105,6 +110,7 @@ export default class UserService {
 
   async socialLogin(data, provider, idProvider) {
     let user;
+
     const { email } = data;
     try {
       user = await userModel.findOne({ email: email.toUpperCase() });
@@ -119,15 +125,30 @@ export default class UserService {
         user.provider[provider] = true;
         user.idProvider[provider] = idProvider;
         user.image = data.image;
+        if (!user.emailVerified) {
+          user.emailVerified = true;
+          user.stripeCustomerId = await this.createCustomerId(user.name, user.email);
+        }
+
         await user.save();
         return { success: true, user };
       }
       user = new userModel(data);
+
+      user.stripeCustomerId = await this.createCustomerId(data.name, data.email);
       await user.save();
       await cartModel.create({ _id: user._id, items: [] });
       return { success: true, user };
     } catch (error) {
       return { success: false, error };
     }
+  }
+
+  async createCustomerId(name, email) {
+    const { id: stripeCustomerId } = await this.#stripe.customers.create({
+      name,
+      email,
+    });
+    return stripeCustomerId;
   }
 }

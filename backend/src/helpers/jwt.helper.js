@@ -1,13 +1,14 @@
 import jwt from "jsonwebtoken";
 import { jwtSecret } from "../config/config.js";
 
-export const createJWT = (user,expiresIn="15d") => {
+export const createJWT = (user, expiresIn = "15d") => {
   const payload = {
     name: user.name,
     email: user.email,
     image: user.image,
     role: user.role,
     id: user._id,
+    stripeCustomerId: user.stripeCustomerId,
   };
 
   return new Promise((resolve, reject) => {

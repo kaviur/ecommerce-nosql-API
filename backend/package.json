@@ -32,6 +32,7 @@
     "passport-google-oauth20": "^2.0.0",
     "passport-instagram": "^1.0.0",
     "passport-twitter": "^1.0.4",
+    "stripe": "^9.9.0",
     "swagger-ui-express": "^4.4.0",
     "uuid": "^8.3.2",
     "yamljs": "^0.3.0"

@@ -18,7 +18,16 @@ import {
   sessionSecret,
 } from "../config/config.js";
 
-import { authRoute, subCategoryRoute, userRoute, categoryRoute, productRoute, cartRoute, reviewRoute } from "../routes/index.js";
+import {
+  authRoute,
+  subCategoryRoute,
+  userRoute,
+  categoryRoute,
+  productRoute,
+  cartRoute,
+  reviewRoute,
+  paymentRoute,
+} from "../routes/index.js";
 import {
   facebookStrategy,
   githubStrategy,
@@ -46,18 +55,27 @@ export class Server {
 
   #middleware() {
     this.#app.use(
-      cors({ origin: ["http://localhost:8081"], credentials: true })
+      cors({
+        origin: ["http://localhost:8081", "http://127.0.0.1:5500"],
+        credentials: true,
+      })
+    );
+    this.#app.use(
+      "/api/v1/payment/webhooks",
+      express.raw({ type: "application/json" })
     );
     this.#app.use(express.json());
     this.#app.use(express.urlencoded({ extended: true }));
     this.#app.use(morgan("dev"));
-    this.#app.use(cookieParser())
+    this.#app.use(cookieParser());
     this.#app.use(passport.initialize());
-    this.#app.use(session({
-      secret: "keyboard cat",
-      resave: false,
-      saveUninitialized: true,
-    }));
+    this.#app.use(
+      session({
+        secret: "keyboard cat",
+        resave: false,
+        saveUninitialized: true,
+      })
+    );
     this.#app.use(
       fileUpload({
         useTempFiles: true,
@@ -75,6 +93,7 @@ export class Server {
     );
     this.#app.use(`/public/user`, express.static(`src/storage/users/`));
     this.#app.use(`/public/product`, express.static(`src/storage/products/`));
+    this.#app.use(`/public/`, express.static(`src/public/assets/images`));
     this.#app.use(passport.initialize());
     this.#passportMiddleware();
   }
@@ -103,6 +122,7 @@ export class Server {
     this.#app.use(this.#paths.category, categoryRoute);
     this.#app.use(this.#paths.product, productRoute);
     this.#app.use(this.#paths.review, reviewRoute);
+    this.#app.use(this.#paths.payment, paymentRoute);
     this.#app.use(
       "/api-docs",
       swaggerUi.serve,
@@ -111,7 +131,7 @@ export class Server {
   }
 
   initServer() {
-    return new Promise((resolve, reject) => {          
+    return new Promise((resolve, reject) => {
       this.#app
         .listen(this.#port)
         .on("listening", () => {

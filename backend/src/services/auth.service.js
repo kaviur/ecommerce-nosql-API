@@ -1,31 +1,49 @@
+
+import Stripe from 'stripe'
 import { validatePassword } from "../helpers/bcrypt.helper.js";
 import { createJWT } from "../helpers/jwt.helper.js";
 import UserService from "./user.service.js";
 import { v4 as uuid } from "uuid";
 import cartModel from "../models/cart.model.js";
 import sendEmail from "../libs/emails.js";
-import { jwtSecret, apiVersion, callbackUrl } from "../config/config.js";
+import {
+  jwtSecret,
+  apiVersion,
+  callbackUrl,
+  stripe_secret,
+} from "../config/config.js";
 import Jwt from "jsonwebtoken";
 import userModel from "../models/user.model.js";
 import { templateEmail } from "../libs/templateEmail.js";
 
 export class AuthService {
   #userService;
+  #stripe
   constructor() {
     this.#userService = new UserService();
+    this.#stripe = new Stripe(stripe_secret);
   }
 
   async validateEmail(token) {
     try {
-      const { email } = Jwt.verify(token, jwtSecret);
+      const { email ,name} = Jwt.verify(token, jwtSecret);
+
+     
       const userUpdate = await userModel.findOneAndUpdate(
-        { email },
+        { email ,emailVerified:false},
         { emailVerified: true },
         { new: true }
       );
-      if (!userUpdate) throw new Error("User not found");
+      if (!userUpdate) throw new Error("the token has already been redeemed");
+      const { id: stripeCustomerId } = await this.#stripe.customers.create({
+        name,
+        email
+      });
+      userUpdate.stripeCustomerId = stripeCustomerId
+      await userUpdate.save()
       const user = await createJWT(userUpdate);
       await cartModel.create({ _id: userUpdate._id, items: [] });
+
       return { success: true, user };
     } catch (error) {
       return { success: false, error };
@@ -52,11 +70,7 @@ export class AuthService {
         const { token } = await createJWT(response.user, "1h");
         const url = `${callbackUrl}/api/${apiVersion}/email_validation/${token}`;
         const htmlEmail = templateEmail(url, response.user.name);
-        await sendEmail(
-          response.user.email,
-          "Confirm your email",
-          htmlEmail
-        );
+        await sendEmail(response.user.email, "Confirm your email", htmlEmail);
 
         return response;
       } catch (error) {

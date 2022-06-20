@@ -21,7 +21,7 @@ export class CartRoute {
       verifyToken,
       async (req = request, res = response) => {
         const { id } = req.payload;
-        const response = await this.#services.getItems(id);
+        const response = await this.#services.getCart(id);
         response.success
           ? successfulResponse(res, 200, true, "Cart", response.cart)
           : errorResponse(res, response.error);
