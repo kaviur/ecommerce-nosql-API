@@ -16,7 +16,7 @@ export class SubCategoryRoute {
   }
 
   #routes() {
-    this.router.get("/", verifyToken, async (req = request, res = response) => {
+    this.router.get("/", async (req = request, res = response) => {
       const response = await this.#service.getSubCategories();
       response.success
         ? successfulResponse(
