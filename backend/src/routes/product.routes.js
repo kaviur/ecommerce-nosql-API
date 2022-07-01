@@ -17,7 +17,7 @@ export class ProductRoute {
   }
 
   #routes() {
-    this.#router.get("/filters", verifyToken, async (req, res) => {
+    this.#router.get("/filters", async (req, res) => {
       const {
         name,
         priceHigherThan,
@@ -65,7 +65,7 @@ export class ProductRoute {
         : errorResponse(res, response.error);
     });
 
-    this.#router.get("/", verifyToken, async (req, res) => {
+    this.#router.get("/", async (req, res) => {
       const { limit = 10, page = 1 } = req.query;
       const response = await this.#services.getAllProducts(limit, page);
       response.success
@@ -79,7 +79,7 @@ export class ProductRoute {
         : errorResponse(res, response.error);
     });
 
-    this.#router.get("/search", verifyToken, async (req, res) => {
+    this.#router.get("/search", async (req, res) => {
       const { termOfSearch, page = 1, limit = 10 } = req.query;
 
       const response = await this.#services.getCoincidencesOfSearch(
@@ -98,7 +98,7 @@ export class ProductRoute {
         : errorResponse(res, response.error);
     });
 
-    this.#router.get("/:slug", verifyToken, async (req, res) => {
+    this.#router.get("/:slug", async (req, res) => {
       const response = await this.#services.getProductBySlug(req.params.slug);
       response.success
         ? successfulResponse(
@@ -111,7 +111,7 @@ export class ProductRoute {
         : errorResponse(res, response.error);
     });
 
-    this.#router.get("/by_seller/:sellerId", verifyToken, async (req, res) => {
+    this.#router.get("/by_seller/:sellerId", [verifyToken, validateRol(2, 3)], async (req, res) => {
       const { page = 1, limit = 10 } = req.query;
       const response = await this.#services.getProductsBySeller(
         req.params.sellerId,
