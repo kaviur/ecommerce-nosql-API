@@ -1,7 +1,7 @@
 import express from "express";
 import "colors";
 import cors from "cors";
-import morgan from "morgan";
+//import morgan from "morgan";
 import cookieParser from "cookie-parser";
 import fileUpload from "express-fileupload";
 import swaggerUi from "swagger-ui-express";
@@ -66,7 +66,7 @@ export class Server {
     );
     this.#app.use(express.json());
     this.#app.use(express.urlencoded({ extended: true }));
-    this.#app.use(morgan("dev"));
+    //this.#app.use(morgan("dev"));
     this.#app.use(cookieParser());
     this.#app.use(passport.initialize());
     this.#app.use(

@@ -23,7 +23,7 @@ const getProfile = (accessToken, refreshToken, profile, done) => {
   done(null, { profile });
 };
 
-const url = (provider) => `${callbackUrl}/api/${apiVersion}/${provider}/login`;
+const url = (provider) => `${callbackUrl}/api/${apiVersion}/${provider}/callback`;
 
 const googleStrategy = () => {
   return new GoogleStrategy(
@@ -31,10 +31,20 @@ const googleStrategy = () => {
       clientID: googleClientId,
       clientSecret: googleClientSecret,
       callbackURL: url("google"),
-    },
-    getProfile
-  );
+    },(accessToken,refreshToken,profile,done)=>{
+      //console.log({accessToken,refreshToken,profile})
+      scope: ['profile', 'email'],
+      done(null,{profile})
+  })
 };
+
+const useGoogleStrategy = () =>{
+  return new GoogleStrategy({
+      clientID:oauthClientID,
+      clientSecret:oauthClientSecret,
+      callbackURL:callbackUrl("google")
+  },getProfile)
+}
 
 const facebookStrategy = () => {
   return new FacebookStrategy(
