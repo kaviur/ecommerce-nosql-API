@@ -12,11 +12,12 @@ info:
     4.- Sistema de pagos automatizado
     5.- Galería de productos con carrusel de multiples imágenes
   contact:
-    name: Camilo Morales Sanchez - Willy Escobar - Karen Urbano
+    name: Karen Urbano- Camilo Morales Sanchez - Willy Escobar
     email: moorales.camilo@gmail.com 
 
 servers:
   - url: http://localhost:8081/api/v1
+  - url: https://ecommercetzuzul2022.ue.r.appspot.com/api/v1
 
 tags:
   - name: Users
