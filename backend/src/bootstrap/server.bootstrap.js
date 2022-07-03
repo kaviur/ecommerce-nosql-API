@@ -56,7 +56,7 @@ export class Server {
   #middleware() {
     this.#app.use(
       cors({
-        origin: ["http://localhost:8081", "http://127.0.0.1:5500","http://localhost:3000","https://ecommercetzuzul2022.ue.r.appspot.com/"],
+        origin: ["http://localhost:8081", "http://127.0.0.1:5500","http://localhost:3000","https://ecommercetzuzul2022.ue.r.appspot.com"],
         credentials: true,
       })
     );
