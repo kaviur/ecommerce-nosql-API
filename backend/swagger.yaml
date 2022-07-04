@@ -16,8 +16,8 @@ info:
     email: moorales.camilo@gmail.com 
 
 servers:
-  - url: http://localhost:8081/api/v1
   - url: https://ecommercetzuzul2022.ue.r.appspot.com/api/v1
+  - url: http://localhost:8081/api/v1
 
 tags:
   - name: Users
@@ -1552,10 +1552,10 @@ paths:
               properties:
                 email:
                   type: string
-                  example: correo@correo.com
+                  example: quemojojojo@gmail.com
                 password:
                   type: string
-                  example: Abc123**12
+                  example: 12345
       security: []
       responses:
         200:

@@ -98,6 +98,8 @@ export class AuthService {
 
       const data = await createJWT(response.user);
 
+      console.log('usuario desde auth service...',data.payload)
+
       const cart = await cartModel.findOne({ _id: data.payload.id });
       if (!cart) {
         await cartModel.create({ _id: data.payload.id, items: [] });
