@@ -43,7 +43,7 @@ export const {
   googleClientSecret: process.env.GOOGLE_CLIENT_SECRET,
   callbackUrl:
     process.env.NODE_ENV === "production"
-      ? `${process.env.CALLBACK_URL}|| 3000}`
+      ? `${process.env.CALLBACK_URL}`
       : `${process.env.CALLBACK_URL_DEVELOPMENT}:${process.env.PORT || 3000}`,
   sessionSecret: process.env.SESION_SECRET,
   facebookAppId: process.env.FACEBOOK_APP_ID,
