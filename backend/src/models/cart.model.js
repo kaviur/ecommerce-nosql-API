@@ -11,12 +11,7 @@ const cartSchema = new mongosee.Schema({
         type: mongosee.Schema.Types.ObjectId,
         ref: "Product",
       },
-      amount: {
-        type: Number,
-        min: 0,
-        default: 0,
-        required: [true, "Amount is required"],
-      },
+      amount: Number
     },
   ],
 });

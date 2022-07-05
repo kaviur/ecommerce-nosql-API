@@ -26,25 +26,43 @@ export class AuthService {
 
   async validateEmail(token) {
     try {
-      const { email ,name} = Jwt.verify(token, jwtSecret);
-
-     
+      const { email ,name, role} = Jwt.verify(token, jwtSecret);
+    
       const userUpdate = await userModel.findOneAndUpdate(
         { email ,emailVerified:false},
         { emailVerified: true },
         { new: true }
       );
+
       if (!userUpdate) throw new Error("the token has already been redeemed");
+
       const { id: stripeCustomerId } = await this.#stripe.customers.create({
         name,
         email
       });
+
       userUpdate.stripeCustomerId = stripeCustomerId
       await userUpdate.save()
-      const user = await createJWT(userUpdate);
-      await cartModel.create({ _id: userUpdate._id, items: [] });
 
-      return { success: true, user };
+      console.log(userUpdate._id);
+      const user = await createJWT(userUpdate);
+
+      if (role === 1) {
+        const cart = await cartModel.findOne({ _id: userUpdate._id });
+        if (!cart) {
+          const createCart= await cartModel.create({ _id: userUpdate._id, items: [] });
+
+          if(createCart){
+            return { success: true, user };
+          }else{
+            return { success: false, error: { message: "Error creating cart" } };
+          }
+        }
+      }else{
+        return { success: true, user };
+      }
+
+      //return { success: true, user };
     } catch (error) {
       return { success: false, error };
     }
@@ -98,12 +116,6 @@ export class AuthService {
 
       const data = await createJWT(response.user);
 
-      console.log('usuario desde auth service...',data.payload)
-
-      const cart = await cartModel.findOne({ _id: data.payload.id });
-      if (!cart) {
-        await cartModel.create({ _id: data.payload.id, items: [] });
-      }
       response.user = data;
       return response;
     } catch (error) {
